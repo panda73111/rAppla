@@ -1,4 +1,6 @@
 rAppla
 ===========
 
-Software Engeneering Project - Rapla for Android
+Software Engineering Project - Rapla for Android
+
+Awesome!
