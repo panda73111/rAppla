@@ -3,20 +3,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:ems="10"
+        android:inputType="numberDecimal" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText1"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:inputType="numberDecimal" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:text="@string/calc" 
+        android:onClick="onCalcButtonPressed"/>
+
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/fragment1" />
+        android:layout_marginBottom="49dp"
+        android:text="@string/ans"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <RatingBar
-        android:id="@+id/ratingBar1"
+    <Spinner
+        android:id="@+id/spinner1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="37dp" />
+        android:layout_above="@+id/editText2"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_marginBottom="15dp"
+        android:entries="@array/Operations"
+        
+        tools:listitem="@android:layout/simple_spinner_dropdown_item" />
 
 </RelativeLayout>

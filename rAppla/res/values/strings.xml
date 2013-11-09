@@ -2,11 +2,23 @@
 <resources>
 
     <string name="app_name">rAppla</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Einstellungen</string>
     <string name="hello_world">Hello world!</string>
     <string name="button">Button</string>
     <string name="fragment1">Tab1</string>
     <string name="fragment2">Tab2</string>
     <string name="fragment3">Tab3</string>
+    <string name="test_option1">test_option1</string>
+    <string name="test_option2">test_option2</string>
+    <string name="this_is_the_optionspanel">This is the optionspanel</string>
+    <string name="calc">Calc</string>
+    <string name="ans">Ans</string>
+    <string-array name="Operations">
+        <item>+</item>
+        <item>-</item>
+        <item>*</item>
+        <item>/</item>
+        
+    </string-array>
 
 </resources>
