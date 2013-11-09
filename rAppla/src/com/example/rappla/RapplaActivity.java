@@ -1,22 +1,30 @@
 package com.example.rappla;
 
 import kernel.Calculator;
+import kernel.Operation;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.Fragment;
-import android.graphics.Color;
 
-public class RapplaActivity extends Activity implements OnClickListener{
+public class RapplaActivity extends Activity {
     Calculator calculator;
-	
+
+    EditText cFaktor1;
+    EditText cFaktor2;
+    Spinner cOperation;
+    Button cCalcButton;
+    TextView cAnsText;
+    
 	Tab tab1;
     Tab tab2;
     Tab tab3;
@@ -25,6 +33,8 @@ public class RapplaActivity extends Activity implements OnClickListener{
     Fragment fragmentTab2 = new FragmentTab2();
     Fragment fragmentTab3 = new FragmentTab3();
  
+    
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +63,17 @@ public class RapplaActivity extends Activity implements OnClickListener{
         actionBar.addTab(tab2);
         actionBar.addTab(tab3);
         
-        // Add button Listeners
-        Button button = (Button)findViewById(R.id.button1);
-        /*button.setOnClickListener(this);*/
+        
+    }
+    
+    protected void onStart()
+    {
+    	super.onStart();
+        cFaktor1	= (EditText)findViewById(R.id.editText1);
+        cFaktor2	= (EditText)findViewById(R.id.editText2);
+        cOperation	= (Spinner)findViewById(R.id.spinner1);
+        cCalcButton	= (Button)findViewById(R.id.button1);
+        cAnsText	= (TextView)findViewById(R.id.textView1);
     }
     
     @Override
@@ -74,10 +92,25 @@ public class RapplaActivity extends Activity implements OnClickListener{
         	return super.onOptionsItemSelected(item);
     	}
     }
-	@Override
-	public void onClick(View arg0) 
-	{
-		Button button = (Button)arg0;
-		button.setBackgroundColor(Color.RED);
-	}
+    
+    public void onCalcButtonPressed(View view)
+    {
+    	String fak1 		= cFaktor1.getText().toString();
+    	String fak2 		= cFaktor2.getText().toString();
+    	String operation 	= cOperation.getSelectedItem().toString();
+    	Operation op = null;
+    	
+    	if(operation.equals("+"))
+    		op = Operation.PLUS;
+    	else if(operation.equals("-"))
+    		op = Operation.MINUS;
+    	else if(operation.equals("*"))
+    		op = Operation.MAL;
+    	else if(operation.equals("/"))
+    		op = Operation.GETEILT;
+    	
+    	double result = calculator.getResult(Double.valueOf(fak1), Double.valueOf(fak2), op);
+    	
+    	cAnsText.setText("" + result);
+    }
 }
