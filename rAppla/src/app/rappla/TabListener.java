@@ -1,4 +1,4 @@
-package com.example.rappla;
+package app.rappla;
 
 import android.app.ActionBar.Tab;
 import android.app.Fragment;

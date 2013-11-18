@@ -2,23 +2,43 @@
 <resources>
 
     <string name="app_name">rAppla</string>
-    <string name="action_settings">Einstellungen</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="button">Button</string>
-    <string name="fragment1">Tab1</string>
-    <string name="fragment2">Tab2</string>
-    <string name="fragment3">Tab3</string>
-    <string name="test_option1">test_option1</string>
-    <string name="test_option2">test_option2</string>
-    <string name="this_is_the_optionspanel">This is the optionspanel</string>
+    <string name="settings">Einstellungen</string>
     <string name="calc">Calc</string>
-    <string name="ans">Ans</string>
+    <string name="ans">ANS</string>
+
     <string-array name="Operations">
         <item>+</item>
         <item>-</item>
         <item>*</item>
         <item>/</item>
-        
     </string-array>
 
+    
+    <string-array name="UpdateIntervals">
+        <item>1 min</item>
+        <item>5 min</item>
+        <item>10 min</item>
+        <item>30 min</item>
+        <item>1 h</item>
+        <item>3 h</item>
+        <item>6 h</item>
+        <item>12 h</item>
+        <item>1 d</item>
+        <item>2 d</item>
+        <item>5 d</item>
+        <item>7 d</item>
+    </string-array>
+    
+    <string name="gmailSync">Mit GMail synchronisieren</string>
+    <string name="pushNotifications">Push Benachrichtigungen\nbei Planänderung</string>
+    <string name="updateInterval">Aktualisierungsintervall</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="offlineSync">Rapla offline Bereitstellen</string>
+    <string name="DEFAULT_FRAGMENT_TITLE">No title</string>
+    <string name="refresh">Aktualisieren</string> 
+	
+    <!-- MENÜ -->
+    <string name="a"></string>
+    
+    
 </resources>

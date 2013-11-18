@@ -1,19 +1,20 @@
-package com.example.rappla;
+package app.rappla;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FragmentTab3 extends Fragment implements RapplaFragment 
+public class TrainFragment extends RapplaFragment 
 {
-	public static String title = "Bahn";
-	
+	public TrainFragment()
+	{
+		setTitle("Bahn");
+	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment3, container,
+		View rootView = inflater.inflate(R.layout.trainlayout, container,
 				false);
 		return rootView;
 	}
