@@ -15,4 +15,4 @@ local.properties
 .classpath
 .settings/
 .loadpath
-.metadata/*
+.metadata/

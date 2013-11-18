@@ -1,4 +1,4 @@
-content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"/>
+content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"><lhs name\="app.rappla.RapplaFragment"><rhs name\="app.rappla.SettingsFragment"/></lhs><lhs name\="android.app.Fragment"><rhs name\="app.rappla.SettingsFragment"/></lhs><lhs name\="android.content.ComponentCallbacks2"><rhs name\="app.rappla.SettingsFragment"/></lhs><lhs name\="android.view.View$OnCreateContextMenuListener"><rhs name\="app.rappla.SettingsFragment"/></lhs><lhs name\="android.content.ComponentCallbacks"><rhs name\="app.rappla.SettingsFragment"/></lhs><lhs name\="app.rappla.SettingsFragment"><rhs name\="app.rappla.SettingsFragment"/></lhs><lhs name\="android.preference.PreferenceFragment"><rhs name\="app.rappla.SettingsFragment"/></lhs></history>
 content_assist_number_of_computers=12
 content_assist_proposals_background=255,255,255
 content_assist_proposals_foreground=0,0,0
