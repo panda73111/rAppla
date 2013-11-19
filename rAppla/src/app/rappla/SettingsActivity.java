@@ -22,9 +22,7 @@ public class SettingsActivity extends Activity
 	}
 	public void onStart() {
 		super.onStart();
-		Intent data = getIntent();
-		Bundle allExtras = data.getExtras();
-		settingsFragment.setData(allExtras);
+		// GO
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {

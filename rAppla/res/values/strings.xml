@@ -14,7 +14,7 @@
     </string-array>
 
     
-    <string-array name="UpdateIntervals">
+    <string-array name="UpdateIntervals_Entries">
         <item>1 min</item>
         <item>5 min</item>
         <item>10 min</item>
@@ -28,10 +28,25 @@
         <item>5 d</item>
         <item>7 d</item>
     </string-array>
+    <string-array name="UpdateIntervals_Values">
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>720</item>
+        <item>1440</item>
+        <item>2880</item>
+        <item>7200</item>
+        <item>10080</item>
+    </string-array>
     
     <string name="gmailSync">Mit GMail synchronisieren</string>
     <string name="pushNotifications">Push Benachrichtigungen\nbei Planänderung</string>
     <string name="updateInterval">Aktualisierungsintervall</string>
+    <string name="updateInterval_summary">Der Rapla wird alle _TIME_ synchronisiert.</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="offlineSync">Rapla offline Bereitstellen</string>
     <string name="DEFAULT_FRAGMENT_TITLE">No title</string>

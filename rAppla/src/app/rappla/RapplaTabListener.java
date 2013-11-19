@@ -5,11 +5,11 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.ActionBar;
  
-public class TabListener implements ActionBar.TabListener {
+public class RapplaTabListener implements ActionBar.TabListener {
  
     Fragment fragment;
  
-    public TabListener(Fragment fragment) {
+    public RapplaTabListener(Fragment fragment) {
         this.fragment = fragment;
     }
  

@@ -23,6 +23,7 @@ public class RapplaActivity extends Activity {
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.setTitle(R.string.app_name);
 
 		// Das ist ein zurück-Button. Ist in den einzelansichten nützlich
 		actionBar.setDisplayHomeAsUpEnabled(false);
@@ -32,7 +33,7 @@ public class RapplaActivity extends Activity {
 			tabs[i] = actionBar.newTab().setText(
 					(String) fragments[i].getTitle());
 			// Add Listener
-			tabs[i].setTabListener(new TabListener(fragments[i]));
+			tabs[i].setTabListener(new RapplaTabListener(fragments[i]));
 			// Add Tab to actionBar
 			actionBar.addTab(tabs[i]);
 		}
@@ -48,21 +49,31 @@ public class RapplaActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.settings:
-			Intent myIntent = new Intent(this, SettingsActivity.class);
-			startActivityForResult(myIntent, 0);
-			return true;
+		case R.id.action_settings:
+			return onSettingsButtonPressed(item);
+    	case R.id.action_refresh:
+    		return onRefreshButtonPressed(item);
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
+	
+	public boolean onRefreshButtonPressed(MenuItem item)
+	{
+		Toast.makeText(this, "Not implemented yet.", Toast.LENGTH_SHORT).show();
+		return true;
+	}
+	public boolean onSettingsButtonPressed(MenuItem item)
+	{
+		Intent myIntent = new Intent(this, SettingsActivity.class);
+		startActivity(myIntent);
+		return true;
+	}
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == RESULT_OK) {
-			Toast.makeText(this, "Settings has ended", Toast.LENGTH_LONG).show();
-		}
 		
-		//Log.d("Settings", data.getDataString());
+		if (resultCode == RESULT_OK) {
+			Toast.makeText(this, "An Activity has ended", Toast.LENGTH_LONG).show();
+		}
 	}
 
 }

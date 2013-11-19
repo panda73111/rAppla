@@ -1,120 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:stretchColumns="0">
-    
-    <TableRow
-        android:id="@+id/tableRow1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_height="wrap_content"
-            android:text="@string/gmailSync" />
-
-        <requestFocus />
-
-        <ToggleButton
-            android:id="@+id/toggleButton1"
-            android:tag="doGMailSync"
-            android:layout_height="wrap_content"
-            android:textOff="Aus"
-            android:textOn="An" />
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/pushNotifications" />
-
-        <ToggleButton
-            android:id="@+id/toggleButton2"
-            android:tag="doPushNotification"
-            android:layout_height="wrap_content"
-            android:textOff="Aus"
-            android:textOn="An" />
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/offlineSync" />
-
-        <ToggleButton
-            android:id="@+id/toggleButton3"
-            android:tag="doOfflineSync"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textOff="Aus"
-            android:textOn="An" />
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/updateInterval" />
-
-        <Spinner
-            android:id="@+id/Spinner1"
-            android:tag="setUpdateInterval"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-        	android:entries="@array/UpdateIntervals"
-            tools:listitem="@android:layout/simple_spinner_dropdown_item" />
-    </TableRow>
-</TableLayout>
--->
-
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="rappla_preferences" >
 
     <CheckBoxPreference
         android:key="gmailSync"
         android:title="@string/gmailSync" />
 
+    <CheckBoxPreference
+        android:key="pushNotifications"
+        android:title="@string/pushNotifications" />
+
+    <CheckBoxPreference
+        android:key="offlineSync"
+        android:title="@string/offlineSync" />
+
     <ListPreference
+        android:dependency="offlineSync"
         android:dialogTitle="@string/updateInterval"
-        android:entries="@array/UpdateIntervals"
-        android:entryValues="@array/UpdateIntervals"
-        android:key="list_preference"
-        android:summary="summary_list_preference"
-        android:title="title_list_preference" />
-
-    <CheckBoxPreference
-        android:key="parent_checkbox_preference"
-        android:summary="summary_parent_preference"
-        android:title="title_parent_preference" />
-
-    <CheckBoxPreference
-        android:dependency="parent_checkbox_preference"
-        android:key="child_checkbox_preference"
-        android:layout="?android:attr/preferenceLayoutChild"
-        android:summary="summary_child_preference"
-        android:title="title_child_preference" />
+        android:entries="@array/UpdateIntervals_Entries"
+        android:entryValues="@array/UpdateIntervals_Values"
+        android:key="updateInterval"
+        android:summary="@string/updateInterval_summary"
+        android:title="@string/updateInterval" />
 
 </PreferenceScreen>
