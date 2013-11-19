@@ -1,4 +1,4 @@
-package app.rappla;
+package app.rappla.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,26 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.TextView;
+import app.rappla.R;
+import app.rappla.StaticContext;
 
 public class WeekFragment extends RapplaFragment implements OnClickListener{
 
-
 	public WeekFragment()
 	{
-		setTitle("Woche");
+		setTitle(StaticContext.getContext().getResources().getString(R.string.week));
 	}
-    
-	@Override
+
+
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.weeklayout, container, false);
 		return rootView;
-	}
-	public void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		//Go
 	}
     public void onStart()
     {
@@ -44,10 +39,6 @@ public class WeekFragment extends RapplaFragment implements OnClickListener{
     }
     public void onCalcButtonPressed(View view)
     {
-    }
-    public void onRefreshButtonPressed(View view)
-    {
-    	
     }
     public void onClick(View view)
     {

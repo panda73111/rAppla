@@ -41,21 +41,25 @@ public final class R {
         public static final int main=0x7f070000;
     }
     public static final class string {
-        public static final int DEFAULT_FRAGMENT_TITLE=0x7f04000a;
-        /**  MENÜ 
-         */
-        public static final int a=0x7f04000c;
+        public static final int DEFAULT_FRAGMENT_TITLE=0x7f040004;
         public static final int ans=0x7f040003;
         public static final int app_name=0x7f040000;
         public static final int calc=0x7f040002;
-        public static final int gmailSync=0x7f040004;
-        public static final int offlineSync=0x7f040009;
-        public static final int pushNotifications=0x7f040005;
-        public static final int refresh=0x7f04000b;
+        public static final int day=0x7f040006;
+        /**  Preferences 
+         */
+        public static final int gmailSync=0x7f040009;
+        public static final int offlineSync=0x7f04000d;
+        public static final int pushNotifications=0x7f04000a;
+        /**  Actionbar 
+         */
+        public static final int refresh=0x7f04000e;
         public static final int settings=0x7f040001;
         public static final int title_activity_settings=0x7f040008;
-        public static final int updateInterval=0x7f040006;
-        public static final int updateInterval_summary=0x7f040007;
+        public static final int train=0x7f040007;
+        public static final int updateInterval=0x7f04000b;
+        public static final int updateInterval_summary=0x7f04000c;
+        public static final int week=0x7f040005;
     }
     public static final class style {
         /** 

@@ -1,7 +1,8 @@
-package app.rappla;
+package app.rappla.fragments;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import app.rappla.R;
 
 public class SettingsFragment extends PreferenceFragment
 {

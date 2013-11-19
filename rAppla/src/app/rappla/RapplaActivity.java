@@ -1,18 +1,25 @@
 package app.rappla;
 
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.Activity;
-import android.content.Intent;
+import app.rappla.fragments.DayFragment;
+import app.rappla.fragments.RapplaFragment;
+import app.rappla.fragments.TrainFragment;
+import app.rappla.fragments.WeekFragment;
 
 public class RapplaActivity extends Activity {
-	RapplaFragment[] fragments = new RapplaFragment[] { new WeekFragment(),
-			new DayFragment(), new TrainFragment() };
+	
+	RapplaFragment[] fragments = new RapplaFragment[]
+	{
+			new WeekFragment(), new DayFragment(), new TrainFragment()
+	};
 	Tab[] tabs = new Tab[fragments.length];
 
 	@Override
@@ -20,25 +27,25 @@ public class RapplaActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_rappla);
-
+		configureActionBar();
+	}
+	
+	private void configureActionBar() {
 		ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setTitle(R.string.app_name);
-
-		// Das ist ein zurück-Button. Ist in den einzelansichten nützlich
 		actionBar.setDisplayHomeAsUpEnabled(false);
 
 		for (int i = 0; i < tabs.length; i++) {
 			// Set title
-			tabs[i] = actionBar.newTab().setText(
-					(String) fragments[i].getTitle());
+			tabs[i] = actionBar.newTab().setText(fragments[i].getTitle());
 			// Add Listener
 			tabs[i].setTabListener(new RapplaTabListener(fragments[i]));
 			// Add Tab to actionBar
 			actionBar.addTab(tabs[i]);
 		}
 	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();

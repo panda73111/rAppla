@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import app.rappla.fragments.SettingsFragment;
 
 public class SettingsActivity extends Activity 
 {
@@ -36,7 +37,6 @@ public class SettingsActivity extends Activity
 	}
 
 	public void onBackPressed() {
-		// Toast.makeText(this, "BackButton", Toast.LENGTH_LONG).show();
 		Intent intent = this.getIntent();
 		setResult(RESULT_OK, intent);
 		finish();

@@ -42,18 +42,26 @@
         <item>7200</item>
         <item>10080</item>
     </string-array>
+
+    <string name="DEFAULT_FRAGMENT_TITLE">No title</string>
+    <string name="week">Woche</string>
+    <string name="day">Tag</string>
+    <string name="train">Bahn</string>
+    <string name="title_activity_settings">SettingsActivity</string>
     
+    
+    <!-- Preferences -->
     <string name="gmailSync">Mit GMail synchronisieren</string>
     <string name="pushNotifications">Push Benachrichtigungen\nbei Planänderung</string>
     <string name="updateInterval">Aktualisierungsintervall</string>
     <string name="updateInterval_summary">Der Rapla wird alle _TIME_ synchronisiert.</string>
-    <string name="title_activity_settings">SettingsActivity</string>
     <string name="offlineSync">Rapla offline Bereitstellen</string>
-    <string name="DEFAULT_FRAGMENT_TITLE">No title</string>
+    
+
+    <!-- Actionbar -->
     <string name="refresh">Aktualisieren</string> 
 	
-    <!-- MENÜ -->
-    <string name="a"></string>
+
     
     
 </resources>
