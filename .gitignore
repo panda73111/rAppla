@@ -18,3 +18,4 @@ local.properties
 .metadata/
 rappla/bin/
 rappla/gen/
+rappla/.settings/
