@@ -3,15 +3,6 @@
 
     <string name="app_name">rAppla</string>
     <string name="settings">Einstellungen</string>
-    <string name="calc">Calc</string>
-    <string name="ans">ANS</string>
-
-    <string-array name="Operations">
-        <item>+</item>
-        <item>-</item>
-        <item>*</item>
-        <item>/</item>
-    </string-array>
 
     
     <string-array name="UpdateIntervals_Entries">
