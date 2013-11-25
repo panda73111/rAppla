@@ -1,16 +1,26 @@
 package app.rappla;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.Set;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.widget.Toast;
+import app.rappla.calendar.CalendarFormatException;
+import app.rappla.calendar.RaplaCalendar;
+import app.rappla.calendar.RaplaEvent;
 import app.rappla.fragments.DayFragment;
 import app.rappla.fragments.RapplaFragment;
 import app.rappla.fragments.TrainFragment;
@@ -19,7 +29,8 @@ import app.rappla.fragments.WeekFragment;
 public class RapplaActivity extends Activity
 {
 
-	RapplaFragment[] fragments = new RapplaFragment[] { new WeekFragment(), new DayFragment(), new TrainFragment() };
+	RapplaFragment[] fragments = new RapplaFragment[] { new WeekFragment(),
+			new DayFragment(), new TrainFragment() };
 	Tab[] tabs = new Tab[fragments.length];
 
 	@Override
@@ -30,6 +41,41 @@ public class RapplaActivity extends Activity
 		setContentView(R.layout.activity_rappla);
 		configureActionBar();
 
+		AssetManager am = StaticContext.getContext().getAssets();
+		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss",
+				Locale.getDefault());
+		InputStream is;
+		try
+		{
+			is = am.open("tinf12b3.ics");
+			RaplaCalendar rapCal = new RaplaCalendar();
+			rapCal.parse(new InputStreamReader(is));
+
+			Calendar today = Calendar.getInstance();
+
+			System.out.println("today's events:");
+			Set<RaplaEvent> events = rapCal.getEventsAtDate(today);
+			if (events == null)
+				System.out.println("none");
+			else
+				for (RaplaEvent e : events)
+				{
+					System.out.println("from "
+							+ timeFormat.format(e.getStartTime().getTime())
+							+ " to "
+							+ timeFormat.format(e.getEndTime().getTime())
+							+ ": " + e.getTitle());
+				}
+		} catch (IOException e)
+		{
+			// some error reading the stream
+			e.printStackTrace();
+		} catch (CalendarFormatException e)
+		{
+			// iCal syntax error or necessary event attributes
+			// (type, title, resources, start/end time or id) missing
+			e.printStackTrace();
+		}
 	}
 
 	private void configureActionBar()
@@ -90,7 +136,8 @@ public class RapplaActivity extends Activity
 
 		if (resultCode == RESULT_OK)
 		{
-			Toast.makeText(this, "An Activity has ended", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "An Activity has ended", Toast.LENGTH_LONG)
+					.show();
 		}
 	}
 
