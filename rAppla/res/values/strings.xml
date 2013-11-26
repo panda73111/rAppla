@@ -38,7 +38,6 @@
     <string name="week">Woche</string>
     <string name="day">Tag</string>
     <string name="train">Bahn</string>
-    <string name="title_activity_settings">SettingsActivity</string>
     
     
     <!-- Preferences -->

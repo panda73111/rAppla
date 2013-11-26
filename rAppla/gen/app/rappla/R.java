@@ -13,12 +13,29 @@ public final class R {
         public static final int UpdateIntervals_Values=0x7f050001;
     }
     public static final class attr {
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int numOfColumns=0x7f010000;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int numOfRows=0x7f010001;
     }
     public static final class drawable {
-        public static final int ic_action_refresh=0x7f020000;
-        public static final int ic_action_settings_light=0x7f020001;
-        public static final int ic_launcher=0x7f020002;
-        public static final int unbenannt=0x7f020003;
+        public static final int event=0x7f020000;
+        public static final int ic_action_refresh=0x7f020001;
+        public static final int ic_action_settings_light=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
+        public static final int unbenannt=0x7f020004;
     }
     public static final class id {
         public static final int action_refresh=0x7f080003;
@@ -29,10 +46,11 @@ public final class R {
     }
     public static final class layout {
         public static final int activity_rappla=0x7f030000;
-        public static final int daylayout=0x7f030001;
-        public static final int fragment_settings=0x7f030002;
-        public static final int trainlayout=0x7f030003;
-        public static final int weeklayout=0x7f030004;
+        public static final int daygridlayout=0x7f030001;
+        public static final int daylayout=0x7f030002;
+        public static final int fragment_settings=0x7f030003;
+        public static final int trainlayout=0x7f030004;
+        public static final int weeklayout=0x7f030005;
     }
     public static final class menu {
         public static final int main=0x7f070000;
@@ -43,17 +61,16 @@ public final class R {
         public static final int day=0x7f040004;
         /**  Preferences 
          */
-        public static final int gmailSync=0x7f040007;
-        public static final int offlineSync=0x7f04000b;
-        public static final int pushNotifications=0x7f040008;
+        public static final int gmailSync=0x7f040006;
+        public static final int offlineSync=0x7f04000a;
+        public static final int pushNotifications=0x7f040007;
         /**  Actionbar 
          */
-        public static final int refresh=0x7f04000c;
+        public static final int refresh=0x7f04000b;
         public static final int settings=0x7f040001;
-        public static final int title_activity_settings=0x7f040006;
         public static final int train=0x7f040005;
-        public static final int updateInterval=0x7f040009;
-        public static final int updateInterval_summary=0x7f04000a;
+        public static final int updateInterval=0x7f040008;
+        public static final int updateInterval_summary=0x7f040009;
         public static final int week=0x7f040003;
     }
     public static final class style {
@@ -84,4 +101,49 @@ public final class R {
          */
         public static final int AppTheme=0x7f060001;
     }
+    public static final class styleable {
+        /** Attributes that can be used with a RapplaGrid.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #RapplaGrid_numOfColumns app.rappla:numOfColumns}</code></td><td></td></tr>
+           <tr><td><code>{@link #RapplaGrid_numOfRows app.rappla:numOfRows}</code></td><td></td></tr>
+           </table>
+           @see #RapplaGrid_numOfColumns
+           @see #RapplaGrid_numOfRows
+         */
+        public static final int[] RapplaGrid = {
+            0x7f010000, 0x7f010001
+        };
+        /**
+          <p>This symbol is the offset where the {@link app.rappla.R.attr#numOfColumns}
+          attribute's value can be found in the {@link #RapplaGrid} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name app.rappla:numOfColumns
+        */
+        public static final int RapplaGrid_numOfColumns = 0;
+        /**
+          <p>This symbol is the offset where the {@link app.rappla.R.attr#numOfRows}
+          attribute's value can be found in the {@link #RapplaGrid} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name app.rappla:numOfRows
+        */
+        public static final int RapplaGrid_numOfRows = 1;
+    };
 }

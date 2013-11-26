@@ -29,9 +29,9 @@ import app.rappla.fragments.WeekFragment;
 public class RapplaActivity extends Activity
 {
 
-	RapplaFragment[] fragments = new RapplaFragment[] { new WeekFragment(),
-			new DayFragment(), new TrainFragment() };
+	RapplaFragment[] fragments = new RapplaFragment[] { new WeekFragment(), new DayFragment(), new TrainFragment() };
 	Tab[] tabs = new Tab[fragments.length];
+	RaplaCalendar calender;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -40,16 +40,29 @@ public class RapplaActivity extends Activity
 
 		setContentView(R.layout.activity_rappla);
 		configureActionBar();
+	}
+
+	public void onStart()
+	{
+		super.onStart();
+		calender = readCalenderFile("tinf12b3.ics", true);
+	}
+
+	public static RaplaCalendar readCalenderFile(String fileName, boolean doDebugOutput)
+	{
 
 		AssetManager am = StaticContext.getContext().getAssets();
-		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss",
-				Locale.getDefault());
+		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+		RaplaCalendar rapCal = new RaplaCalendar();
+
 		InputStream is;
 		try
 		{
-			is = am.open("tinf12b3.ics");
-			RaplaCalendar rapCal = new RaplaCalendar();
+			is = am.open(fileName);
 			rapCal.parse(new InputStreamReader(is));
+
+			if (!doDebugOutput)
+				return rapCal;
 
 			Calendar today = Calendar.getInstance();
 
@@ -60,10 +73,7 @@ public class RapplaActivity extends Activity
 			else
 				for (RaplaEvent e : events)
 				{
-					System.out.println("from "
-							+ timeFormat.format(e.getStartTime().getTime())
-							+ " to "
-							+ timeFormat.format(e.getEndTime().getTime())
+					System.out.println("from " + timeFormat.format(e.getStartTime().getTime()) + " to " + timeFormat.format(e.getEndTime().getTime())
 							+ ": " + e.getTitle());
 				}
 		} catch (IOException e)
@@ -76,6 +86,7 @@ public class RapplaActivity extends Activity
 			// (type, title, resources, start/end time or id) missing
 			e.printStackTrace();
 		}
+		return rapCal;
 	}
 
 	private void configureActionBar()
@@ -136,8 +147,7 @@ public class RapplaActivity extends Activity
 
 		if (resultCode == RESULT_OK)
 		{
-			Toast.makeText(this, "An Activity has ended", Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(this, "An Activity has ended", Toast.LENGTH_LONG).show();
 		}
 	}
 

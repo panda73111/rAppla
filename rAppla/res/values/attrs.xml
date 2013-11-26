@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="RapplaGrid">
+        <attr name="numOfColumns" format="integer" />
+        <attr name="numOfRows" format="integer" />
+    </declare-styleable>
+
+</resources>

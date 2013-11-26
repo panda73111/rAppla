@@ -52,6 +52,7 @@ public class SettingsActivity extends Activity
 	public void setActionBar()
 	{
 		ActionBar actionBar = getActionBar();
+		actionBar.setTitle(getResources().getString(R.string.settings));
 		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 }
