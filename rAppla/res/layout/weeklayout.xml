@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:numOfColumns="5"
-        app:numOfRows="40"
+        android:columnCount="5"
+        android:rowCount="40"
         
         android:id="@+id/weekGrid"/>
 

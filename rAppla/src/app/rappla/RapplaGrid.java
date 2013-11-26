@@ -1,89 +1,57 @@
 package app.rappla;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.GridLayout;
-import android.widget.LinearLayout;
 
-public class RapplaGrid extends LinearLayout
+public class RapplaGrid extends GridLayout
 {
-	public final static String colPrefix = "CP#";
 	public final static String elementPrefix = "EP#";
-	
+	public final static String coordinateSeperator = "#";
+
 	public RapplaGrid(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
-		TypedArray a=context.obtainStyledAttributes(attrs, R.styleable.RapplaGrid);
-		
-		String colCountString = a.getString(R.styleable.RapplaGrid_numOfColumns);
-		String rowCountString = a.getString(R.styleable.RapplaGrid_numOfRows);	
-		
-		a.recycle();
-		
-		if(colCountString==null)
-			colCountString="1";
-		if(rowCountString==null)
-			rowCountString="1";
-
-		int colCount = Math.max(Integer.valueOf(colCountString), 1);
-		int rowCount = Math.max(Integer.valueOf(rowCountString), 1);
-		addGrid(context, colCount, rowCount);
 	}
-	private void addGrid(Context context, int colCount, int rowCount)
+
+	public void onSizeChanged(int w, int h, int oldw, int oldh)
 	{
-		LinearLayout.LayoutParams dayParams = new LinearLayout.LayoutParams(1, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-		
-		for (int i = 0; i < colCount; i++)
+		int childcount = getChildCount();
+		ViewGroup.LayoutParams lParam;
+		for (int i = 0; i < childcount; i++)
 		{
-			GridLayout dayGrid = new GridLayout(context);
-
-			dayGrid.setLayoutParams(dayParams);
-
-			dayGrid.setColumnCount(1);
-			dayGrid.setRowCount(rowCount);
-			dayGrid.setUseDefaultMargins(false);
-			dayGrid.setClipToPadding(true);
-			dayGrid.setTag(colPrefix + i);
-			this.addView(dayGrid, i);
+			View v = getChildAt(i);
+			lParam = v.getLayoutParams();
+			lParam.width = w / getColumnCount();
+			lParam.height = w / getRowCount();
+			v.setLayoutParams(lParam);
 		}
 	}
-	
-	public GridLayout getColumn(int column)
-	{
-		return (GridLayout)findViewWithTag(colPrefix + column);
-	}
+
 	public View getElementAt(int x, int y)
 	{
-		GridLayout column = getColumn(x);
-		
-		if(column==null)
-			return null;
-		
-		return column.findViewWithTag(elementPrefix + y);
+		return findViewWithTag(elementPrefix + x + coordinateSeperator + y);
 	}
-	
+
 	public boolean addElementAt(View element, int x, int y, int rowSpan)
 	{
-		GridLayout column = getColumn(x);
 
-		if(column==null)
-			return false;
-		
 		// Apply rowSpan
-		if(rowSpan>1)
-		{
-			GridLayout.LayoutParams gParams = new GridLayout.LayoutParams(element.getLayoutParams());
-			gParams.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, rowSpan);
-			gParams.setGravity(Gravity.FILL_VERTICAL);
-			gParams.
-			element.setLayoutParams(gParams);
-		}
-		
-		column.addView(element, y);
+
+		GridLayout.LayoutParams gParams = new GridLayout.LayoutParams();
+		gParams.setGravity(Gravity.FILL_VERTICAL);
+
+		gParams.width = getWidth() / getColumnCount();
+		gParams.height = getHeight() / getRowCount();
+		gParams.rowSpec = GridLayout.spec(y, rowSpan + 1);
+		gParams.columnSpec = GridLayout.spec(x, 1);
+
+		element.setLayoutParams(gParams);
+
+		addView(element);
 		return true;
 	}
-	
 }

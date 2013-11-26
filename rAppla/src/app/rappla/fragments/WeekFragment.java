@@ -15,7 +15,7 @@ public class WeekFragment extends RapplaFragment implements OnClickListener
 {
 	String gridElementPrefix = "GL#";
 	String weekGridPrefix = "WG#";
-
+	
 	public WeekFragment()
 	{
 		setTitle(StaticContext.getContext().getResources().getString(R.string.week));
@@ -69,18 +69,18 @@ public class WeekFragment extends RapplaFragment implements OnClickListener
 	{
 		RapplaGrid weekGrid = (RapplaGrid) getActivity().findViewById(R.id.weekGrid);
 	    
-		ViewGroup.LayoutParams bParam = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+		//ViewGroup.LayoutParams bParam = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
 		
 
 		Button b = new Button(getActivity());
-		b.setLayoutParams(bParam);
+//		b.setLayoutParams(bParam);
 		b.setBackgroundResource(R.drawable.event);
-		weekGrid.addElementAt(b, 2, 0, 2);
+		weekGrid.addElementAt(b, 2, 0, 50);
 		
 		b = new Button(getActivity());
-		b.setLayoutParams(bParam);
-		b.setBackgroundResource(R.drawable.event);
-		weekGrid.addElementAt(b, 1, 0, 1);
+//		b.setLayoutParams(bParam);
+//		b.setBackgroundResource(R.drawable.event);
+		weekGrid.addElementAt(b, 2, 1, 0);
 		
 	}
 

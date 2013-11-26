@@ -17,12 +17,4 @@ public class StaticContext extends Application
         return mContext;
     }
     
-//	public static Point getScreenSize()
-//	{
-//		WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-//		Display display = wm.getDefaultDisplay();
-//		Point size = new Point();
-//		display.getSize(size);
-//		return size;
-//	}
 }
