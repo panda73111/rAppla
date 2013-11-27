@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:columnCount="5"
-        android:rowCount="40"
+        android:rowCount="60"
         
         android:id="@+id/weekGrid"/>
 
