@@ -1,20 +1,20 @@
 package app.rappla.fragments;
 
+import RapplaGrid.RapplaGrid;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 import app.rappla.R;
-import app.rappla.RapplaGrid;
 import app.rappla.StaticContext;
 
 public class WeekFragment extends RapplaFragment implements OnClickListener
 {
 	String gridElementPrefix = "GL#";
 	String weekGridPrefix = "WG#";
+	RapplaGrid weekGrid;
 	
 	public WeekFragment()
 	{
@@ -67,21 +67,13 @@ public class WeekFragment extends RapplaFragment implements OnClickListener
 
 	private void configureWeekGrid()
 	{
-		RapplaGrid weekGrid = (RapplaGrid) getActivity().findViewById(R.id.weekGrid);
+		weekGrid = (RapplaGrid) getActivity().findViewById(R.id.weekGrid);
 	    
-		//ViewGroup.LayoutParams bParam = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-		
 
-		Button b = new Button(getActivity());
-//		b.setLayoutParams(bParam);
-		b.setBackgroundResource(R.drawable.event);
-		weekGrid.addElementAt(b, 2, 0, 50);
-		
-		b = new Button(getActivity());
-//		b.setLayoutParams(bParam);
+//		Button b = new Button(getActivity());
 //		b.setBackgroundResource(R.drawable.event);
-		weekGrid.addElementAt(b, 2, 1, 0);
-		
+//		weekGrid.addElementAt(b, 2, 10, 20);
+
 	}
 
 
