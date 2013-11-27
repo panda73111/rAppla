@@ -1,21 +1,23 @@
 package app.rappla.fragments;
 
+import java.util.Calendar;
+import java.util.Set;
+
 import RapplaGrid.RapplaGrid;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 import app.rappla.R;
 import app.rappla.StaticContext;
+import app.rappla.calendar.RaplaEvent;
 
-public class WeekFragment extends RapplaFragment implements OnClickListener
+public class WeekFragment extends CalenderFragment implements OnClickListener
 {
-	String gridElementPrefix = "GL#";
-	String weekGridPrefix = "WG#";
-	RapplaGrid weekGrid;
-	
+
 	public WeekFragment()
 	{
 		setTitle(StaticContext.getContext().getResources().getString(R.string.week));
@@ -25,27 +27,6 @@ public class WeekFragment extends RapplaFragment implements OnClickListener
 	{
 		View rootView = inflater.inflate(R.layout.weeklayout, container, false);
 		return rootView;
-	}
-
-	public void onStart()
-	{
-		super.onStart();
-		configureWeekGrid();
-		/*
-		 * SharedPreferences sp =
-		 * PreferenceManager.getDefaultSharedPreferences(getActivity());
-		 * 
-		 * tv1.setText("Gmail sync is " + sp.getBoolean("gmailSync", false));
-		 * tv2.setText("Push notifications are " +
-		 * sp.getBoolean("pushNotifications", false));
-		 * tv3.setText("Offline sync is " + sp.getBoolean("offlineSync",
-		 * false)); tv4.setText("updateInterval is " +
-		 * sp.getString("updateInterval", "0 min"));
-		 */
-	}
-
-	public void onCalcButtonPressed(View view)
-	{
 	}
 
 	public void onClick(View view)
@@ -65,16 +46,40 @@ public class WeekFragment extends RapplaFragment implements OnClickListener
 		}
 	}
 
-	private void configureWeekGrid()
+	protected void configureGrid()
 	{
-		weekGrid = (RapplaGrid) getActivity().findViewById(R.id.weekGrid);
-	    
+		calenderGrid = (RapplaGrid) getActivity().findViewById(R.id.weekGrid);
 
-//		Button b = new Button(getActivity());
-//		b.setBackgroundResource(R.drawable.event);
-//		weekGrid.addElementAt(b, 2, 10, 20);
+		Calendar today = Calendar.getInstance();
+		today.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+		
+		for (int i = 0; i < 5; i++)
+		{
+			today.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY+i);
+			Set<RaplaEvent> events = getCalender().getEventsAtDate(today);
+
+			for (RaplaEvent currentEvent : events)
+			{
+				long durationInMinutes = currentEvent.getDurationInMinutes();
+				int eventLength = (int) (durationInMinutes / minimumTimeInterval);
+
+				Calendar startTime = currentEvent.getStartTime();
+				Calendar earliestStart = Calendar.getInstance();
+				earliestStart.setTime(startTime.getTime());
+				earliestStart.set(Calendar.AM_PM, Calendar.AM);
+				earliestStart.set(Calendar.HOUR, 8);
+				earliestStart.set(Calendar.MINUTE, 0);
+				
+				
+				int offset = (int) ((startTime.getTimeInMillis() - earliestStart.getTimeInMillis()) / 1000 / 60 / 15);
+
+				Button eventButton = new Button(getActivity());
+				eventButton.setBackgroundResource(R.drawable.event);
+				eventButton.setText(currentEvent.getTitle());
+				calenderGrid.addElementAt(eventButton, i, offset, eventLength);
+			}
+		}
 
 	}
-
 
 }
