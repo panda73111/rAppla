@@ -65,7 +65,7 @@ public class RaplaEvent implements Comparable<RaplaEvent>
 		long oldStartTimeMillis = e._startTime.getTimeInMillis();
 		long duration = e._endTime.getTimeInMillis() - oldStartTimeMillis;
 		Calendar newEndTime = Calendar.getInstance();
-		newEndTime.setTimeInMillis(oldStartTimeMillis + duration);
+		newEndTime.setTimeInMillis(newStartTime.getTimeInMillis() + duration);
 		
 		RaplaEvent re = new RaplaEvent(e._uid, newStartTime, newEndTime, e._type, e._title, e._resources);
 		re._changesAllowedBy = e._changesAllowedBy;
@@ -189,6 +189,23 @@ public class RaplaEvent implements Comparable<RaplaEvent>
 		return _persons;
 	}
 
+	public long getDurationInMillis()
+	{
+		long startTime  	= getStartTime().getTimeInMillis();
+		long endTime  		= getEndTime().getTimeInMillis();
+		return endTime-startTime;
+	}
+	public long getDurationInSeconds()
+	{
+		return getDurationInMillis()/1000;
+	}
+	public long getDurationInMinutes()
+	{
+		return getDurationInSeconds()/60;
+	}
+	
+	
+	
 	@Override
 	public int compareTo(RaplaEvent another)
 	{
