@@ -29,6 +29,10 @@ package app.rappla.calendar;
  */
 public class BogusDataException extends Exception
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2535024664725012353L;
 	public String error;
 	public String icalText;
 

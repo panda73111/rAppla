@@ -28,6 +28,10 @@ package app.rappla.calendar;
  */
 public class ParseException extends Exception
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4929485460515566154L;
 	public String error;
 	public String icalText;
 
