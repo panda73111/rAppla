@@ -150,5 +150,9 @@ public class RapplaActivity extends Activity
 			Toast.makeText(this, "An Activity has ended", Toast.LENGTH_LONG).show();
 		}
 	}
+	public RaplaCalendar getCalender()
+	{
+		return calender;
+	}
 
 }
