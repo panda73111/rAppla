@@ -47,9 +47,12 @@ public class RaplaCalendar
 
 	public Set<RaplaEvent> getEventsAtDate(Calendar date)
 	{
-		Integer key = getDateHash(date);
-
-		return _eventCal.get(key);
+		return _eventCal.get(getDateHash(date));
+	}
+	
+	public Set<RaplaEvent> getEventsAtDate(int day, int month, int year)
+	{
+		return _eventCal.get(year * 365 + month * 31 + day);
 	}
 
 	private void addEvent(RaplaEvent event)
@@ -70,9 +73,7 @@ public class RaplaCalendar
 	private int getDateHash(Calendar date)
 	{
 		// we need that (whole) day's date as key
-		int hash = date.get(Calendar.YEAR) * 365 + date.get(Calendar.MONTH)
+		return date.get(Calendar.YEAR) * 365 + date.get(Calendar.MONTH)
 				* 31 + date.get(Calendar.DAY_OF_MONTH);
-
-		return hash;
 	}
 }
