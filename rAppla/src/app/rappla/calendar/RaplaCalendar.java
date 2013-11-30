@@ -6,11 +6,11 @@ import java.util.*;
 
 public class RaplaCalendar
 {
-	private Hashtable<Integer, Set<RaplaEvent>> _eventCal;
+	private Hashtable<Integer, Set<RaplaEvent>> eventCal;
 
 	public RaplaCalendar()
 	{
-		_eventCal = new Hashtable<Integer, Set<RaplaEvent>>();
+		eventCal = new Hashtable<Integer, Set<RaplaEvent>>();
 	}
 
 	public void parse(Reader reader) throws CalendarFormatException,
@@ -47,33 +47,38 @@ public class RaplaCalendar
 
 	public Set<RaplaEvent> getEventsAtDate(Calendar date)
 	{
-		return _eventCal.get(getDateHash(date));
+		return eventCal.get(getDateHash(date));
 	}
 	
 	public Set<RaplaEvent> getEventsAtDate(int day, int month, int year)
 	{
-		return _eventCal.get(year * 365 + month * 31 + day);
+		// the month in the Calendar class is zero based 
+		return eventCal.get(getDateHash(day, month - 1, year));
 	}
 
 	private void addEvent(RaplaEvent event)
 	{
 		Integer key = getDateHash(event.getStartTime());
 
-		if (_eventCal.containsKey(key))
+		if (eventCal.containsKey(key))
 		{
-			_eventCal.get(key).add(event);
+			eventCal.get(key).add(event);
 		} else
 		{
 			Set<RaplaEvent> l = new TreeSet<RaplaEvent>();
 			l.add(event);
-			_eventCal.put(key, l);
+			eventCal.put(key, l);
 		}
 	}
 
 	private int getDateHash(Calendar date)
 	{
 		// we need that (whole) day's date as key
-		return date.get(Calendar.YEAR) * 365 + date.get(Calendar.MONTH)
-				* 31 + date.get(Calendar.DAY_OF_MONTH);
+		return getDateHash(date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.MONTH), date.get(Calendar.YEAR));
+	}
+	
+	private int getDateHash(int day, int month, int year)
+	{
+		return year * 365 + month * 31 + day - 1;
 	}
 }

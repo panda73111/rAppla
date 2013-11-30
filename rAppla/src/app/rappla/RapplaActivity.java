@@ -1,30 +1,19 @@
 package app.rappla;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
-import android.app.ActionBar;
+import android.app.*;
 import android.app.ActionBar.Tab;
-import android.app.Activity;
-import android.content.Intent;
+import android.content.*;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.*;
 import android.widget.Toast;
-import app.rappla.calendar.CalendarFormatException;
-import app.rappla.calendar.RaplaCalendar;
-import app.rappla.calendar.RaplaEvent;
-import app.rappla.fragments.DayFragment;
-import app.rappla.fragments.RapplaFragment;
-import app.rappla.fragments.TrainFragment;
-import app.rappla.fragments.WeekFragment;
+import app.rappla.calendar.*;
+import app.rappla.fragments.*;
+import app.rappla.inet.*;
 
 public class RapplaActivity extends Activity
 {
@@ -46,6 +35,8 @@ public class RapplaActivity extends Activity
 	{
 		super.onStart();
 		calender = readCalenderFile("tinf12b3.ics", true);
+		
+		new DownloadRaplaTask().execute("http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3");
 	}
 
 	public static RaplaCalendar readCalenderFile(String fileName, boolean doDebugOutput)

@@ -4,30 +4,30 @@ import java.util.Calendar;
 
 public class RaplaEvent implements Comparable<RaplaEvent>
 {
-	private final String _uid;
-	private final Calendar _startTime;
-	private final Calendar _endTime;
-	private final String _type;
-	private final String _title;
-	private final String _resources;
-	private String _language = null;
-	private String _course = null;
-	private String _changesAllowedBy = null;
-	private int _plannedHours = 0;
-	private String _note = null;
-	private String _createdBy = null;
-	private String _lastChangeBy = null;
-	private String _persons = null;
+	private final String uid;
+	private final Calendar startTime;
+	private final Calendar endTime;
+	private final String type;
+	private final String title;
+	private final String resources;
+	private String language = null;
+	private String course = null;
+	private String changesAllowedBy = null;
+	private int plannedHours = 0;
+	private String note = null;
+	private String createdBy = null;
+	private String lastChangeBy = null;
+	private String persons = null;
 
 	public RaplaEvent(String uid, Calendar startTime,
 			Calendar endTime, String type, String title, String resources)
 	{
-		_uid = uid;
-		_startTime = startTime;
-		_endTime = endTime;
-		_type = type;
-		_title = title;
-		_resources = resources;
+		this.uid = uid;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.type = type;
+		this.title = title;
+		this.resources = resources;
 	}
 
 	public static RaplaEvent FromEvent(Event e)
@@ -62,131 +62,130 @@ public class RaplaEvent implements Comparable<RaplaEvent>
 	
 	public static RaplaEvent FromRecurringRaplaEvent(RaplaEvent e, Calendar newStartTime)
 	{
-		long oldStartTimeMillis = e._startTime.getTimeInMillis();
-		long duration = e._endTime.getTimeInMillis() - oldStartTimeMillis;
+		long duration = e.getDurationInMillis();
 		Calendar newEndTime = Calendar.getInstance();
 		newEndTime.setTimeInMillis(newStartTime.getTimeInMillis() + duration);
 		
-		RaplaEvent re = new RaplaEvent(e._uid, newStartTime, newEndTime, e._type, e._title, e._resources);
-		re._changesAllowedBy = e._changesAllowedBy;
-		re._course = e._course;
-		re._createdBy = e._createdBy;
-		re._language = e._language;
-		re._lastChangeBy = e._lastChangeBy;
-		re._note = e._note;
-		re._persons = e._persons;
-		re._plannedHours = e._plannedHours;
+		RaplaEvent re = new RaplaEvent(e.uid, newStartTime, newEndTime, e.type, e.title, e.resources);
+		re.changesAllowedBy = e.changesAllowedBy;
+		re.course = e.course;
+		re.createdBy = e.createdBy;
+		re.language = e.language;
+		re.lastChangeBy = e.lastChangeBy;
+		re.note = e.note;
+		re.persons = e.persons;
+		re.plannedHours = e.plannedHours;
 		return re;
 	}
 
 	public String getUid()
 	{
-		return _uid;
+		return uid;
 	}
 
 	public Calendar getStartTime()
 	{
-		return _startTime;
+		return startTime;
 	}
 
 	public Calendar getEndTime()
 	{
-		return _endTime;
+		return endTime;
 	}
 
 	public String getType()
 	{
-		return _type;
+		return type;
 	}
 
 	public String getTitle()
 	{
-		return _title;
+		return title;
 	}
 
 	public String getResources()
 	{
-		return _resources;
+		return resources;
 	}
 
 	public void setLanguage(String language)
 	{
-		_language = language;
+		this.language = language;
 	}
 
 	public String getLanguage()
 	{
-		return _language;
+		return language;
 	}
 
 	public void setCourse(String course)
 	{
-		_course = course;
+		this.course = course;
 	}
 
 	public String getCourse()
 	{
-		return _course;
+		return course;
 	}
 
 	public void setChangesAllowedBy(String changesAllowedBy)
 	{
-		_changesAllowedBy = changesAllowedBy;
+		this.changesAllowedBy = changesAllowedBy;
 	}
 
 	public String getChangesAllowedBy()
 	{
-		return _changesAllowedBy;
+		return changesAllowedBy;
 	}
 
 	public void setPlannedHours(int plannedHours)
 	{
-		_plannedHours = plannedHours;
+		this.plannedHours = plannedHours;
 	}
 
 	public int getPlannedHours()
 	{
-		return _plannedHours;
+		return plannedHours;
 	}
 
 	public void setNote(String note)
 	{
-		_note = note;
+		this.note = note;
 	}
 
 	public String getNote()
 	{
-		return _note;
+		return note;
 	}
 
 	public void setCreatedBy(String createdBy)
 	{
-		_createdBy = createdBy;
+		this.createdBy = createdBy;
 	}
 
 	public String getCreatedBy()
 	{
-		return _createdBy;
+		return createdBy;
 	}
 
 	public void setLastChangeBy(String lastChangeBy)
 	{
-		_lastChangeBy = lastChangeBy;
+		this.lastChangeBy = lastChangeBy;
 	}
 
 	public String getLastChangeBy()
 	{
-		return _lastChangeBy;
+		return lastChangeBy;
 	}
 
 	public void setPersons(String persons)
 	{
-		_persons = persons;
+		this.persons = persons;
 	}
 
 	public String getPersons()
 	{
-		return _persons;
+		return persons;
 	}
 
 	public long getDurationInMillis()
@@ -209,6 +208,6 @@ public class RaplaEvent implements Comparable<RaplaEvent>
 	@Override
 	public int compareTo(RaplaEvent another)
 	{
-		return this._startTime.compareTo(another._startTime);
+		return this.startTime.compareTo(another.startTime);
 	}
 }
