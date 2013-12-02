@@ -49,7 +49,7 @@ public class WeekFragment extends CalenderFragment implements OnClickListener
 
 	protected void configureGrid()
 	{
-		calenderGrid = (RapplaGrid) getActivity().findViewById(R.id.weekGrid);
+		calendarGrid = (RapplaGrid) getActivity().findViewById(R.id.weekGrid);
 
 		Calendar today = Calendar.getInstance();
 		today.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -63,7 +63,7 @@ public class WeekFragment extends CalenderFragment implements OnClickListener
 			
 			for(RapplaGridElement eventGridElement : dayElements)
 			{
-				calenderGrid.addElementAt(eventGridElement);	
+				calendarGrid.addElementAt(eventGridElement);	
 			}
 
 		}

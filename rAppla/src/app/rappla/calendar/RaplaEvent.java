@@ -1,8 +1,9 @@
 package app.rappla.calendar;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class RaplaEvent implements Comparable<RaplaEvent>
+public class RaplaEvent implements Comparable<RaplaEvent>, Serializable
 {
 	private final String uid;
 	private final Calendar startTime;

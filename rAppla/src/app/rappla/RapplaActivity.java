@@ -1,13 +1,8 @@
 package app.rappla;
 
-import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 import android.app.*;
 import android.app.ActionBar.Tab;
 import android.content.*;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.Toast;
@@ -17,75 +12,45 @@ import app.rappla.inet.*;
 
 public class RapplaActivity extends Activity
 {
-
-	RapplaFragment[] fragments = new RapplaFragment[] { new WeekFragment(), new DayFragment(), new TrainFragment() };
-	Tab[] tabs = new Tab[fragments.length];
-	int selectedTab = 0;
+	private static final String ICAL_URL = "http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3";
 	
-	RaplaCalendar calender;
+	RapplaFragment[] fragments = new RapplaFragment[] { new WeekFragment(), new DayFragment(), new TrainFragment() };
+	private Tab[] tabs = new Tab[fragments.length];
+	private int selectedTab = 0;
+
+	private RaplaCalendar calendar;
+	private GestureDetector gestDetector;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 
+		gestDetector = new GestureDetector(this, new RapplaGestureListener());
+		calendar = RaplaCalendar.load();
+		
+		if (calendar == null)
+		{
+			// calendar is not saved locally, download it
+			calendar = new RaplaCalendar();
+			new DownloadRaplaTask(this).execute(ICAL_URL);
+		}
+		
 		setContentView(R.layout.activity_rappla);
 		configureActionBar(savedInstanceState);
 	}
+
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-	    super.onSaveInstanceState(outState);
-	    int i = getActionBar().getSelectedNavigationIndex();
-	    outState.putInt("selectedTab", i);
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		int i = getActionBar().getSelectedNavigationIndex();
+		outState.putInt("selectedTab", i);
 	}
-	
+
 	public void onStart()
 	{
 		super.onStart();
-		calender = readCalenderFile("tinf12b3.ics", true);
-
-		new DownloadRaplaTask().execute("http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3");
-	}
-
-	public static RaplaCalendar readCalenderFile(String fileName, boolean doDebugOutput)
-	{
-
-		AssetManager am = StaticContext.getContext().getAssets();
-		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-		RaplaCalendar rapCal = new RaplaCalendar();
-
-		InputStream is;
-		try
-		{
-			is = am.open(fileName);
-			rapCal.parse(new InputStreamReader(is));
-
-			if (!doDebugOutput)
-				return rapCal;
-
-			Calendar today = Calendar.getInstance();
-
-			System.out.println("today's events:");
-			Set<RaplaEvent> events = rapCal.getEventsAtDate(today);
-			if (events == null)
-				System.out.println("none");
-			else
-				for (RaplaEvent e : events)
-				{
-					System.out.println("from " + timeFormat.format(e.getStartTime().getTime()) + " to " + timeFormat.format(e.getEndTime().getTime())
-							+ ": " + e.getTitle());
-				}
-		} catch (IOException e)
-		{
-			// some error reading the stream
-			e.printStackTrace();
-		} catch (CalendarFormatException e)
-		{
-			// iCal syntax error or necessary event attributes
-			// (type, title, resources, start/end time or id) missing
-			e.printStackTrace();
-		}
-		return rapCal;
 	}
 
 	private void configureActionBar(Bundle savedInstanceState)
@@ -104,10 +69,10 @@ public class RapplaActivity extends Activity
 			// Add Tab to actionBar
 			actionBar.addTab(tabs[i]);
 		}
-		
-		int selectedIndex=0;
-		if(savedInstanceState!=null)
-			selectedIndex=savedInstanceState.getInt("selectedTab");
+
+		int selectedIndex = 0;
+		if (savedInstanceState != null)
+			selectedIndex = savedInstanceState.getInt("selectedTab");
 		actionBar.selectTab(tabs[selectedIndex]);
 	}
 
@@ -135,7 +100,7 @@ public class RapplaActivity extends Activity
 
 	public boolean onRefreshButtonPressed(MenuItem item)
 	{
-		Toast.makeText(this, "Not implemented yet.", Toast.LENGTH_SHORT).show();
+		new DownloadRaplaTask(this).execute(ICAL_URL);
 		return true;
 	}
 
@@ -154,9 +119,15 @@ public class RapplaActivity extends Activity
 			Toast.makeText(this, "An Activity has ended", Toast.LENGTH_LONG).show();
 		}
 	}
+
 	public RaplaCalendar getCalender()
 	{
-		return calender;
+		return calendar;
 	}
 
+	@Override
+	public boolean onTouchEvent(MotionEvent event)
+	{
+		return gestDetector.onTouchEvent(event);
+	}
 }
