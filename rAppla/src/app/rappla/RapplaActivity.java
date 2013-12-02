@@ -20,6 +20,8 @@ public class RapplaActivity extends Activity
 
 	RapplaFragment[] fragments = new RapplaFragment[] { new WeekFragment(), new DayFragment(), new TrainFragment() };
 	Tab[] tabs = new Tab[fragments.length];
+	int selectedTab = 0;
+	
 	RaplaCalendar calender;
 
 	@Override
@@ -28,14 +30,20 @@ public class RapplaActivity extends Activity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_rappla);
-		configureActionBar();
+		configureActionBar(savedInstanceState);
 	}
-
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    int i = getActionBar().getSelectedNavigationIndex();
+	    outState.putInt("selectedTab", i);
+	}
+	
 	public void onStart()
 	{
 		super.onStart();
 		calender = readCalenderFile("tinf12b3.ics", true);
-		
+
 		new DownloadRaplaTask().execute("http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3");
 	}
 
@@ -80,7 +88,7 @@ public class RapplaActivity extends Activity
 		return rapCal;
 	}
 
-	private void configureActionBar()
+	private void configureActionBar(Bundle savedInstanceState)
 	{
 		ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -96,6 +104,11 @@ public class RapplaActivity extends Activity
 			// Add Tab to actionBar
 			actionBar.addTab(tabs[i]);
 		}
+		
+		int selectedIndex=0;
+		if(savedInstanceState!=null)
+			selectedIndex=savedInstanceState.getInt("selectedTab");
+		actionBar.selectTab(tabs[selectedIndex]);
 	}
 
 	@Override
