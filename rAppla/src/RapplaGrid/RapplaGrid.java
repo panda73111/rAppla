@@ -1,13 +1,16 @@
 package RapplaGrid;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.Space;
+import app.rappla.R;
 
 public class RapplaGrid extends GridLayout
 {
@@ -15,14 +18,32 @@ public class RapplaGrid extends GridLayout
 	public final static String coordinateSeperator = "#";
 
 	private HashMap<View, RapplaGridElementLayout> allElementLayouts;
-	
+	private ArrayList<View> nonSpaceViews;
+
+
 	public RapplaGrid(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
 		allElementLayouts = new HashMap<View, RapplaGridElementLayout>();
+		nonSpaceViews= new ArrayList<View>();
 		fillWithSpaces(context);
 	}
 
+
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		super.onConfigurationChanged(newConfig);
+
+		// Checks the orientation of the screen
+		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
+		{
+			setBackgroundResource(R.drawable.wooden_background_landscape);
+		} else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
+		{
+			setBackgroundResource(R.drawable.wooden_background_potrait);
+		}
+	}
+	
 	public void onSizeChanged(int w, int h, int oldw, int oldh)
 	{
 		super.onSizeChanged(w, h, oldw, oldh);
@@ -32,6 +53,7 @@ public class RapplaGrid extends GridLayout
 			View view 			= getChildAt(i);
 			applyLayout(view, allElementLayouts.get(view));
 		}
+		
 	}
 
 
@@ -40,7 +62,7 @@ public class RapplaGrid extends GridLayout
 		return findViewWithTag(elementPrefix + x + coordinateSeperator + y);
 	}
 
-	public boolean addElementAt(RapplaGridElement element)
+	public boolean addElement(RapplaGridElement element)
 	{
 		RapplaGridElementLayout layout = element.getEventLayout();
 		return addElementAt(element.getEventButton(), layout.xCoordinate, layout.yCoordinate, layout.rowSpan);
@@ -57,9 +79,13 @@ public class RapplaGrid extends GridLayout
 		if(rowSpan<1) rowSpan=1;					// Rowspan auf Minimum 1 setzen
 													// TODO: auf Maximum achten
 		
+		if(!(element instanceof Space))
+			nonSpaceViews.add(element);
+		
 		RapplaGridElementLayout rapplaLayout 	= new RapplaGridElementLayout(x, y, rowSpan);
 		allElementLayouts.put(element, rapplaLayout);
 		applyLayout(element, rapplaLayout);
+		
 		addView(element);
 		return true;
 	}
@@ -69,7 +95,18 @@ public class RapplaGrid extends GridLayout
 			return false;
 		removeView(view);
 		allElementLayouts.remove(view);
+		nonSpaceViews.remove(view);
 		return true;
+	}
+	
+	/**
+	 * This wont remove the Spaces!
+	 */
+	public void removeAllElements()
+	{
+		while(nonSpaceViews.size()>0)
+			removeElement(nonSpaceViews.get(0));
+
 	}
 	
 	private void fillWithSpaces(Context context)
