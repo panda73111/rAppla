@@ -8,6 +8,10 @@ import android.os.AsyncTask;
 
 public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalendar>
 {
+	public ParseRaplaTask()
+	{
+	}
+	
 	@Override
 	protected RaplaCalendar doInBackground(InputStream... stream)
 	{
@@ -30,6 +34,11 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 	{
 		super.onPostExecute(result);
 		
-		// TODO do something with the calendar
+		if (result == null)
+			return;
+		
+		// TODO: refresh the calendar grid here
+		
+		result.save();
 	}
 }

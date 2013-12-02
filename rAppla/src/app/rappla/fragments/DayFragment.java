@@ -30,8 +30,8 @@ public class DayFragment extends CalenderFragment
 
 	protected void configureGrid()
 	{
-		calenderGrid = (RapplaGrid) getActivity().findViewById(R.id.dayGrid);
-		calenderGrid.removeAllElements();
+		calendarGrid = (RapplaGrid) getActivity().findViewById(R.id.dayGrid);
+		calendarGrid.removeAllElements();
 		
 		
 		Calendar today = Calendar.getInstance();
@@ -41,7 +41,7 @@ public class DayFragment extends CalenderFragment
 
 		for (RapplaGridElement eventGridElement : dayElements)
 		{
-			calenderGrid.addElement(eventGridElement);
+			calendarGrid.addElementAt(eventGridElement);
 		}
 /*
 		Button b = new Button(getActivity());

@@ -13,7 +13,7 @@ public abstract class CalenderFragment extends RapplaFragment
 {
 	protected static final String gridElementPrefix = "GL#";
 	protected static final String weekGridPrefix = "WG#";
-	protected RapplaGrid calenderGrid;
+	protected RapplaGrid calendarGrid;
 
 	public static final int timeInterval = 15; // In minutes
 
