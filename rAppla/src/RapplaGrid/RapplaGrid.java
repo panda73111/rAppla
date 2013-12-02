@@ -25,12 +25,7 @@ public class RapplaGrid extends GridLayout
 
 	public void onSizeChanged(int w, int h, int oldw, int oldh)
 	{
-		if(h==0)	// This is needed, since at the beginning all Views have the height 0
-		{			// And due to the WRAP_CONTENT paramameter the Layout would never be inflated
-			h = ((View)getParent()).getHeight();
-		}
 		super.onSizeChanged(w, h, oldw, oldh);
-		
 		
 		for (int i = 0; i < getChildCount(); i++)
 		{
@@ -39,11 +34,17 @@ public class RapplaGrid extends GridLayout
 		}
 	}
 
+
 	public View getElementAt(int x, int y)
 	{
 		return findViewWithTag(elementPrefix + x + coordinateSeperator + y);
 	}
 
+	public boolean addElementAt(RapplaGridElement element)
+	{
+		RapplaGridElementLayout layout = element.getEventLayout();
+		return addElementAt(element.getEventButton(), layout.xCoordinate, layout.yCoordinate, layout.rowSpan);
+	}
 	public boolean addElementAt(View element, int x, int y)
 	{
 		return addElementAt(element, x, y, 0);
@@ -58,8 +59,7 @@ public class RapplaGrid extends GridLayout
 		
 		RapplaGridElementLayout rapplaLayout 	= new RapplaGridElementLayout(x, y, rowSpan);
 		allElementLayouts.put(element, rapplaLayout);
-		//applyLayout(element, rapplaLayout);
-		
+		applyLayout(element, rapplaLayout);
 		addView(element);
 		return true;
 	}

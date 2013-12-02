@@ -188,6 +188,16 @@ public class RaplaEvent implements Comparable<RaplaEvent>
 		return persons;
 	}
 
+
+	/**
+	 * May be stupid, but it looks nicer in the Code.
+	 * @return The Date the Event is scheduled on
+	 */
+	public Calendar getDate()
+	{
+		return getStartTime();
+	}
+	
 	public long getDurationInMillis()
 	{
 		long startTime  	= getStartTime().getTimeInMillis();
@@ -202,12 +212,29 @@ public class RaplaEvent implements Comparable<RaplaEvent>
 	{
 		return getDurationInSeconds()/60;
 	}
-	
-	
+
+	public long getTimeDifferenceInMinutes(Calendar referenceTime)
+	{
+		return getTimeDifferenceInMinutes(getStartTime(), referenceTime);
+	}
+	public long getTimeDifferenceInMinutes(RaplaEvent referenceTime)
+	{
+		return getTimeDifferenceInMinutes(referenceTime.getStartTime());
+	}
+	public static long getTimeDifferenceInMinutes(RaplaEvent baseTime, RaplaEvent referenceTime)
+	{
+		return baseTime.getTimeDifferenceInMinutes(referenceTime.getStartTime());
+	}
+	public static long getTimeDifferenceInMinutes(Calendar baseTime, Calendar referenceTime)
+	{
+		long timeDifference = (baseTime.getTimeInMillis() - referenceTime.getTimeInMillis())/1000/60;
+		return Math.abs(timeDifference);
+	}	
 	
 	@Override
 	public int compareTo(RaplaEvent another)
 	{
 		return this.startTime.compareTo(another.startTime);
 	}
+
 }

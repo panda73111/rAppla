@@ -13,6 +13,7 @@ public abstract class RapplaFragment extends Fragment
 	public RapplaFragment()
 	{
 		setTitle(StaticContext.getContext().getResources().getString(R.string.DEFAULT_FRAGMENT_TITLE));
+		setRetainInstance(true);
 	}
 	
 	public String getTitle()

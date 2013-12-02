@@ -5,11 +5,11 @@ public class RapplaGridElementLayout
 	int xCoordinate;
 	int yCoordinate;
 	int rowSpan;
-	
-	public RapplaGridElementLayout(int x, int y, int rowSpan)
+
+	public RapplaGridElementLayout(int column, int offset, int length)
 	{
-		this.xCoordinate 	= x;
-		this.yCoordinate 	= y;
-		this.rowSpan 		= rowSpan;
+		this.xCoordinate 	= column;
+		this.yCoordinate 	= offset;
+		this.rowSpan 		= length;
 	}
 }

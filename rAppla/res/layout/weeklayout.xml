@@ -1,18 +1,8 @@
-<ScrollView 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RapplaGrid.RapplaGrid xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    
+    android:id="@+id/weekGrid"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <RapplaGrid.RapplaGrid
-        
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:columnCount="5"
-        android:rowCount="60"
-        
-        android:id="@+id/weekGrid"/>
-
-</ScrollView>
+    android:layout_height="match_parent"
+    android:columnCount="5"
+    android:orientation="horizontal"
+    android:rowCount="45" />

@@ -1,15 +1,16 @@
 package app.rappla.fragments;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Set;
 
 import RapplaGrid.RapplaGrid;
+import RapplaGrid.RapplaGridElement;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 import app.rappla.R;
 import app.rappla.StaticContext;
@@ -52,32 +53,19 @@ public class WeekFragment extends CalenderFragment implements OnClickListener
 
 		Calendar today = Calendar.getInstance();
 		today.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-		
+		ArrayList<RapplaGridElement> dayElements;
+
 		for (int i = 0; i < 5; i++)
 		{
-			today.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY+i);
+			today.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY + i);
 			Set<RaplaEvent> events = getCalender().getEventsAtDate(today);
-
-			for (RaplaEvent currentEvent : events)
+			dayElements = createDayGrid(events, i);
+			
+			for(RapplaGridElement eventGridElement : dayElements)
 			{
-				long durationInMinutes = currentEvent.getDurationInMinutes();
-				int eventLength = (int) (durationInMinutes / minimumTimeInterval);
-
-				Calendar startTime = currentEvent.getStartTime();
-				Calendar earliestStart = Calendar.getInstance();
-				earliestStart.setTime(startTime.getTime());
-				earliestStart.set(Calendar.AM_PM, Calendar.AM);
-				earliestStart.set(Calendar.HOUR, 8);
-				earliestStart.set(Calendar.MINUTE, 0);
-				
-				
-				int offset = (int) ((startTime.getTimeInMillis() - earliestStart.getTimeInMillis()) / 1000 / 60 / 15);
-
-				Button eventButton = new Button(getActivity());
-				eventButton.setBackgroundResource(R.drawable.event);
-				eventButton.setText(currentEvent.getTitle());
-				calenderGrid.addElementAt(eventButton, i, offset, eventLength);
+				calenderGrid.addElementAt(eventGridElement);	
 			}
+
 		}
 
 	}
