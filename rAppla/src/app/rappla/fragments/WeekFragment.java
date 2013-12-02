@@ -50,6 +50,7 @@ public class WeekFragment extends CalenderFragment implements OnClickListener
 	protected void configureGrid()
 	{
 		calenderGrid = (RapplaGrid) getActivity().findViewById(R.id.weekGrid);
+		calenderGrid.removeAllElements();
 
 		Calendar today = Calendar.getInstance();
 		today.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -59,11 +60,11 @@ public class WeekFragment extends CalenderFragment implements OnClickListener
 		{
 			today.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY + i);
 			Set<RaplaEvent> events = getCalender().getEventsAtDate(today);
-			dayElements = createDayGrid(events, i);
+			dayElements = createDayGrid(getActivity(), events, i);
 			
 			for(RapplaGridElement eventGridElement : dayElements)
 			{
-				calenderGrid.addElementAt(eventGridElement);	
+				calenderGrid.addElement(eventGridElement);	
 			}
 
 		}

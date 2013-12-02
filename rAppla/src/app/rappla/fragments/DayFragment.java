@@ -31,15 +31,17 @@ public class DayFragment extends CalenderFragment
 	protected void configureGrid()
 	{
 		calenderGrid = (RapplaGrid) getActivity().findViewById(R.id.dayGrid);
-
+		calenderGrid.removeAllElements();
+		
+		
 		Calendar today = Calendar.getInstance();
 		Set<RaplaEvent> events = getCalender().getEventsAtDate(today);
 		
-		ArrayList<RapplaGridElement> dayElements = createDayGrid(events, 0);
+		ArrayList<RapplaGridElement> dayElements = createDayGrid(getActivity(), events, 0);
 
 		for (RapplaGridElement eventGridElement : dayElements)
 		{
-			calenderGrid.addElementAt(eventGridElement);
+			calenderGrid.addElement(eventGridElement);
 		}
 /*
 		Button b = new Button(getActivity());

@@ -6,6 +6,7 @@ import java.util.Set;
 
 import RapplaGrid.RapplaGrid;
 import RapplaGrid.RapplaGridElement;
+import android.content.Context;
 import app.rappla.calendar.RaplaEvent;
 
 public abstract class CalenderFragment extends RapplaFragment
@@ -13,22 +14,21 @@ public abstract class CalenderFragment extends RapplaFragment
 	protected static final String gridElementPrefix = "GL#";
 	protected static final String weekGridPrefix = "WG#";
 	protected RapplaGrid calenderGrid;
-	
+
 	public static final int timeInterval = 15; // In minutes
-	
+
 	private static final int earliestHour = 8;
 	private static final int earliestMinute = 0;
 	private static final int earliestAMPM = Calendar.AM;
 	private static final int latestHour = 7;
 	private static final int latestMinute = 0;
 	private static final int latestAMPM = Calendar.PM;
-	
 
-	
 	public void onStart()
 	{
 		super.onStart();
 		configureGrid();
+
 		/*
 		 * SharedPreferences sp =
 		 * PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -41,13 +41,29 @@ public abstract class CalenderFragment extends RapplaFragment
 		 * sp.getString("updateInterval", "0 min"));
 		 */
 	}
+
+
 	protected void configureGrid()
 	{/*
-		int rowCount=0;
-		
-		calenderGrid.setRowCount(rowCount);*/
+	 * int rowCount=0;
+	 * 
+	 * calenderGrid.setRowCount(rowCount);
+	 */
 		// Set up your grid here
 	}
+
+	protected static ArrayList<RapplaGridElement> createDayGrid(Context context, Set<RaplaEvent> eventSet, int column)
+	{
+		ArrayList<RapplaGridElement> allEventButtons = new ArrayList<RapplaGridElement>();
+
+		for (RaplaEvent currentEvent : eventSet)
+		{
+			RapplaGridElement eventElement = new RapplaGridElement(context, currentEvent, column);
+			allEventButtons.add(eventElement);
+		}
+		return allEventButtons;
+	}
+
 	public static Calendar getEarliestStart(Calendar day)
 	{
 		Calendar earliestStart = Calendar.getInstance();
@@ -57,6 +73,7 @@ public abstract class CalenderFragment extends RapplaFragment
 		earliestStart.set(Calendar.MINUTE, earliestMinute);
 		return earliestStart;
 	}
+
 	public static Calendar getLatestEnd(Calendar day)
 	{
 		Calendar latestEnd = Calendar.getInstance();
@@ -66,23 +83,10 @@ public abstract class CalenderFragment extends RapplaFragment
 		latestEnd.set(Calendar.MINUTE, latestMinute);
 		return latestEnd;
 	}
-	
+
 	public static long getDayDuration()
 	{
 		Calendar today = Calendar.getInstance();
 		return RaplaEvent.getTimeDifferenceInMinutes(getEarliestStart(today), getLatestEnd(today));
-	}
-	
-	
-	protected ArrayList<RapplaGridElement> createDayGrid(Set<RaplaEvent> eventSet, int column)
-	{
-		ArrayList<RapplaGridElement> allEventButtons = new ArrayList<RapplaGridElement>();
-		
-		for (RaplaEvent currentEvent : eventSet)
-		{
-			RapplaGridElement eventElement = new RapplaGridElement(getActivity(), currentEvent, column);
-			allEventButtons.add(eventElement);
-		}
-		return allEventButtons;
 	}
 }
