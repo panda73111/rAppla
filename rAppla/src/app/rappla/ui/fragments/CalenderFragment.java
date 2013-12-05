@@ -1,19 +1,17 @@
-package app.rappla.fragments;
+package app.rappla.ui.fragments;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Set;
 
-import RapplaGrid.RapplaGrid;
-import RapplaGrid.RapplaGridElement;
 import android.content.Context;
 import app.rappla.calendar.RaplaEvent;
+import app.rappla.ui.grid.RapplaGridElement;
 
 public abstract class CalenderFragment extends RapplaFragment
 {
 	protected static final String gridElementPrefix = "GL#";
 	protected static final String weekGridPrefix = "WG#";
-	protected RapplaGrid calendarGrid;
 
 	public static final int timeInterval = 15; // In minutes
 
@@ -28,28 +26,10 @@ public abstract class CalenderFragment extends RapplaFragment
 	{
 		super.onStart();
 		configureGrid();
-
-		/*
-		 * SharedPreferences sp =
-		 * PreferenceManager.getDefaultSharedPreferences(getActivity());
-		 * 
-		 * tv1.setText("Gmail sync is " + sp.getBoolean("gmailSync", false));
-		 * tv2.setText("Push notifications are " +
-		 * sp.getBoolean("pushNotifications", false));
-		 * tv3.setText("Offline sync is " + sp.getBoolean("offlineSync",
-		 * false)); tv4.setText("updateInterval is " +
-		 * sp.getString("updateInterval", "0 min"));
-		 */
 	}
 
-
 	protected void configureGrid()
-	{/*
-	 * int rowCount=0;
-	 * 
-	 * calenderGrid.setRowCount(rowCount);
-	 */
-		// Set up your grid here
+	{
 	}
 
 	protected static ArrayList<RapplaGridElement> createDayGrid(Context context, Set<RaplaEvent> eventSet, int column)

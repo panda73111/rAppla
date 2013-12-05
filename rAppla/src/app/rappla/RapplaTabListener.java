@@ -15,7 +15,7 @@ public class RapplaTabListener implements ActionBar.TabListener {
  
     @Override
     public void onTabSelected(Tab tab, FragmentTransaction ft) {
-        ft.replace(R.id.fragment_container, fragment);
+    	ft.add(R.id.layout_rappla, fragment);
     }
  
     @Override

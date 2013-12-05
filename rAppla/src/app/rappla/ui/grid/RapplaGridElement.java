@@ -1,10 +1,10 @@
-package RapplaGrid;
+package app.rappla.ui.grid;
 
 import android.content.Context;
 import android.widget.Button;
 import app.rappla.R;
 import app.rappla.calendar.RaplaEvent;
-import app.rappla.fragments.CalenderFragment;
+import app.rappla.ui.fragments.CalenderFragment;
 
 public class RapplaGridElement
 {

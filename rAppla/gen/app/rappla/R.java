@@ -32,25 +32,29 @@ containing a value of this type.
     }
     public static final class drawable {
         public static final int event=0x7f020000;
-        public static final int ic_action_refresh=0x7f020001;
-        public static final int ic_action_settings_light=0x7f020002;
-        public static final int ic_launcher=0x7f020003;
-        public static final int unbenannt=0x7f020004;
+        public static final int event_glass=0x7f020001;
+        public static final int ic_action_refresh=0x7f020002;
+        public static final int ic_action_settings_light=0x7f020003;
+        public static final int ic_launcher=0x7f020004;
+        public static final int wooden_background_landscape=0x7f020005;
+        public static final int wooden_background_potrait=0x7f020006;
     }
     public static final class id {
-        public static final int action_refresh=0x7f080003;
-        public static final int action_settings=0x7f080004;
-        public static final int dayGrid=0x7f080001;
-        public static final int fragment_container=0x7f080000;
-        public static final int weekGrid=0x7f080002;
+        public static final int action_refresh=0x7f080005;
+        public static final int action_settings=0x7f080006;
+        public static final int layout_day=0x7f080000;
+        public static final int layout_rappla=0x7f080001;
+        public static final int layout_train=0x7f080002;
+        public static final int layout_week=0x7f080003;
+        public static final int pager_week=0x7f080004;
     }
     public static final class layout {
-        public static final int activity_rappla=0x7f030000;
-        public static final int daygridlayout=0x7f030001;
-        public static final int daylayout=0x7f030002;
-        public static final int fragment_settings=0x7f030003;
-        public static final int trainlayout=0x7f030004;
-        public static final int weeklayout=0x7f030005;
+        public static final int fragment_settings=0x7f030000;
+        public static final int layout_day=0x7f030001;
+        public static final int layout_rappla=0x7f030002;
+        public static final int layout_train=0x7f030003;
+        public static final int layout_week=0x7f030004;
+        public static final int pager_week=0x7f030005;
     }
     public static final class menu {
         public static final int main=0x7f070000;
@@ -62,6 +66,9 @@ containing a value of this type.
         /**  Preferences 
          */
         public static final int gmailSync=0x7f040006;
+        /**  Dummy strings 
+         */
+        public static final int loremIpsum=0x7f04000c;
         public static final int offlineSync=0x7f04000a;
         public static final int pushNotifications=0x7f040007;
         /**  Actionbar 

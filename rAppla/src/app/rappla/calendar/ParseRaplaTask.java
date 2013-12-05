@@ -37,8 +37,6 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 		if (result == null)
 			return;
 		
-		// TODO: refresh the calendar grid here
-		
 		result.save();
 	}
 }

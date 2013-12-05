@@ -1,31 +1,33 @@
-package app.rappla;
+package app.rappla.activities;
 
 import android.app.*;
 import android.app.ActionBar.Tab;
 import android.content.*;
 import android.os.Bundle;
 import android.view.*;
-import android.widget.Toast;
+import app.rappla.*;
 import app.rappla.calendar.*;
-import app.rappla.fragments.*;
 import app.rappla.inet.*;
+import app.rappla.ui.fragments.*;
 
 public class RapplaActivity extends Activity
 {
 	private static final String ICAL_URL = "http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3";
 	
-	RapplaFragment[] fragments = new RapplaFragment[] { new WeekFragment(), new DayFragment(), new TrainFragment() };
+	RapplaFragment[] fragments = new RapplaFragment[] { new WeekPagerFragment(), new DayFragment(), new TrainFragment() };
 	private Tab[] tabs = new Tab[fragments.length];
-	private int selectedTab = 0;
 
 	private RaplaCalendar calendar;
 	private GestureDetector gestDetector;
+	private static RapplaActivity instance;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 
+		instance = this;
+		
 		gestDetector = new GestureDetector(this, new RapplaGestureListener());
 		calendar = RaplaCalendar.load();
 		
@@ -36,7 +38,7 @@ public class RapplaActivity extends Activity
 			new DownloadRaplaTask(this).execute(ICAL_URL);
 		}
 		
-		setContentView(R.layout.activity_rappla);
+		setContentView(R.layout.layout_rappla);
 		configureActionBar(savedInstanceState);
 	}
 
@@ -81,7 +83,7 @@ public class RapplaActivity extends Activity
 	{
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
-		return super.onCreateOptionsMenu(menu);
+		return true;
 	}
 
 	@Override
@@ -111,15 +113,6 @@ public class RapplaActivity extends Activity
 		return true;
 	}
 
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-
-		if (resultCode == RESULT_OK)
-		{
-			Toast.makeText(this, "An Activity has ended", Toast.LENGTH_LONG).show();
-		}
-	}
-
 	public RaplaCalendar getCalender()
 	{
 		return calendar;
@@ -129,5 +122,10 @@ public class RapplaActivity extends Activity
 	public boolean onTouchEvent(MotionEvent event)
 	{
 		return gestDetector.onTouchEvent(event);
+	}
+	
+	public static RapplaActivity getInstance()
+	{
+		return instance;
 	}
 }

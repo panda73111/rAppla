@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.*;
 
 import android.content.Context;
-import app.rappla.RapplaActivity;
 import app.rappla.StaticContext;
 
 public class RaplaCalendar implements Serializable
