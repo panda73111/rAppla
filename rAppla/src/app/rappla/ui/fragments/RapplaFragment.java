@@ -139,7 +139,10 @@ public abstract class RapplaFragment extends Fragment
 		super.onConfigurationChanged(newConfig);
 
 		if (setBackground)
-			setBackground(newConfig.orientation);
+			setBackground(getResources().getConfiguration().orientation);
+
+		if (LOG_EVENTS)
+			Log.d(title, "onConfigurationChanged");
 	}
 
 	private void setBackground(int orientation)

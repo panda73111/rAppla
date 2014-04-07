@@ -32,7 +32,7 @@ public class RapplaGrid extends GridLayout
 	{
 		super.onSizeChanged(w, h, oldw, oldh);
 
-		Log.d("grid", "size changed");
+		Log.d("Grid", "Size changed: width " + oldw + " -> " + w + "; height " + oldh + " -> " + h);
 		
 		for (int i = 0; i < getChildCount(); i++)
 		{
