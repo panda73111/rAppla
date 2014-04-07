@@ -36,6 +36,9 @@ public abstract class CalenderFragment extends RapplaFragment
 	{
 		ArrayList<RapplaGridElement> allEventButtons = new ArrayList<RapplaGridElement>();
 
+		if(eventSet==null)
+			return allEventButtons;
+		
 		for (RaplaEvent currentEvent : eventSet)
 		{
 			RapplaGridElement eventElement = new RapplaGridElement(context, currentEvent, column);
