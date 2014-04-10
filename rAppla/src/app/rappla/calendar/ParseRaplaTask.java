@@ -4,12 +4,41 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
+import app.rappla.activities.RapplaActivity;
 
 public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalendar>
 {
-	public ParseRaplaTask()
+	private ProgressDialog dlg;
+	
+	public ParseRaplaTask(Context ctx)
 	{
+		dlg = new ProgressDialog(ctx);
+		dlg.setTitle("Lade Kalender");
+		dlg.setMessage("Bitte warten...");
+		dlg.setCancelable(true);
+		dlg.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		dlg.setButton(ProgressDialog.BUTTON_NEGATIVE, "Abbrechen", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				cancel(true);
+			}
+		});
+	}
+	
+	@Override
+	protected void onPreExecute()
+	{
+		super.onPreExecute();
+
+		dlg.show();
 	}
 	
 	@Override
@@ -30,13 +59,32 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 	}
 	
 	@Override
+	protected void onCancelled()
+	{
+		super.onCancelled();
+
+		dlg.hide();
+	}
+	
+	@Override
 	protected void onPostExecute(RaplaCalendar result)
 	{
 		super.onPostExecute(result);
+		
+		dlg.hide();
 		
 		if (result == null)
 			return;
 		
 		result.save();
+		
+		RapplaActivity activity = RapplaActivity.getInstance();
+		activity.setCalendar(result);
+		
+		Activity act = RapplaActivity.getInstance();
+		
+		Intent intent = act.getIntent();
+		act.finish();
+		act.startActivity(intent);
 	}
 }

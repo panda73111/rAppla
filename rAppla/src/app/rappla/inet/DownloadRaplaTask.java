@@ -16,9 +16,11 @@ import app.rappla.calendar.ParseRaplaTask;
 public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 {
 	private ProgressDialog dlg;
+	private Context context;
 
 	public DownloadRaplaTask(Context ctx)
 	{
+		context = ctx;
 		dlg = new ProgressDialog(ctx);
 		dlg.setTitle("Aktuallisiere");
 		dlg.setMessage("Bitte warten...");
@@ -118,6 +120,6 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 		dlg.hide();
 
 		if (result != null)
-			new ParseRaplaTask().execute(result);
+			new ParseRaplaTask(context).execute(result);
 	}
 }

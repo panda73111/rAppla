@@ -84,7 +84,7 @@ public class RaplaCalendar implements Serializable
 
 	public static RaplaCalendar load()
 	{
-		android.util.Log.d("cal", "loading calendar");
+		android.util.Log.d("RaplaCalendar", "load");
 		try
 		{
 			InputStream inStr = StaticContext.getContext().openFileInput(CALENDAR_DB_FILE);
@@ -94,7 +94,7 @@ public class RaplaCalendar implements Serializable
 			return ret;
 		} catch (IOException ex)
 		{
-			android.util.Log.d("cal", "error loading calendar: " + ex);
+			android.util.Log.d("RaplaCalendar", "error loading calendar: " + ex);
 			return null;
 		} catch (ClassNotFoundException ex)
 		{
@@ -105,7 +105,7 @@ public class RaplaCalendar implements Serializable
 
 	public void save()
 	{
-		android.util.Log.d("cal", "saving calendar");
+		android.util.Log.d("RaplaCalendar", "saving calendar");
 		try
 		{
 			OutputStream outStr = StaticContext.getContext().openFileOutput(CALENDAR_DB_FILE, Context.MODE_PRIVATE);
@@ -114,7 +114,7 @@ public class RaplaCalendar implements Serializable
 			objOutStr.close();
 		} catch (IOException ex)
 		{
-			android.util.Log.d("cal", "error saving calendar: " + ex);
+			android.util.Log.d("RaplaCalendar", "error saving calendar: " + ex);
 		}
 	}
 }

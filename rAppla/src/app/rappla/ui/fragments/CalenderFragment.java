@@ -28,9 +28,7 @@ public abstract class CalenderFragment extends RapplaFragment
 		configureGrid();
 	}
 
-	protected void configureGrid()
-	{
-	}
+	abstract void configureGrid();
 
 	protected static ArrayList<RapplaGridElement> createDayGrid(Context context, Set<RaplaEvent> eventSet, int column)
 	{

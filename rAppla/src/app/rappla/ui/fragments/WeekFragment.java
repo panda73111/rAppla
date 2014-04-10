@@ -59,8 +59,9 @@ public class WeekFragment extends CalenderFragment
 
 	protected void configureGrid()
 	{
-		Log.d(title, "configuring grid");
-		
+		if (LOG_EVENTS)
+			Log.d(title, "configureGrid");
+
 		ArrayList<RapplaGridElement> dayElements;
 		RapplaGrid calGrid = (RapplaGrid) getView();
 

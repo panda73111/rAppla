@@ -29,6 +29,9 @@ public class DayFragment extends CalenderFragment
 
 	protected void configureGrid()
 	{
+		if (LOG_EVENTS)
+			Log.d(title, "configureGrid");
+		
 		RapplaGrid calGrid = (RapplaGrid) getView();
 
 		Calendar today = Calendar.getInstance();

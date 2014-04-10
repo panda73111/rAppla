@@ -42,6 +42,11 @@ public class RapplaActivity extends Activity
 		configureActionBar(savedInstanceState);
 	}
 
+	public WeekPagerFragment getWeekPagerFragment()
+	{
+		return (WeekPagerFragment) fragments[0];
+	}
+	
 	@Override
 	protected void onSaveInstanceState(Bundle outState)
 	{
@@ -118,6 +123,11 @@ public class RapplaActivity extends Activity
 		return calendar;
 	}
 
+	public void setCalendar(RaplaCalendar cal)
+	{
+		calendar = cal;
+	}
+	
 	@Override
 	public boolean onTouchEvent(MotionEvent event)
 	{
