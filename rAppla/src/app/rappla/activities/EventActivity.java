@@ -16,6 +16,7 @@ public class EventActivity extends Activity
 	RapplaFragment[] fragments = new RapplaFragment[] { new NotesFragment()};
 	private Tab[] tabs = new Tab[fragments.length];
 
+	private static EventActivity instance;
 	public final static String eventIDKey = "eventID";
 	
 
@@ -24,6 +25,8 @@ public class EventActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+
+		instance = this;
 		
 		String eventID = getIntent().getExtras().getString(eventIDKey);
 		
@@ -64,6 +67,16 @@ public class EventActivity extends Activity
 		super.onSaveInstanceState(outState);
 		int i = getActionBar().getSelectedNavigationIndex();
 		outState.putInt("selectedTab", i);
+	}
+	
+	public RaplaEvent getEvent()
+	{
+		return myEvent;
+	}
+	
+	public static EventActivity getInstance()
+	{
+		return instance;
 	}
 	
 }

@@ -50,7 +50,10 @@
 
     <!-- Actionbar -->
     <string name="refresh">Aktualisieren</string>
-    <string name="notes">Notizen</string> 
+    
+    
+    <string name="notes">Notizen</string>
+    <string name="save">Speichern</string> 
 	
 
     

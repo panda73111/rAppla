@@ -65,7 +65,7 @@ public class RaplaCalendar implements Serializable
 			Set<RaplaEvent> entry = it.next();
 			for(RaplaEvent event : entry)
 			{
-				if(event.getUid()==uid)
+				if(event.getUid().equals(uid))
 					return event;
 			}
 		}
