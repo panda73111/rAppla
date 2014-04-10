@@ -3,8 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ImageView android:id="@+id/imageView1" android:layout_width="400dp" android:layout_height="400dp" android:src="@drawable/stickynote" />
-
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
@@ -13,13 +11,24 @@
         android:layout_centerHorizontal="true"
         android:text="Speichern" />
 
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="430dp"
+        android:layout_height="430dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/stickynote" />
+
     <EditText
         android:id="@+id/editText1"
         android:layout_width="250dp"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine" >
+
+        <requestFocus />
+    </EditText>
 
 </RelativeLayout>
