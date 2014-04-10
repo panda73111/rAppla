@@ -36,8 +36,9 @@ containing a value of this type.
         public static final int ic_action_refresh=0x7f020002;
         public static final int ic_action_settings_light=0x7f020003;
         public static final int ic_launcher=0x7f020004;
-        public static final int wooden_background_landscape=0x7f020005;
-        public static final int wooden_background_potrait=0x7f020006;
+        public static final int stickynote=0x7f020005;
+        public static final int wooden_background_landscape=0x7f020006;
+        public static final int wooden_background_potrait=0x7f020007;
     }
     public static final class id {
         public static final int action_refresh=0x7f080011;

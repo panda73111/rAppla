@@ -25,4 +25,12 @@
         android:layout_centerHorizontal="true"
         android:text="Speichern" />
 
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_above="@+id/button1"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/stickynote" />
+
 </RelativeLayout>
