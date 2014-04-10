@@ -1,11 +1,23 @@
 package app.rappla.calendar;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import android.content.Context;
 import app.rappla.StaticContext;
 
+@SuppressWarnings("serial")
 public class RaplaCalendar implements Serializable
 {
 	private static final String CALENDAR_DB_FILE = "rapla.db";
@@ -45,6 +57,21 @@ public class RaplaCalendar implements Serializable
 		}
 	}
 
+	public RaplaEvent getElementByUID(String uid)
+	{
+		Iterator<Set<RaplaEvent>> it = eventCal.values().iterator();	
+		while (it.hasNext()) 
+		{
+			Set<RaplaEvent> entry = it.next();
+			for(RaplaEvent event : entry)
+			{
+				if(event.getUid()==uid)
+					return event;
+			}
+		}
+		return null;
+	}
+	
 	public Set<RaplaEvent> getEventsAtDate(Calendar date)
 	{
 		return eventCal.get(getDateHash(date));

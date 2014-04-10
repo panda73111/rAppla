@@ -35,6 +35,8 @@ public class RapplaGridElement
 	private Button createEventButton(Context context, RaplaEvent raplaEvent)
 	{
 		Button button = new Button(context);
+		button.setOnClickListener(new EventClickListener(raplaEvent.getUid(), context));
+		
 		button.setBackgroundResource(eventImage);
 		button.setText(raplaEvent.getTitle());
 		return button;

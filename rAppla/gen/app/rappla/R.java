@@ -81,6 +81,7 @@ containing a value of this type.
         /**  Preferences 
          */
         public static final int gmailSync=0x7f040006;
+        public static final int notes=0x7f04000c;
         public static final int offlineSync=0x7f04000a;
         public static final int pushNotifications=0x7f040007;
         /**  Actionbar 

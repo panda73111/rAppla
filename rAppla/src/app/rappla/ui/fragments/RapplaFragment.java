@@ -130,7 +130,7 @@ public abstract class RapplaFragment extends Fragment
 
 	protected RaplaCalendar getCalender()
 	{
-		return ((RapplaActivity) getActivity()).getCalender();
+		return RapplaActivity.getInstance().getCalender();
 	}
 
 	@Override
