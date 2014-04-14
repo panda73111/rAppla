@@ -4,16 +4,18 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import app.rappla.R;
 import app.rappla.RapplaTabListener;
 import app.rappla.calendar.RaplaEvent;
+import app.rappla.ui.fragments.AlarmFragment;
 import app.rappla.ui.fragments.NotesFragment;
 import app.rappla.ui.fragments.RapplaFragment;
 
 public class EventActivity extends Activity
 {
 	RaplaEvent myEvent;
-	RapplaFragment[] fragments = new RapplaFragment[] { new NotesFragment()};
+	RapplaFragment[] fragments = new RapplaFragment[] { new NotesFragment(), new AlarmFragment()};
 	private Tab[] tabs = new Tab[fragments.length];
 
 	private static EventActivity instance;
@@ -40,9 +42,10 @@ public class EventActivity extends Activity
 	{
 		ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setTitle(R.string.app_name);
-		actionBar.setDisplayHomeAsUpEnabled(false);
-
+		actionBar.setTitle(myEvent.getTitle());
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		
 		for (int i = 0; i < tabs.length; i++)
 		{
 			// Set title
@@ -59,6 +62,15 @@ public class EventActivity extends Activity
 		actionBar.selectTab(tabs[selectedIndex]);
 	}
 
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			onBackPressed();
+			break;
+		default:
+		}
+		return true;
+	}
 	
 
 	@Override

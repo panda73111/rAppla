@@ -54,6 +54,7 @@ public class NotesFragment extends RapplaFragment
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	public void onStart()
 	{
 		super.onStart();
@@ -63,7 +64,7 @@ public class NotesFragment extends RapplaFragment
 		Button		saveButton	= (Button)		getActivity().findViewById(R.id.button1);
 		EditText 	noteTextView= (EditText) 	getActivity().findViewById(R.id.editText1);
 		
-		
+		noteTextView.setBackgroundDrawable(null);
 		saveButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View arg0)
