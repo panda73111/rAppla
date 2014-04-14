@@ -24,7 +24,6 @@ public class SettingsActivity extends Activity
 	}
 	public void onStart() {
 		super.onStart();
-		// GO
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {

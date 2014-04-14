@@ -3,6 +3,7 @@ package app.rappla.calendar;
 import java.io.Serializable;
 import java.util.Calendar;
 
+@SuppressWarnings("serial")
 public class RaplaEvent implements Comparable<RaplaEvent>, Serializable
 {
 	private final String uid;
