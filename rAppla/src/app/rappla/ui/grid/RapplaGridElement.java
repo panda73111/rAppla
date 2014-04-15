@@ -38,8 +38,26 @@ public class RapplaGridElement
 		button.setOnClickListener(new EventClickListener(raplaEvent.getUid(), context));
 		
 		button.setBackgroundResource(eventImage);
-		button.setText(raplaEvent.getTitle());
+		
+		String eventName = getEventName(raplaEvent);
+		
+		button.setText(eventName);
+		button.setPadding(3, 0, 3, 0);
+		button.setTextSize(12);
+		
 		return button;
+	}
+
+	private String getEventName(RaplaEvent raplaEvent)
+	{
+		String 	eventName 					= raplaEvent.getTitle();
+		int 	separatorIndex				= eventName.indexOf("[");
+		String 	eventNameWithoutProfessor;
+		if(separatorIndex > 0)
+			eventNameWithoutProfessor = eventName.substring(0, separatorIndex);
+		else
+			eventNameWithoutProfessor = eventName;
+		return eventNameWithoutProfessor;
 	}
 
 	private RapplaGridElementLayout createEventLayout(RaplaEvent raplaEvent, int column)
