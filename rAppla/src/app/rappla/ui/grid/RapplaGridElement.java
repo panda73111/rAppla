@@ -52,12 +52,11 @@ public class RapplaGridElement
 	{
 		String 	eventName 					= raplaEvent.getTitle();
 		int 	separatorIndex				= eventName.indexOf("[");
-		String 	eventNameWithoutProfessor;
+		
 		if(separatorIndex > 0)
-			eventNameWithoutProfessor = eventName.substring(0, separatorIndex);
+			return eventName.substring(0, separatorIndex);
 		else
-			eventNameWithoutProfessor = eventName;
-		return eventNameWithoutProfessor;
+			return eventName;
 	}
 
 	private RapplaGridElementLayout createEventLayout(RaplaEvent raplaEvent, int column)

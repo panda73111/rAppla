@@ -12,7 +12,7 @@ import app.rappla.ui.fragments.*;
 
 public class RapplaActivity extends Activity
 {
-	private static final String ICAL_URL = "http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3";
+	public static final String ICAL_URL = "http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3";
 	
 	RapplaFragment[] fragments = new RapplaFragment[] { new WeekPagerFragment(), new DayFragment(), new TrainFragment() };
 	private Tab[] tabs = new Tab[fragments.length];
@@ -20,12 +20,15 @@ public class RapplaActivity extends Activity
 	private RaplaCalendar calendar;
 	private GestureDetector gestDetector;
 	private static RapplaActivity instance;
+	public static boolean isTest = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-
+		RapplaActivity.isTest = savedInstanceState.getBoolean("isTest", false);
+			
+		
 		instance = this;
 		
 		gestDetector = new GestureDetector(this, new RapplaGestureListener());
@@ -42,6 +45,14 @@ public class RapplaActivity extends Activity
 		configureActionBar(savedInstanceState);
 	}
 
+	public int getFragmentCount()
+	{
+		return fragments.length;
+	}
+	public Fragment getFragment(int i)
+	{
+		return fragments[i];
+	}
 	public WeekPagerFragment getWeekPagerFragment()
 	{
 		return (WeekPagerFragment) fragments[0];
@@ -63,6 +74,9 @@ public class RapplaActivity extends Activity
 	private void configureActionBar(Bundle savedInstanceState)
 	{
 		ActionBar actionBar = getActionBar();
+		if(actionBar==null)
+			return;
+		
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setTitle(R.string.app_name);
 		actionBar.setDisplayHomeAsUpEnabled(false);

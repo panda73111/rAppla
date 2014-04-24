@@ -11,18 +11,20 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import app.rappla.activities.RapplaActivity;
 import app.rappla.calendar.ParseRaplaTask;
+import app.rappla.calendar.RaplaCalendar;
 
 public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 {
 	private ProgressDialog dlg;
 	private Context context;
-
+	
 	public DownloadRaplaTask(Context ctx)
 	{
 		context = ctx;
 		dlg = new ProgressDialog(ctx);
-		dlg.setTitle("Aktuallisiere");
+		dlg.setTitle("Aktualisiere");
 		dlg.setMessage("Bitte warten...");
 		dlg.setCancelable(true);
 		dlg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -43,7 +45,8 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 		super.onPreExecute();
 
 		dlg.setProgress(0);
-		dlg.show();
+		if(RapplaActivity.isTest)
+			dlg.show();
 	}
 
 	@Override
@@ -109,15 +112,17 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 	{
 		super.onCancelled();
 
-		dlg.hide();
+		if(RapplaActivity.isTest)
+			dlg.hide();
 	}
 
 	@Override
 	protected void onPostExecute(InputStream result)
 	{
 		super.onPostExecute(result);
-		
-		dlg.hide();
+
+		if(RapplaActivity.isTest)
+			dlg.hide();
 
 		if (result != null)
 			new ParseRaplaTask(context).execute(result);

@@ -38,7 +38,8 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 	{
 		super.onPreExecute();
 
-		dlg.show();
+		if(RapplaActivity.isTest)
+			dlg.show();
 	}
 	
 	@Override
@@ -63,15 +64,17 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 	{
 		super.onCancelled();
 
-		dlg.hide();
+		if(RapplaActivity.isTest)
+			dlg.hide();
 	}
 	
 	@Override
 	protected void onPostExecute(RaplaCalendar result)
 	{
 		super.onPostExecute(result);
-		
-		dlg.hide();
+
+		if(RapplaActivity.isTest)
+			dlg.hide();
 		
 		if (result == null)
 			return;
