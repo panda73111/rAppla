@@ -1,8 +1,6 @@
 package app.rappla.ui.fragments;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -37,5 +35,10 @@ public class WeekPagerFragment extends RapplaFragment
 			Log.d(title, "onCreateView");
 
 		return pager;
+	}
+	public Fragment getActiveFragment()
+	{
+		// TODO: Dont think this makes actual sense
+		return pageAdapter.getItem(0);
 	}
 }

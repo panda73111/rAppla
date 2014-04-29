@@ -26,8 +26,11 @@ public class RapplaActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		RapplaActivity.isTest = savedInstanceState.getBoolean("isTest", false);
-			
+		
+		if(savedInstanceState!=null)
+		{
+			RapplaActivity.isTest = savedInstanceState.getBoolean("isTest", false);
+		}
 		
 		instance = this;
 		

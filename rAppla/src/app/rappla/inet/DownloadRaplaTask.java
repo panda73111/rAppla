@@ -1,9 +1,15 @@
 package app.rappla.inet;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
-import org.apache.http.*;
-import org.apache.http.client.*;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -13,7 +19,6 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import app.rappla.activities.RapplaActivity;
 import app.rappla.calendar.ParseRaplaTask;
-import app.rappla.calendar.RaplaCalendar;
 
 public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 {
@@ -45,7 +50,7 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 		super.onPreExecute();
 
 		dlg.setProgress(0);
-		if(RapplaActivity.isTest)
+		if(!RapplaActivity.isTest)
 			dlg.show();
 	}
 
@@ -112,7 +117,7 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 	{
 		super.onCancelled();
 
-		if(RapplaActivity.isTest)
+		if(!RapplaActivity.isTest)
 			dlg.hide();
 	}
 
@@ -121,7 +126,7 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 	{
 		super.onPostExecute(result);
 
-		if(RapplaActivity.isTest)
+		if(!RapplaActivity.isTest)
 			dlg.hide();
 
 		if (result != null)

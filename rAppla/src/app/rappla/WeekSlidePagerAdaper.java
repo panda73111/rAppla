@@ -1,7 +1,6 @@
 package app.rappla;
 
 import java.util.Calendar;
-import java.util.HashMap;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
