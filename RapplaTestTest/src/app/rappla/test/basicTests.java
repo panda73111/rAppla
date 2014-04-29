@@ -1,6 +1,5 @@
 package app.rappla.test;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import app.rappla.activities.RapplaActivity;
@@ -8,8 +7,7 @@ import app.rappla.calendar.RaplaCalendar;
 import app.rappla.inet.DownloadRaplaTask;
 import app.rappla.ui.fragments.RapplaFragment;
 
-public class basicTests extends  
-		android.test.ActivityUnitTestCase<RapplaActivity> {
+public class basicTests extends  android.test.ActivityUnitTestCase<RapplaActivity> {
 
 	private RapplaActivity activity;
 
@@ -23,23 +21,22 @@ public class basicTests extends
 		Intent intent = new Intent(getInstrumentation().getTargetContext(),
 				RapplaActivity.class);
 		Bundle noDlg = new Bundle();
-		noDlg.putBoolean("isTest", false);
+		noDlg.putBoolean("isTest", true);
 		startActivity(intent, noDlg, null);
 		activity = getActivity();
 	}
 	public void testTrue()
 	{
-		assert(true);
+		assertTrue(true);
 	}
 	public void testCalendarAvailable()
 	{
 		RaplaCalendar c = activity.getCalender();
-		assert(c!=null);
+		assertTrue(c!=null);
 	}
-	public void testActionBarAvailable()
+	public void testFragmentsCreated()
 	{
-		ActionBar ab = activity.getActionBar();
-		assert(ab!=null);
+		assertTrue(activity.getFragmentCount()==3);
 	}
 	public void testRaplaDownloadTask()
 	{
@@ -49,10 +46,10 @@ public class basicTests extends
 	public void testTabsAreCreated()
 	{		
 		RapplaFragment fragment = (RapplaFragment) activity.getFragment(0);
-		assert(fragment.getTitle().equals("Woche"));
+		assertTrue(fragment.getTitle().equals("Woche"));
 		fragment = (RapplaFragment) activity.getFragment(1);
-		assert(fragment.getTitle().equals("Tag"));
+		assertTrue(fragment.getTitle().equals("Tag"));
 		fragment = (RapplaFragment) activity.getFragment(2);
-		assert(fragment.getTitle().equals("Bahn"));
+		assertTrue(fragment.getTitle().equals("Bahn"));
 	}
 }
