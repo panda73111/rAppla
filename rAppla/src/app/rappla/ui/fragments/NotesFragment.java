@@ -1,6 +1,7 @@
 package app.rappla.ui.fragments;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -73,10 +74,8 @@ public class NotesFragment extends RapplaFragment
 			}}
 		);
 		
-		RaplaEvent event 		= EventActivity.getInstance().getEvent();
-		
-		eventID					= event.getUid();
-		
+		RaplaEvent event 		= EventActivity.getInstance().getEvent();		
+		eventID					= event.getUid();		
 		noteTextView.setText((CharSequence) notes.get(eventID));
 	}
 
@@ -116,7 +115,9 @@ public class NotesFragment extends RapplaFragment
 			notes = (HashMap<String, String>) in.readObject();
 			in.close();
 			fis.close();
-		} catch (IOException i)
+		} catch(FileNotFoundException e)		// Thats no problem. The file does not exist yet
+		{}
+		catch (IOException i)
 		{
 			i.printStackTrace();
 		} catch (ClassNotFoundException e)

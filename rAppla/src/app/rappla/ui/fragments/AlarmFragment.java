@@ -1,7 +1,15 @@
 package app.rappla.ui.fragments;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,13 +26,13 @@ import app.rappla.calendar.RaplaEvent;
 
 public class AlarmFragment extends RapplaFragment
 {
-	public static final String serializedNoteFileName = "RapplaAlarms.ser";
+	public static final String serializedAlarmsFileName = "RapplaAlarms.ser";
 	
-	static HashMap<String, String> notes = null;
-	LinearLayout alarmHolder = null;
+	LinearLayout alarmHolder 				= null;
 	String eventID;
-	
-	
+
+	static HashMap<String, ArrayList<Alarm>> alarms	= null;
+	ArrayList<Alarm> alarmList 						= null;
 	
 	public AlarmFragment()
 	{
@@ -42,11 +50,15 @@ public class AlarmFragment extends RapplaFragment
 
 		return rootView;
 	}
-	
-	
+		
 	public void onStart()
 	{
 		super.onStart();
+		
+		if(alarms==null)
+			loadAlarmFile();
+		alarmList = alarms.get(eventID);
+		
 		Button addBtn = (Button) getActivity().findViewById(R.id.btnAdd);
 		addBtn.setOnClickListener(new OnClickListener()
 		{	
@@ -68,16 +80,78 @@ public class AlarmFragment extends RapplaFragment
 		alarmHolder = (LinearLayout) getActivity().findViewById(R.id.alarmHolder);
 	}
 	
+	public void onResume()
+	{
+		super.onResume();
+		refreshPanel();
+	}
+	
 	public void onClickedAdd()
 	{
 		RaplaEvent event = EventActivity.getInstance().getEvent();
 		
 		Alarm newAlarm = new Alarm(event.getDate());
-		newAlarm.initViews(getActivity(), alarmHolder);
-		newAlarm.updateViews();
+		alarmList.add(newAlarm);
+		alarms.put(eventID, alarmList);
+		refreshPanel();
 	}
 	public void onClickedSave()
 	{
+		saveAlarmFile();
 		getActivity().finish();
+	}
+	
+	
+	public void refreshPanel()
+	{
+		alarmHolder.removeAllViews();
+		
+		if(alarmList==null)
+			alarmList = alarms.get(eventID);
+		if(alarmList==null)
+			alarmList = new ArrayList<Alarm>();
+
+		for(Alarm a : alarmList)
+		{
+			a.initViews(getActivity(), alarmHolder);
+		}
+	}
+	private void saveAlarmFile()
+	{
+		try
+		{
+			FileOutputStream fileOut = getActivity().openFileOutput(serializedAlarmsFileName, Context.MODE_PRIVATE);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(alarms);
+			out.close();
+			fileOut.close();
+		} catch (IOException i)
+		{
+			i.printStackTrace();
+		}
+	}
+	@SuppressWarnings("unchecked")
+	private void loadAlarmFile()
+	{
+		try
+		{
+			FileInputStream fis 	= getActivity().openFileInput(serializedAlarmsFileName);
+			ObjectInputStream in 	= new ObjectInputStream(fis);
+			alarms =  (HashMap<String, ArrayList<Alarm>>) in.readObject();
+			in.close();
+			fis.close();
+		} catch(FileNotFoundException e)
+		{	}
+		catch (IOException i)
+		{
+			i.printStackTrace();
+		} catch (ClassNotFoundException e)
+		{
+			e.printStackTrace();
+		} finally
+		{
+			if(alarms == null)
+				alarms = new HashMap<String, ArrayList<Alarm>>();
+		}
 	}
 }

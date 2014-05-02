@@ -1,71 +1,101 @@
 package app.rappla.alarms;
 
-import java.text.SimpleDateFormat;
+import java.io.Serializable;
 import java.util.Calendar;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.view.View;
+import android.graphics.drawable.Drawable;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import app.rappla.R;
 
-public class Alarm
+@SuppressLint("SimpleDateFormat")
+public class Alarm implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+	public static final int dateButtonID = 1;
+	public static final int timeButtonID = 2;
+
 	Calendar alarmDate;
 
-	LinearLayout 	alarmGroup;
-	RelativeLayout 	alarmSubGroup;
-	Button 			dateButton;
-	Button 			timeButton;
-	Button   		alarmButton;
-	
+	transient LinearLayout alarmGroup;
+	transient RelativeLayout alarmSubGroup;
+	transient Button dateButton;
+	transient Button timeButton;
+	transient Button alarmButton;
+
 	public Alarm(Calendar a)
 	{
-		if(a==null)
-			a = Calendar.getInstance();
-		
-		this.alarmDate = a;
+		this.alarmDate = Calendar.getInstance();
+
+		if (a != null)
+		{
+			alarmDate.setTime(a.getTime());
+		}
 	}
-	
+
 	public void initViews(Context c, ViewGroup parent)
 	{
-		int w = 100;
-		int h = 100;
-		
-		alarmButton  = new Button(c);
-		alarmButton.setWidth(100);
-		alarmButton.setHeight(200);
-		
+		alarmButton = new Button(c);
+		alarmButton.setBackgroundResource(R.drawable.alarm_on);
+
+		Drawable bd = c.getResources().getDrawable(R.drawable.alarm_on);
+		int height = bd.getIntrinsicHeight();
+		int width = bd.getIntrinsicWidth();
+
+		OnAlarmClickListener oacl = new OnAlarmClickListener(c, alarmDate, this);
+
 		dateButton = new Button(c);
-		dateButton.setId(1);
+		dateButton.setId(dateButtonID);
+		dateButton.setOnClickListener(oacl);
+
 		timeButton = new Button(c);
-		timeButton.setId(2);
-		alarmGroup	 = new LinearLayout(c);
-		alarmSubGroup= new RelativeLayout(c);
-		
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		timeButton.setId(timeButtonID);
+		timeButton.setOnClickListener(oacl);
+
+		alarmGroup = new LinearLayout(c);
+		alarmSubGroup = new RelativeLayout(c);
+
+		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		lp.addRule(RelativeLayout.BELOW, dateButton.getId());
-		
+
 		alarmSubGroup.addView(dateButton);
 		alarmSubGroup.addView(timeButton, lp);
-		alarmGroup.addView(alarmButton);
-		alarmGroup.addView(alarmSubGroup);		
+		alarmGroup.addView(alarmButton, width, height);
+		alarmGroup.addView(alarmSubGroup);
 		parent.addView(alarmGroup);
+
+		updateViews();
 	}
 
 	public void updateViews()
 	{
-		if(dateButton != null)
+		if (dateButton != null)
 		{
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			dateButton.setText(sdf.format(alarmDate.getTime()));
+			dateButton.setText(toDateString(alarmDate));
 		}
-		if(timeButton != null)
+		if (timeButton != null)
 		{
-			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-			timeButton.setText(sdf.format(alarmDate.getTime()));
+			timeButton.setText(toTimeString(alarmDate));
 		}
 	}
 
+	public Calendar getDate()
+	{
+		return alarmDate;
+	}
+	
+	private String toDateString(Calendar date)
+	{
+		return date.get(Calendar.DAY_OF_MONTH) + "/" + date.get(Calendar.MONTH) + 1 + "/" + date.get(Calendar.YEAR);
+	}
+
+	private String toTimeString(Calendar date)
+	{
+		return date.get(Calendar.HOUR) + ":" + date.get(Calendar.MINUTE);
+	}
 }
