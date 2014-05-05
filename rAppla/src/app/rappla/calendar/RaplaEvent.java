@@ -84,6 +84,10 @@ public class RaplaEvent implements Comparable<RaplaEvent>, Serializable
 	{
 		return uid;
 	}
+	public String getUniqueEventID()
+	{
+		return uid + startTime.getTimeInMillis();
+	}
 
 	public Calendar getStartTime()
 	{

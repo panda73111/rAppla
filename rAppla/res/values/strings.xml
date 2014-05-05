@@ -56,6 +56,14 @@
     <string name="alarms">Wecker</string>
     <string name="save">Speichern</string> 
     <string name="add">Hinzufügen</string> 
+    <string name="Begin">starttime</string> 
+    <string name="starttime">Begin</string> 
+    <string name="title">Titel</string> 
+    <string name="endtime">Ende</string> 
+    <string name="ressources">Ressourcen</string> 
+    <string name="empty">"THIS IS A BIG ASS TEXT"</string> 
+    <string name="infos">"Infos"</string> 
+    <string name="date">Datum</string> 
 	
 
     

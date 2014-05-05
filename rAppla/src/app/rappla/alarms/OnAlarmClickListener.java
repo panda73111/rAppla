@@ -37,6 +37,7 @@ public class OnAlarmClickListener implements OnClickListener
 				{
 					alarm.getDate().set(year, monthOfYear, dayOfMonth);
 					alarm.updateViews();
+					alarm.updateState();
 				}
 			};
 			new DatePickerDialog(c, odsl, eventDate.get(Calendar.YEAR), eventDate.get(Calendar.MONTH), eventDate.get(Calendar.DAY_OF_MONTH))
@@ -48,12 +49,17 @@ public class OnAlarmClickListener implements OnClickListener
 				@Override
 				public void onTimeSet(TimePicker arg0, int hour, int minute)
 				{
-					alarm.getDate().set(Calendar.HOUR, hour);
+					alarm.getDate().set(Calendar.HOUR_OF_DAY, hour);
 					alarm.getDate().set(Calendar.MINUTE, minute);
 					alarm.updateViews();
+					alarm.updateState();
 				}
 			};
-			new TimePickerDialog(c, otsl, eventDate.get(Calendar.HOUR), eventDate.get(Calendar.MINUTE), true).show();
+			new TimePickerDialog(c, otsl, eventDate.get(Calendar.HOUR_OF_DAY), eventDate.get(Calendar.MINUTE), true).show();
+			
+			break;
+		case Alarm.activateButtonID:
+			alarm.setActive(!alarm.isActive);
 			break;
 		}
 	}

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import app.rappla.R;
 import app.rappla.StaticContext;
 import app.rappla.activities.RapplaActivity;
@@ -19,7 +20,11 @@ public abstract class RapplaFragment extends Fragment
 	protected static final boolean LOG_EVENTS = true;
 	protected String title;
 	protected boolean setBackground;
-
+	private int fragmentWidth = 0;
+	private int fragmentHeight = 0;
+	
+	
+	
 	public RapplaFragment()
 	{
 		setTitle(StaticContext.getContext().getResources().getString(R.string.DEFAULT_FRAGMENT_TITLE));
@@ -33,6 +38,23 @@ public abstract class RapplaFragment extends Fragment
 			Log.d(title, "onAttach");
 	}
 
+	public void onActivityCreated(Bundle savedInstanceState)
+	{
+		super.onActivityCreated(savedInstanceState);
+		getView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+	          @Override
+	          public void onGlobalLayout() {
+	              fragmentWidth = getView().getWidth();
+	              fragmentHeight = getView().getHeight();
+	              if(fragmentWidth > 0)
+	              {
+	            	  getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+	              }
+	              doGlobalLayout();
+	          }
+	        });
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -154,5 +176,19 @@ public abstract class RapplaFragment extends Fragment
 		{
 			getView().setBackgroundResource(R.drawable.wooden_background_landscape);
 		}
+	}
+	
+	public void doGlobalLayout()
+	{
+		
+	}
+	
+	public int getWidth()
+	{
+		return fragmentWidth;
+	}
+	public int getHeight()
+	{
+		return fragmentHeight;
 	}
 }

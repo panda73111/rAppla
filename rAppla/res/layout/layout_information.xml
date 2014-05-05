@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/titleView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -18,10 +18,10 @@
         android:id="@+id/editText1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView1"
-        android:layout_alignBottom="@+id/textView1"
+        android:layout_alignBaseline="@+id/titleView"
+        android:layout_alignBottom="@+id/titleView"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/textView1"
+        android:layout_toRightOf="@+id/titleView"
         android:ems="10" >
 
         <requestFocus />
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editText1"
         android:layout_marginTop="32dp"
-        android:layout_toRightOf="@+id/textView1"
+        android:layout_toRightOf="@+id/titleView"
         android:ems="10" />
 
     <TextView
@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/editText3"
-        android:layout_alignLeft="@+id/textView1"
+        android:layout_alignLeft="@+id/titleView"
         android:text="Titel" />
 
     <EditText
@@ -75,7 +75,7 @@
         android:inputType="textPersonName" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/beginView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/editText4"
@@ -89,7 +89,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/editText4"
         android:layout_marginTop="30dp"
-        android:layout_toRightOf="@+id/textView1"
+        android:layout_toRightOf="@+id/titleView"
         android:ems="10" />
 
     <TextView
@@ -97,7 +97,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/editText5"
-        android:layout_alignLeft="@+id/textView4"
+        android:layout_alignLeft="@+id/beginView"
         android:text="Ressourcen" />
 
     <Button

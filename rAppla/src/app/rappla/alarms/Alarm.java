@@ -12,24 +12,33 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import app.rappla.R;
 
+@SuppressWarnings("serial")
 @SuppressLint("SimpleDateFormat")
 public class Alarm implements Serializable
 {
-	private static final long serialVersionUID = 1L;
 	public static final int dateButtonID = 1;
 	public static final int timeButtonID = 2;
+	public static final int activateButtonID = 3;
 
+	private static final int alarmOnResource = R.drawable.alarmicon2on;
+	private static final int alarmOffResource = R.drawable.alarmicon2off;
+	
 	Calendar alarmDate;
-
+	boolean isActive = true;
+	String eventID;
+	
 	transient LinearLayout alarmGroup;
 	transient RelativeLayout alarmSubGroup;
 	transient Button dateButton;
 	transient Button timeButton;
 	transient Button alarmButton;
-
-	public Alarm(Calendar a)
+	transient Context context;
+	
+	public Alarm(Calendar a, String eventID)
 	{
 		this.alarmDate = Calendar.getInstance();
+		this.isActive = true;
+		this.eventID = eventID;
 
 		if (a != null)
 		{
@@ -39,14 +48,17 @@ public class Alarm implements Serializable
 
 	public void initViews(Context c, ViewGroup parent)
 	{
-		alarmButton = new Button(c);
-		alarmButton.setBackgroundResource(R.drawable.alarm_on);
-
-		Drawable bd = c.getResources().getDrawable(R.drawable.alarm_on);
+		this.context = c;
+		
+		OnAlarmClickListener oacl = new OnAlarmClickListener(c, alarmDate, this);
+		Drawable bd = c.getResources().getDrawable(alarmOnResource);
 		int height = bd.getIntrinsicHeight();
 		int width = bd.getIntrinsicWidth();
-
-		OnAlarmClickListener oacl = new OnAlarmClickListener(c, alarmDate, this);
+		
+		
+		alarmButton = new Button(c);
+		alarmButton.setId(activateButtonID);
+		alarmButton.setOnClickListener(oacl);
 
 		dateButton = new Button(c);
 		dateButton.setId(dateButtonID);
@@ -82,20 +94,58 @@ public class Alarm implements Serializable
 		{
 			timeButton.setText(toTimeString(alarmDate));
 		}
+		if(alarmButton != null)
+		{
+			if(isActive)
+				alarmButton.setBackgroundResource(alarmOnResource);
+			else
+				alarmButton.setBackgroundResource(alarmOffResource);				
+		}
 	}
 
 	public Calendar getDate()
 	{
 		return alarmDate;
 	}
+
+	public void startAlarm()
+	{
+		AlarmFactory.startAlarm(eventID, alarmDate, context);
+	}
+	public void cancelAlarm()
+	{
+		AlarmFactory.cancelAlarm(eventID, alarmDate, context);
+	}
+	public void updateState()
+	{
+		if(isActive)
+			startAlarm();
+		else
+			cancelAlarm();
+	}
+	public void setActive(boolean isActive)
+	{
+		this.isActive = isActive;
+		if(isActive)
+			startAlarm();
+		else
+			cancelAlarm();
+		updateViews();
+	}
 	
 	private String toDateString(Calendar date)
 	{
-		return date.get(Calendar.DAY_OF_MONTH) + "/" + date.get(Calendar.MONTH) + 1 + "/" + date.get(Calendar.YEAR);
+		int day 	= date.get(Calendar.DAY_OF_MONTH);
+		int month 	= date.get(Calendar.MONTH);
+		int year 	= date.get(Calendar.YEAR);
+		return day + "/" + (month + 1) + "/" + year;
 	}
-
 	private String toTimeString(Calendar date)
 	{
-		return date.get(Calendar.HOUR) + ":" + date.get(Calendar.MINUTE);
+		int hour = date.get(Calendar.HOUR_OF_DAY);
+		int minute = date.get(Calendar.MINUTE);
+		return hour + ":" + minute;
 	}
+	
+	
 }

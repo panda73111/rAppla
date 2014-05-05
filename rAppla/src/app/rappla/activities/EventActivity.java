@@ -4,18 +4,20 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import app.rappla.R;
 import app.rappla.RapplaTabListener;
 import app.rappla.calendar.RaplaEvent;
 import app.rappla.ui.fragments.AlarmFragment;
+import app.rappla.ui.fragments.EventInfoFragment;
 import app.rappla.ui.fragments.NotesFragment;
 import app.rappla.ui.fragments.RapplaFragment;
 
 public class EventActivity extends Activity
 {
 	RaplaEvent myEvent;
-	RapplaFragment[] fragments = new RapplaFragment[] { new NotesFragment(), new AlarmFragment()};
+	RapplaFragment[] fragments = new RapplaFragment[] {new EventInfoFragment(), new NotesFragment(), new AlarmFragment()};
 	private Tab[] tabs = new Tab[fragments.length];
 
 	private static EventActivity instance;
@@ -27,12 +29,14 @@ public class EventActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		Log.d("EventActivity", "onCreate");
 
 		instance = this;
+		Bundle extras = getIntent().getExtras();
 		
-		String eventID = getIntent().getExtras().getString(eventIDKey);
+		String eventID = extras.getString(eventIDKey);
 		
-		myEvent = RapplaActivity.getInstance().getCalender().getElementByUID(eventID);
+		myEvent = RapplaActivity.getInstance().getCalender().getElementByUniqueID(eventID);
 		
 		setContentView(R.layout.layout_rappla);
 		configureActionBar(savedInstanceState);

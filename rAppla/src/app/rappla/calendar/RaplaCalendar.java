@@ -57,7 +57,7 @@ public class RaplaCalendar implements Serializable
 		}
 	}
 
-	public RaplaEvent getElementByUID(String uid)
+	public RaplaEvent getElementByUniqueID(String uid)
 	{
 		Iterator<Set<RaplaEvent>> it = eventCal.values().iterator();	
 		while (it.hasNext()) 
@@ -65,12 +65,13 @@ public class RaplaCalendar implements Serializable
 			Set<RaplaEvent> entry = it.next();
 			for(RaplaEvent event : entry)
 			{
-				if(event.getUid().equals(uid))
+				if(event.getUniqueEventID().equals(uid))
 					return event;
 			}
 		}
 		return null;
 	}
+	
 	
 	public Set<RaplaEvent> getEventsAtDate(Calendar date)
 	{
