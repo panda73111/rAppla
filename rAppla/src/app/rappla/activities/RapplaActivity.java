@@ -1,22 +1,38 @@
 package app.rappla.activities;
 
-import android.app.*;
+import android.app.ActionBar;
 import android.app.ActionBar.Tab;
-import android.content.*;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.*;
-import app.rappla.*;
-import app.rappla.calendar.*;
-import app.rappla.inet.*;
-import app.rappla.ui.fragments.*;
+import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import app.rappla.R;
+import app.rappla.RapplaGestureListener;
+import app.rappla.RapplaTabListener;
+import app.rappla.calendar.RaplaCalendar;
+import app.rappla.inet.DownloadRaplaTask;
+import app.rappla.ui.fragments.DayFragment;
+import app.rappla.ui.fragments.RapplaFragment;
+import app.rappla.ui.fragments.TrainFragment;
+import app.rappla.ui.fragments.WeekPagerFragment;
 
 public class RapplaActivity extends FragmentActivity
 {
 	private static final String ICAL_URL = "http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3";
+	private static final int TAB_CNT = 3;
+	private static final int WEEKPAGER_FRAGMENT_INDEX = 0;
+	private static final int DAY_FRAGMENT_INDEX = 1;
+	private static final int TRAIN_FRAGMENT_INDEX = 2;
 
-	RapplaFragment[] fragments = new RapplaFragment[] { new WeekPagerFragment(), new DayFragment(), new TrainFragment() };
-	private Tab[] tabs = new Tab[fragments.length];
+	private RapplaFragment[] fragments;
+	private Tab[] tabs;
 
 	private RaplaCalendar calendar;
 	private GestureDetector gestDetector;
@@ -28,6 +44,11 @@ public class RapplaActivity extends FragmentActivity
 		super.onCreate(savedInstanceState);
 
 		instance = this;
+		fragments = new RapplaFragment[TAB_CNT];
+		fragments[WEEKPAGER_FRAGMENT_INDEX] = new WeekPagerFragment();
+		fragments[DAY_FRAGMENT_INDEX] = new DayFragment();
+		fragments[TRAIN_FRAGMENT_INDEX] = new TrainFragment();
+		tabs = new Tab[TAB_CNT];
 
 		gestDetector = new GestureDetector(this, new RapplaGestureListener());
 		calendar = RaplaCalendar.load();
@@ -45,7 +66,17 @@ public class RapplaActivity extends FragmentActivity
 
 	public WeekPagerFragment getWeekPagerFragment()
 	{
-		return (WeekPagerFragment) fragments[0];
+		return (WeekPagerFragment) fragments[WEEKPAGER_FRAGMENT_INDEX];
+	}
+
+	public DayFragment getDayFragment()
+	{
+		return (DayFragment) fragments[DAY_FRAGMENT_INDEX];
+	}
+
+	public TrainFragment getTrainFragment()
+	{
+		return (TrainFragment) fragments[TRAIN_FRAGMENT_INDEX];
 	}
 
 	@Override
@@ -127,6 +158,26 @@ public class RapplaActivity extends FragmentActivity
 	public void setCalendar(RaplaCalendar cal)
 	{
 		calendar = cal;
+
+		// redraw grids
+		FragmentManager frMan = getFragmentManager();
+		FragmentTransaction fragTransaction = frMan.beginTransaction();
+		ActionBar aBar = getActionBar();
+		Fragment fr;
+		switch (aBar.getSelectedNavigationIndex())
+		{
+		case WEEKPAGER_FRAGMENT_INDEX:
+			fr = getWeekPagerFragment();
+			break;
+		case DAY_FRAGMENT_INDEX:
+			fr = getDayFragment();
+			break;
+		default:
+			return;
+		}
+		fragTransaction.detach(fr);
+		fragTransaction.attach(fr);
+		fragTransaction.commit();
 	}
 
 	@Override

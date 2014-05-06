@@ -12,9 +12,6 @@ import app.rappla.R;
 
 public class RapplaGrid extends ViewGroup
 {
-	public final static String elementPrefix = "EP#";
-	public final static String coordinateSeperator = "#";
-
 	private int columnCount, rowCount;
 	private float columnWidth, rowHeight;
 

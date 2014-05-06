@@ -10,9 +10,6 @@ import app.rappla.ui.grid.RapplaGridElement;
 
 public abstract class CalenderFragment extends RapplaFragment
 {
-	protected static final String gridElementPrefix = "GL#";
-	protected static final String weekGridPrefix = "WG#";
-
 	public static final int timeInterval = 15; // In minutes
 
 	private static final int earliestHour = 8;

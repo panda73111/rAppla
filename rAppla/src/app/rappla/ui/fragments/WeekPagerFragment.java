@@ -40,7 +40,7 @@ public class WeekPagerFragment extends RapplaFragment
 		pager.setCurrentItem(pagePosition);
 		return pager;
 	}
-
+	
 	@Override
 	public void onDetach()
 	{
