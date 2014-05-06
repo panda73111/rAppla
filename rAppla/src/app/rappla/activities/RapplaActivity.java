@@ -2,12 +2,12 @@ package app.rappla.activities;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
