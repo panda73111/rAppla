@@ -2,8 +2,8 @@
 <resources>
 
     <declare-styleable name="RapplaGrid">
-        <attr name="numOfColumns" format="integer" />
-        <attr name="numOfRows" format="integer" />
+        <attr name="columnCount" format="integer" />
+        <attr name="rowCount" format="integer" />
     </declare-styleable>
 
 </resources>

@@ -2,14 +2,14 @@ package app.rappla.ui.grid;
 
 public class RapplaGridElementLayout
 {
-	int xCoordinate;
-	int yCoordinate;
+	int column;
+	int offset;
 	int rowSpan;
 
 	public RapplaGridElementLayout(int column, int offset, int length)
 	{
-		this.xCoordinate 	= column;
-		this.yCoordinate 	= offset;
-		this.rowSpan 		= length;
+		this.column = column;
+		this.offset = offset;
+		this.rowSpan = length;
 	}
 }
