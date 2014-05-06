@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,10 +14,12 @@ import app.rappla.activities.RapplaActivity;
 public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalendar>
 {
 	private ProgressDialog dlg;
+	private Activity activity;
 
-	public ParseRaplaTask(Context ctx)
+	public ParseRaplaTask(Context context)
 	{
-		dlg = new ProgressDialog(ctx);
+		activity = (Activity) context;
+		dlg = new ProgressDialog(context);
 		dlg.setTitle("Lade Kalender");
 		dlg.setMessage("Bitte warten...");
 		dlg.setCancelable(true);
@@ -38,6 +41,8 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 
 		if (!RapplaActivity.isTest)
 			dlg.show();
+
+		activity.setProgressBarIndeterminateVisibility(true);
 	}
 
 	@Override
@@ -64,6 +69,8 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 
 		if (!RapplaActivity.isTest)
 			dlg.dismiss();
+
+		activity.setProgressBarIndeterminateVisibility(false);
 	}
 
 	@Override
@@ -75,11 +82,16 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 			dlg.dismiss();
 
 		if (result == null)
+		{
+			activity.setProgressBarIndeterminateVisibility(false);
 			return;
+		}
 
 		result.save();
 
 		RapplaActivity activity = RapplaActivity.getInstance();
 		activity.setCalendar(result);
+
+		activity.setProgressBarIndeterminateVisibility(false);
 	}
 }

@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.Window;
 import app.rappla.R;
 import app.rappla.RapplaGestureListener;
 import app.rappla.RapplaTabListener;
@@ -66,6 +67,9 @@ public class RapplaActivity extends Activity
 			new DownloadRaplaTask(this).execute(ICAL_URL);
 		}
 
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setProgressBarIndeterminateVisibility(true); 
+		
 		configureActionBar(savedInstanceState);
 		setContentView(R.layout.layout_rappla);
 	}
