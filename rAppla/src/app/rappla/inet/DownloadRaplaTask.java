@@ -117,7 +117,7 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 	{
 		super.onPostExecute(result);
 		
-		dlg.hide();
+		dlg.dismiss();
 
 		if (result != null)
 			new ParseRaplaTask(context).execute(result);

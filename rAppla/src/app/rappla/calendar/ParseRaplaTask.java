@@ -71,7 +71,7 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 	{
 		super.onPostExecute(result);
 		
-		dlg.hide();
+		dlg.dismiss();
 		
 		if (result == null)
 			return;
