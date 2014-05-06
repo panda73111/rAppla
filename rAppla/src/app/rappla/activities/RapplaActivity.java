@@ -4,16 +4,17 @@ import android.app.*;
 import android.app.ActionBar.Tab;
 import android.content.*;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.*;
 import app.rappla.*;
 import app.rappla.calendar.*;
 import app.rappla.inet.*;
 import app.rappla.ui.fragments.*;
 
-public class RapplaActivity extends Activity
+public class RapplaActivity extends FragmentActivity
 {
 	private static final String ICAL_URL = "http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3";
-	
+
 	RapplaFragment[] fragments = new RapplaFragment[] { new WeekPagerFragment(), new DayFragment(), new TrainFragment() };
 	private Tab[] tabs = new Tab[fragments.length];
 
@@ -27,26 +28,26 @@ public class RapplaActivity extends Activity
 		super.onCreate(savedInstanceState);
 
 		instance = this;
-		
+
 		gestDetector = new GestureDetector(this, new RapplaGestureListener());
 		calendar = RaplaCalendar.load();
-		
+
 		if (calendar == null)
 		{
 			// calendar is not saved locally, download it
 			calendar = new RaplaCalendar();
 			new DownloadRaplaTask(this).execute(ICAL_URL);
 		}
-		
-		setContentView(R.layout.layout_rappla);
+
 		configureActionBar(savedInstanceState);
+		setContentView(R.layout.layout_rappla);
 	}
 
 	public WeekPagerFragment getWeekPagerFragment()
 	{
 		return (WeekPagerFragment) fragments[0];
 	}
-	
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState)
 	{
@@ -127,13 +128,13 @@ public class RapplaActivity extends Activity
 	{
 		calendar = cal;
 	}
-	
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event)
 	{
 		return gestDetector.onTouchEvent(event);
 	}
-	
+
 	public static RapplaActivity getInstance()
 	{
 		return instance;

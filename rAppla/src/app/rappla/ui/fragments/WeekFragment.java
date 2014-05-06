@@ -50,10 +50,10 @@ public class WeekFragment extends CalenderFragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		View rootView = (RapplaGrid) inflater.inflate(R.layout.layout_week, container, false);
-
+		
 		if (LOG_EVENTS)
 			Log.d(title, "onCreateView");
-
+		
 		return rootView;
 	}
 

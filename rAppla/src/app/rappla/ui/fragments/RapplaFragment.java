@@ -22,6 +22,7 @@ public abstract class RapplaFragment extends Fragment
 
 	public RapplaFragment()
 	{
+		super();
 		setTitle(StaticContext.getContext().getResources().getString(R.string.DEFAULT_FRAGMENT_TITLE));
 	}
 
@@ -44,6 +45,7 @@ public abstract class RapplaFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
+		super.onCreateView(inflater, container, savedInstanceState);
 		if (LOG_EVENTS)
 			Log.d(title, "onCreateView");
 
@@ -95,11 +97,11 @@ public abstract class RapplaFragment extends Fragment
 	{
 		super.onResume();
 
-		if (setBackground)
-			setBackground(getResources().getConfiguration().orientation);
-
 		if (LOG_EVENTS)
 			Log.d(title, "onResume");
+
+		if (setBackground)
+			setBackground(getResources().getConfiguration().orientation);
 	}
 
 	@Override
@@ -138,11 +140,11 @@ public abstract class RapplaFragment extends Fragment
 	{
 		super.onConfigurationChanged(newConfig);
 
-		if (setBackground)
-			setBackground(getResources().getConfiguration().orientation);
-
 		if (LOG_EVENTS)
 			Log.d(title, "onConfigurationChanged");
+
+		if (setBackground)
+			setBackground(getResources().getConfiguration().orientation);
 	}
 
 	private void setBackground(int orientation)

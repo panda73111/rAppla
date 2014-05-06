@@ -18,7 +18,7 @@ public class RapplaGrid extends ViewGroup
 	private int columnCount, rowCount;
 	private float columnWidth, rowHeight;
 
-	
+	HashMap<View, RapplaGridElementLayout> elementLayouts;
 	View[][] elementMatrix;
 
 	public RapplaGrid(Context context, AttributeSet attrs)
@@ -36,9 +36,10 @@ public class RapplaGrid extends ViewGroup
 			a.recycle();
 		}
 
+		elementLayouts = new HashMap<View, RapplaGridElementLayout>();
 		elementMatrix = new View[columnCount][rowCount];
 
-		Log.d("RapplaGrid", "new: " + rowCount + " rows, " + columnCount + " columns");
+		//Log.d("RapplaGrid", "new: " + rowCount + " rows, " + columnCount + " columns");
 	}
 
 	public int getColumnCount()
@@ -83,7 +84,14 @@ public class RapplaGrid extends ViewGroup
 
 	public boolean addElementAt(View element, int col, int row, int rowSpan)
 	{
-		Log.d("RapplaGrid", "adding element at column " + col + ", row " + row);
+		if (elementLayouts.containsKey(element))
+		{
+			// This element was already added
+			return false;
+		}
+
+		//Log.d("RapplaGrid", "adding element at column " + col + ", row " + row);
+		elementLayouts.put(element, new RapplaGridElementLayout(col, row, rowSpan));
 		elementMatrix[col][row] = element;
 
 		if (rowSpan < 1)
@@ -92,29 +100,6 @@ public class RapplaGrid extends ViewGroup
 
 		addView(element);
 		return true;
-	}
-
-	private void applyLayout(View view, int col, int row, int rowSpan)
-	{
-		
-
-		// Try to get old Layout
-		ViewGroup.LayoutParams gParams = (LayoutParams) view.getLayoutParams();
-		// If failed, create a new one
-		if (gParams == null)
-			gParams = new ViewGroup.LayoutParams(newWidth, newHeight);
-		else
-		{
-			gParams.width = newWidth;
-			gParams.height = newHeight;
-		}
-
-		view.setLayoutParams(gParams);
-		view.setX(col * newWidth);
-		view.setY(row * newHeight);
-
-		Log.d("RapplaGrid", "applied layout to " + view.getTag() + ": " + col * newWidth + "|" + row * newHeight + ", " + newWidth + "px x "
-				+ newHeight + "px");
 	}
 
 	@Override
@@ -126,13 +111,20 @@ public class RapplaGrid extends ViewGroup
 				View element = getElementAt(col, row);
 				if (element == null)
 					continue;
-				
+
+				RapplaGridElementLayout layout = elementLayouts.get(element);
+
 				int elemWidth = (int) columnWidth;
-				int elemHeight = (int) (rowHeight * rowSpan);
-				
-				Log.d("RapplaGrid", "placing element of column " + col + ", row " + row + " at " + element.getLeft() + "|" + element.getTop() + "|"
-						+ element.getRight() + "|" + element.getBottom());
-				element.layout(element.getLeft(), element.getTop(), element.getRight(), element.getBottom());
+				int elemHeight = (int) (rowHeight * layout.rowSpan);
+				int elemX = (int) (col * columnWidth);
+				int elemY = (int) (row * rowHeight);
+
+				/*
+				Log.d("RapplaGrid", "placing element of column " + col + ", row " + row + " at " + elemX + "px|" + elemY + "px, " + elemWidth
+						+ "px x " + elemHeight + "px");
+						*/
+
+				element.layout(elemX, elemY, elemX + elemWidth, elemY + elemHeight);
 			}
 	}
 }

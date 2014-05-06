@@ -6,10 +6,10 @@ public class RapplaGridElementLayout
 	int offset;
 	int rowSpan;
 
-	public RapplaGridElementLayout(int column, int offset, int length)
+	public RapplaGridElementLayout(int column, int offset, int rowSpan)
 	{
 		this.column = column;
 		this.offset = offset;
-		this.rowSpan = length;
+		this.rowSpan = rowSpan;
 	}
 }
