@@ -4,18 +4,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import app.rappla.activities.RapplaActivity;
 
 public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalendar>
 {
 	private ProgressDialog dlg;
-	
+
 	public ParseRaplaTask(Context ctx)
 	{
 		dlg = new ProgressDialog(ctx);
@@ -32,7 +30,7 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 			}
 		});
 	}
-	
+
 	@Override
 	protected void onPreExecute()
 	{
@@ -41,7 +39,7 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 		if(!RapplaActivity.isTest)
 			dlg.show();
 	}
-	
+
 	@Override
 	protected RaplaCalendar doInBackground(InputStream... stream)
 	{
@@ -58,7 +56,7 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 		}
 		return cal;
 	}
-	
+
 	@Override
 	protected void onCancelled()
 	{
@@ -67,27 +65,21 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 		if(!RapplaActivity.isTest)
 			dlg.hide();
 	}
-	
+
 	@Override
 	protected void onPostExecute(RaplaCalendar result)
 	{
 		super.onPostExecute(result);
 
 		if(!RapplaActivity.isTest)
-			dlg.hide();
-		
+		dlg.dismiss();
+
 		if (result == null)
 			return;
-		
+
 		result.save();
-		
+
 		RapplaActivity activity = RapplaActivity.getInstance();
 		activity.setCalendar(result);
-		
-		Activity act = RapplaActivity.getInstance();
-		
-		Intent intent = act.getIntent();
-		act.finish();
-		act.startActivity(intent);
 	}
 }

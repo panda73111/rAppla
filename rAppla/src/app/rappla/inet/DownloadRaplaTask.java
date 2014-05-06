@@ -1,15 +1,9 @@
 package app.rappla.inet;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
+import org.apache.http.*;
+import org.apache.http.client.*;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -17,19 +11,18 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import app.rappla.activities.RapplaActivity;
 import app.rappla.calendar.ParseRaplaTask;
 
 public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 {
 	private ProgressDialog dlg;
 	private Context context;
-	
+
 	public DownloadRaplaTask(Context ctx)
 	{
 		context = ctx;
 		dlg = new ProgressDialog(ctx);
-		dlg.setTitle("Aktualisiere");
+		dlg.setTitle("Aktuallisiere");
 		dlg.setMessage("Bitte warten...");
 		dlg.setCancelable(true);
 		dlg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -125,9 +118,9 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 	protected void onPostExecute(InputStream result)
 	{
 		super.onPostExecute(result);
-
+		
 		if(!RapplaActivity.isTest)
-			dlg.hide();
+		dlg.dismiss();
 
 		if (result != null)
 			new ParseRaplaTask(context).execute(result);
