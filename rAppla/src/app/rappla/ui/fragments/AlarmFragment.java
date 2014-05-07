@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import app.rappla.R;
 import app.rappla.StaticContext;
 import app.rappla.activities.EventActivity;
@@ -112,7 +113,7 @@ public class AlarmFragment extends RapplaFragment
 			a.applyState();
 		}
 		saveAlarmFile();
-		getActivity().finish();
+		Toast.makeText(getActivity(), R.string.alarmsaved, Toast.LENGTH_LONG).show();
 	}
 
 	public void refreshPanel()
