@@ -15,7 +15,6 @@ public class AlarmFactory
 	
 	private static PendingIntent createPendingIntent(String eventID, Calendar alarmDate, Context context)
 	{
-		//Intent intent = new Intent(context, EventActivity.class);
 		Intent intent = new Intent(context, AlarmPopupDialog.class);
 	    
 	    intent.putExtra(EventActivity.eventIDKey, eventID);

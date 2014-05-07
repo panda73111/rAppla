@@ -8,7 +8,7 @@ import app.rappla.ui.fragments.CalenderFragment;
 
 public class RapplaGridElement
 {
-	protected static final int eventImage = R.drawable.event_glass;
+	protected static final int eventImage = R.drawable.event;
 	
 	
 	private Button eventButton;

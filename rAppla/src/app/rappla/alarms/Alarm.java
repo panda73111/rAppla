@@ -20,8 +20,8 @@ public class Alarm implements Serializable
 	public static final int timeButtonID = 2;
 	public static final int activateButtonID = 3;
 
-	private static final int alarmOnResource = R.drawable.alarmicon2on;
-	private static final int alarmOffResource = R.drawable.alarmicon2off;
+	private static final int alarmOnResource = R.drawable.alarmon;
+	private static final int alarmOffResource = R.drawable.alarmoff;
 
 	Calendar alarmDate;
 	boolean isActive = true;
