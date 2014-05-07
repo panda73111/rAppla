@@ -58,6 +58,8 @@ public class Event implements Constants
 	protected Duration duration;
 	/** Recurrance rule (RRULE) */
 	protected Rrule rrule = null;
+	/** Recurrance exception */
+	protected Exdate exdate = null;
 	/** URL */
 	protected URL url = null;
 	/** Location */
