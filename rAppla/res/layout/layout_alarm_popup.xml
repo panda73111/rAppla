@@ -11,11 +11,10 @@
         android:layout_height="215dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:contentDescription="TODO"
         android:src="@drawable/stickynote" />
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/noteText"
         android:layout_width="150dp"
         android:layout_height="200dp"
         android:layout_alignTop="@+id/imageView1"
@@ -37,7 +36,7 @@
         android:layout_alignLeft="@+id/imageView1"
         android:layout_alignRight="@+id/imageView1"
         android:layout_marginTop="5dp"
-        android:layout_below="@+id/editText1" >
+        android:layout_below="@+id/noteText" >
 
         <Button
             style="?android:attr/buttonBarButtonStyle"

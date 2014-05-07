@@ -1,14 +1,5 @@
 package app.rappla.ui.fragments;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.HashMap;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,16 +8,15 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import app.rappla.R;
 import app.rappla.StaticContext;
 import app.rappla.activities.EventActivity;
 import app.rappla.calendar.RaplaEvent;
+import app.rappla.notes.Notes;
 
 public class NotesFragment extends RapplaFragment
-{
-	public static final String serializedNoteFileName = "RapplaNotes.ser";
-	
-	static HashMap<String, String> notes = null;
+{	
 	String eventID;
 	
 	
@@ -59,8 +49,8 @@ public class NotesFragment extends RapplaFragment
 	public void onStart()
 	{
 		super.onStart();
-		if (notes == null)
-			loadNoteFile();
+		if (!Notes.isInitialized())
+			Notes.loadNoteFile(getActivity());
 		
 		Button		saveButton	= (Button)		getActivity().findViewById(R.id.button1);
 		EditText 	noteTextView= (EditText) 	getActivity().findViewById(R.id.editText1);
@@ -75,58 +65,19 @@ public class NotesFragment extends RapplaFragment
 		);
 		
 		RaplaEvent event 		= EventActivity.getInstance().getEvent();		
-		eventID					= event.getUid();		
-		noteTextView.setText((CharSequence) notes.get(eventID));
+		eventID					= event.getUniqueEventID();		
+		noteTextView.setText(Notes.get(eventID));
 	}
 
 	public void onClickedSave()
 	{
 		EditText noteTextView 	= (EditText) getActivity().findViewById(R.id.editText1);
-		notes.put(eventID, noteTextView.getText().toString());
+		Notes.put(eventID, noteTextView.getText().toString());
 		
-		saveNoteFile();
-		
-		getActivity().finish();
+		Notes.saveNoteFile(getActivity());
+		Toast.makeText(getActivity(), R.string.notesaved, Toast.LENGTH_LONG).show();
 	}
 	
 	
-	public void saveNoteFile()
-	{
-		try
-		{
-			FileOutputStream fileOut = getActivity().openFileOutput(serializedNoteFileName, Context.MODE_PRIVATE);
-			ObjectOutputStream out = new ObjectOutputStream(fileOut);
-			out.writeObject(notes);
-			out.close();
-			fileOut.close();
-		} catch (IOException i)
-		{
-			i.printStackTrace();
-		}
-	}
 
-	@SuppressWarnings("unchecked")
-	public void loadNoteFile()
-	{
-		try
-		{
-			FileInputStream fis 	= getActivity().openFileInput(serializedNoteFileName);
-			ObjectInputStream in 	= new ObjectInputStream(fis);
-			notes = (HashMap<String, String>) in.readObject();
-			in.close();
-			fis.close();
-		} catch(FileNotFoundException e)		// Thats no problem. The file does not exist yet
-		{}
-		catch (IOException i)
-		{
-			i.printStackTrace();
-		} catch (ClassNotFoundException e)
-		{
-			e.printStackTrace();
-		} finally
-		{
-			if(notes == null)
-				notes = new HashMap<String, String>();
-		}
-	}
 }
