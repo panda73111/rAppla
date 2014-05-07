@@ -109,5 +109,5 @@ public class EventActivity extends Activity
 	{
 		return instance;
 	}
-	
+
 }

@@ -24,12 +24,12 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 {
 	private ProgressDialog dlg;
 	private Context context;
-	
+
 	public DownloadRaplaTask(Context ctx)
 	{
 		context = ctx;
 		dlg = new ProgressDialog(ctx);
-		dlg.setTitle("Aktualisiere");
+		dlg.setTitle("Aktuallisiere");
 		dlg.setMessage("Bitte warten...");
 		dlg.setCancelable(true);
 		dlg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -50,7 +50,7 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 		super.onPreExecute();
 
 		dlg.setProgress(0);
-		if(!RapplaActivity.isTest)
+		if (!RapplaActivity.isTest)
 			dlg.show();
 	}
 
@@ -117,8 +117,8 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 	{
 		super.onCancelled();
 
-		if(!RapplaActivity.isTest)
-			dlg.hide();
+		if (!RapplaActivity.isTest)
+			dlg.dismiss();
 	}
 
 	@Override
@@ -126,8 +126,8 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 	{
 		super.onPostExecute(result);
 
-		if(!RapplaActivity.isTest)
-			dlg.hide();
+		if (!RapplaActivity.isTest)
+			dlg.dismiss();
 
 		if (result != null)
 			new ParseRaplaTask(context).execute(result);

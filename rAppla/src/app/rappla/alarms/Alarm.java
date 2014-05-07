@@ -22,19 +22,19 @@ public class Alarm implements Serializable
 
 	private static final int alarmOnResource = R.drawable.alarmicon2on;
 	private static final int alarmOffResource = R.drawable.alarmicon2off;
-	
+
 	Calendar alarmDate;
 	boolean isActive = true;
 	transient boolean wasModified = false;
 	String eventID;
-	
+
 	transient LinearLayout alarmGroup;
 	transient RelativeLayout alarmSubGroup;
 	transient Button dateButton;
 	transient Button timeButton;
 	transient Button alarmButton;
 	transient Context context;
-	
+
 	public Alarm(Calendar a, String eventID)
 	{
 		this.alarmDate = Calendar.getInstance();
@@ -51,13 +51,12 @@ public class Alarm implements Serializable
 	public void initViews(Context c, ViewGroup parent)
 	{
 		this.context = c;
-		
+
 		OnAlarmClickListener oacl = new OnAlarmClickListener(c, alarmDate, this);
 		Drawable bd = c.getResources().getDrawable(alarmOnResource);
 		int height = bd.getIntrinsicHeight();
 		int width = bd.getIntrinsicWidth();
-		
-		
+
 		alarmButton = new Button(c);
 		alarmButton.setId(activateButtonID);
 		alarmButton.setOnClickListener(oacl);
@@ -96,12 +95,12 @@ public class Alarm implements Serializable
 		{
 			timeButton.setText(toTimeString(alarmDate));
 		}
-		if(alarmButton != null)
+		if (alarmButton != null)
 		{
-			if(isActive)
+			if (isActive)
 				alarmButton.setBackgroundResource(alarmOnResource);
 			else
-				alarmButton.setBackgroundResource(alarmOffResource);				
+				alarmButton.setBackgroundResource(alarmOffResource);
 		}
 	}
 
@@ -114,46 +113,47 @@ public class Alarm implements Serializable
 	{
 		AlarmFactory.startAlarm(eventID, alarmDate, context);
 	}
+
 	private void cancelAlarm()
 	{
 		AlarmFactory.cancelAlarm(eventID, alarmDate, context);
 	}
-	
+
 	public void applyState()
 	{
-		if(isActive)
+		if (isActive)
 			startAlarm();
 		else
 			cancelAlarm();
 	}
+
 	public void setActive(boolean isActive)
 	{
-		if(this.isActive == isActive)
+		if (this.isActive == isActive)
 			return;
-		
+
 		this.isActive = isActive;
 		this.wasModified = true;
-		
+
 		updateViews();
 	}
-	
+
 	private String toDateString(Calendar date)
 	{
-		int day 	= date.get(Calendar.DAY_OF_MONTH);
-		int month 	= date.get(Calendar.MONTH);
-		int year 	= date.get(Calendar.YEAR);
+		int day = date.get(Calendar.DAY_OF_MONTH);
+		int month = date.get(Calendar.MONTH);
+		int year = date.get(Calendar.YEAR);
 		return day + "/" + (month + 1) + "/" + year;
 	}
+
 	private String toTimeString(Calendar date)
 	{
 		String hour = "" + date.get(Calendar.HOUR_OF_DAY);
 		String minute = "" + date.get(Calendar.MINUTE);
-		
-		if(minute.length()==1)
+
+		if (minute.length() == 1)
 			minute = "0" + minute;
-		
+
 		return hour + ":" + minute;
 	}
-	
-	
 }

@@ -54,10 +54,10 @@ public class AlarmFragment extends RapplaFragment
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		RaplaEvent event = ((EventActivity)getActivity()).getEvent();
+		RaplaEvent event = ((EventActivity) getActivity()).getEvent();
 		eventID = event.getUniqueEventID();
 	}
-	
+
 	public void onStart()
 	{
 		super.onStart();
@@ -95,8 +95,8 @@ public class AlarmFragment extends RapplaFragment
 
 	public void onClickedAdd()
 	{
-		RaplaEvent event = ((EventActivity)getActivity()).getEvent();
-		
+		RaplaEvent event = ((EventActivity) getActivity()).getEvent();
+
 		Alarm newAlarm = new Alarm(event.getDate(), eventID);
 		alarmList.add(newAlarm);
 		alarms.put(eventID, alarmList);
@@ -107,7 +107,7 @@ public class AlarmFragment extends RapplaFragment
 
 	public void onClickedSave()
 	{
-		for(Alarm a : alarmList)
+		for (Alarm a : alarmList)
 		{
 			a.applyState();
 		}
