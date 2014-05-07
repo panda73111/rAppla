@@ -21,16 +21,14 @@ import app.rappla.calendar.RaplaCalendar;
 import app.rappla.inet.DownloadRaplaTask;
 import app.rappla.ui.fragments.DayFragment;
 import app.rappla.ui.fragments.RapplaFragment;
-import app.rappla.ui.fragments.TrainFragment;
 import app.rappla.ui.fragments.WeekPagerFragment;
 
 public class RapplaActivity extends Activity
 {
 	private static final String ICAL_URL = "http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3";
-	private static final int TAB_CNT = 3;
+	private static final int TAB_CNT = 2;
 	private static final int WEEKPAGER_FRAGMENT_INDEX = 0;
 	private static final int DAY_FRAGMENT_INDEX = 1;
-	private static final int TRAIN_FRAGMENT_INDEX = 2;
 
 	private RapplaFragment[] fragments;
 	private Tab[] tabs;
@@ -54,7 +52,6 @@ public class RapplaActivity extends Activity
 		fragments = new RapplaFragment[TAB_CNT];
 		fragments[WEEKPAGER_FRAGMENT_INDEX] = new WeekPagerFragment();
 		fragments[DAY_FRAGMENT_INDEX] = new DayFragment();
-		fragments[TRAIN_FRAGMENT_INDEX] = new TrainFragment();
 		tabs = new Tab[TAB_CNT];
 
 		gestDetector = new GestureDetector(this, new RapplaGestureListener());
@@ -92,10 +89,6 @@ public class RapplaActivity extends Activity
 		return (DayFragment) fragments[DAY_FRAGMENT_INDEX];
 	}
 
-	public TrainFragment getTrainFragment()
-	{
-		return (TrainFragment) fragments[TRAIN_FRAGMENT_INDEX];
-	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState)

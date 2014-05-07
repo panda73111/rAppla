@@ -8,7 +8,7 @@ import app.rappla.ui.fragments.CalenderFragment;
 
 public class RapplaGridElement
 {
-	protected static final int eventImage = R.drawable.event_glass;
+	protected static final int eventImage = R.drawable.event;
 	
 	
 	private Button eventButton;
@@ -42,7 +42,7 @@ public class RapplaGridElement
 		String eventName = getEventName(raplaEvent);
 		
 		button.setText(eventName);
-		button.setPadding(3, 0, 3, 0);
+		button.setPadding(10, 20, 10, 10);
 		button.setTextSize(12);
 		
 		return button;

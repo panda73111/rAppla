@@ -1,0 +1,24 @@
+Feature: Navigation
+	Users should be able to navigate the app
+	
+	Scenario: Navigate to MainActivity
+		Then I'm on MainActivity
+	
+	Scenario: Navigate to Settings
+		Given I'm on MainActivity
+		Then I wait
+		Then I press "Einstellungen"
+		Then I'm on SettingsActivity
+	
+	Scenario: Navigate to EventInfos
+		Given I'm on MainActivity
+		Then I wait
+		Then I press the "Software Engineering" Button
+		Then I'm on EventInfos
+		
+	Scenario: Navigate to Notes
+		Given I'm on EventInfos
+		Then I wait
+		Then I press "Notizen"
+		Then I'm on Notes
+		

@@ -172,10 +172,10 @@ public abstract class RapplaFragment extends Fragment
 	{
 		if (orientation == Configuration.ORIENTATION_PORTRAIT)
 		{
-			getView().setBackgroundResource(R.drawable.wooden_background_potrait);
+			getView().setBackgroundResource(R.drawable.background_potrait);
 		} else
 		{
-			getView().setBackgroundResource(R.drawable.wooden_background_landscape);
+			getView().setBackgroundResource(R.drawable.background_landscape);
 		}
 	}
 	

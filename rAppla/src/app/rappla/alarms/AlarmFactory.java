@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import app.rappla.activities.AlarmPopupDialog;
 import app.rappla.activities.EventActivity;
 
 public class AlarmFactory
@@ -14,8 +15,10 @@ public class AlarmFactory
 	
 	private static PendingIntent createPendingIntent(String eventID, Calendar alarmDate, Context context)
 	{
-	    Intent intent = new Intent(context, EventActivity.class);
+		Intent intent = new Intent(context, AlarmPopupDialog.class);
+	    
 	    intent.putExtra(EventActivity.eventIDKey, eventID);
+	    intent.putExtra(EventActivity.isAlarmKey, true);
 
 	    return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -31,11 +34,17 @@ public class AlarmFactory
 	        Log.e("AlarmFactory", "PendingIntent came back as null");
 	        return false;
 	    }
-	    Log.d("Alarm", "Alarm set to " + alarmDate.toString());
-	    /*alarmDate.getTimeInMillis()*/
 	    
-	    alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+5000, pendingIntent);
-		return true;
+	    if(alarmDate.getTimeInMillis() < System.currentTimeMillis())
+	    {
+	    	Log.d("Alarm", "Alarm not set. It is in the past!");
+		    return false;
+	    }
+	    
+	    alarmMgr.set(AlarmManager.RTC_WAKEUP, alarmDate.getTimeInMillis(), pendingIntent);
+	    Log.d("Alarm", "Alarm set to " + alarmDate.toString());
+	    
+	    return true;
 	}
 
 	public static boolean cancelAlarm(String eventID, Calendar alarmDate, Context context)

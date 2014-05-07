@@ -4,9 +4,10 @@
     android:versionCode="1"
     android:versionName="1.0">
     <uses-sdk
-        android:minSdkVersion="17"
-        android:targetSdkVersion="19" />
+        android:minSdkVersion="16"
+        android:targetSdkVersion="18" />
     <uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -34,6 +35,13 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Event" >
         </activity>
+    	<activity 
+    	    android:name="app.rappla.activities.AlarmPopupDialog"
+    	    android:label="Alarm"
+    	    android:theme="@android:style/Theme.Dialog"
+    	    android:launchMode="singleInstance"
+    	    >
+    	    
+    	</activity>
     </application>
-
 </manifest>

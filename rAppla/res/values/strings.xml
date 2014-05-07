@@ -64,6 +64,8 @@
     <string name="empty">"THIS IS A BIG ASS TEXT"</string> 
     <string name="infos">"Infos"</string> 
     <string name="date">Datum</string> 
+	<string name="notesaved">Notiz gespeichert</string> 
+	<string name="alarmsaved">Wecker gestellt</string> 
 	
 
     

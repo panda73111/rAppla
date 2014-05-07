@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import app.rappla.R;
 import app.rappla.StaticContext;
 import app.rappla.activities.EventActivity;
@@ -54,10 +55,10 @@ public class AlarmFragment extends RapplaFragment
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		RaplaEvent event = ((EventActivity)getActivity()).getEvent();
-		eventID = event.getUid();
+		RaplaEvent event = ((EventActivity) getActivity()).getEvent();
+		eventID = event.getUniqueEventID();
 	}
-	
+
 	public void onStart()
 	{
 		super.onStart();
@@ -95,8 +96,8 @@ public class AlarmFragment extends RapplaFragment
 
 	public void onClickedAdd()
 	{
-		RaplaEvent event = ((EventActivity)getActivity()).getEvent();
-		
+		RaplaEvent event = ((EventActivity) getActivity()).getEvent();
+
 		Alarm newAlarm = new Alarm(event.getDate(), eventID);
 		alarmList.add(newAlarm);
 		alarms.put(eventID, alarmList);
@@ -107,8 +108,12 @@ public class AlarmFragment extends RapplaFragment
 
 	public void onClickedSave()
 	{
+		for (Alarm a : alarmList)
+		{
+			a.applyState();
+		}
 		saveAlarmFile();
-		getActivity().finish();
+		Toast.makeText(getActivity(), R.string.alarmsaved, Toast.LENGTH_LONG).show();
 	}
 
 	public void refreshPanel()
