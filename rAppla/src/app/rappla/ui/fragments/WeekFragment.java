@@ -21,29 +21,19 @@ public class WeekFragment extends CalenderFragment
 	public WeekFragment()
 	{
 		setDate(Calendar.getInstance());
+		setBackground = true;
 	}
 
 	public void setDate(Calendar date)
 	{
 		this.date = date;
 		setTitle("Einzelwoche " + date.get(Calendar.YEAR) + "/" + date.get(Calendar.WEEK_OF_YEAR));
+		setBackground = true;
 	}
 
 	public Calendar getDate()
 	{
 		return date;
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-	}
-
-	@Override
-	public void onStart()
-	{
-		super.onStart();
 	}
 
 	@Override

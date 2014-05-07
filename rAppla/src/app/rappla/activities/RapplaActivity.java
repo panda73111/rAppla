@@ -20,6 +20,7 @@ import app.rappla.RapplaTabListener;
 import app.rappla.calendar.RaplaCalendar;
 import app.rappla.inet.DownloadRaplaTask;
 import app.rappla.ui.fragments.DayFragment;
+import app.rappla.ui.fragments.DayPagerFragment;
 import app.rappla.ui.fragments.RapplaFragment;
 import app.rappla.ui.fragments.WeekPagerFragment;
 
@@ -42,16 +43,16 @@ public class RapplaActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
-		if(savedInstanceState!=null)
+
+		if (savedInstanceState != null)
 		{
 			RapplaActivity.isTest = savedInstanceState.getBoolean("isTest", false);
 		}
-		
+
 		instance = this;
 		fragments = new RapplaFragment[TAB_CNT];
 		fragments[WEEKPAGER_FRAGMENT_INDEX] = new WeekPagerFragment();
-		fragments[DAY_FRAGMENT_INDEX] = new DayFragment();
+		fragments[DAY_FRAGMENT_INDEX] = new DayPagerFragment();
 		tabs = new Tab[TAB_CNT];
 
 		gestDetector = new GestureDetector(this, new RapplaGestureListener());
@@ -65,8 +66,8 @@ public class RapplaActivity extends Activity
 		}
 
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setProgressBarIndeterminateVisibility(true); 
-		
+		setProgressBarIndeterminateVisibility(true);
+
 		configureActionBar(savedInstanceState);
 		setContentView(R.layout.layout_rappla);
 	}
@@ -75,10 +76,12 @@ public class RapplaActivity extends Activity
 	{
 		return fragments.length;
 	}
+
 	public Fragment getFragment(int i)
 	{
 		return fragments[i];
 	}
+
 	public WeekPagerFragment getWeekPagerFragment()
 	{
 		return (WeekPagerFragment) fragments[WEEKPAGER_FRAGMENT_INDEX];
@@ -88,7 +91,6 @@ public class RapplaActivity extends Activity
 	{
 		return (DayFragment) fragments[DAY_FRAGMENT_INDEX];
 	}
-
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState)
@@ -106,9 +108,9 @@ public class RapplaActivity extends Activity
 	private void configureActionBar(Bundle savedInstanceState)
 	{
 		ActionBar actionBar = getActionBar();
-		if(actionBar==null)
+		if (actionBar == null)
 			return;
-		
+
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setTitle(R.string.app_name);
 		actionBar.setDisplayHomeAsUpEnabled(false);
