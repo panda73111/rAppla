@@ -55,7 +55,7 @@ public class AlarmFragment extends RapplaFragment
 	{
 		super.onCreate(savedInstanceState);
 		RaplaEvent event = ((EventActivity)getActivity()).getEvent();
-		eventID = event.getUid();
+		eventID = event.getUniqueEventID();
 	}
 	
 	public void onStart()
@@ -107,6 +107,10 @@ public class AlarmFragment extends RapplaFragment
 
 	public void onClickedSave()
 	{
+		for(Alarm a : alarmList)
+		{
+			a.applyState();
+		}
 		saveAlarmFile();
 		getActivity().finish();
 	}

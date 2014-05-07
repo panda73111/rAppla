@@ -25,6 +25,7 @@ public class Alarm implements Serializable
 	
 	Calendar alarmDate;
 	boolean isActive = true;
+	transient boolean wasModified = false;
 	String eventID;
 	
 	transient LinearLayout alarmGroup;
@@ -39,6 +40,7 @@ public class Alarm implements Serializable
 		this.alarmDate = Calendar.getInstance();
 		this.isActive = true;
 		this.eventID = eventID;
+		this.wasModified = false;
 
 		if (a != null)
 		{
@@ -108,15 +110,16 @@ public class Alarm implements Serializable
 		return alarmDate;
 	}
 
-	public void startAlarm()
+	private void startAlarm()
 	{
 		AlarmFactory.startAlarm(eventID, alarmDate, context);
 	}
-	public void cancelAlarm()
+	private void cancelAlarm()
 	{
 		AlarmFactory.cancelAlarm(eventID, alarmDate, context);
 	}
-	public void updateState()
+	
+	public void applyState()
 	{
 		if(isActive)
 			startAlarm();
@@ -125,11 +128,12 @@ public class Alarm implements Serializable
 	}
 	public void setActive(boolean isActive)
 	{
+		if(this.isActive == isActive)
+			return;
+		
 		this.isActive = isActive;
-		if(isActive)
-			startAlarm();
-		else
-			cancelAlarm();
+		this.wasModified = true;
+		
 		updateViews();
 	}
 	
@@ -142,8 +146,12 @@ public class Alarm implements Serializable
 	}
 	private String toTimeString(Calendar date)
 	{
-		int hour = date.get(Calendar.HOUR_OF_DAY);
-		int minute = date.get(Calendar.MINUTE);
+		String hour = "" + date.get(Calendar.HOUR_OF_DAY);
+		String minute = "" + date.get(Calendar.MINUTE);
+		
+		if(minute.length()==1)
+			minute = "0" + minute;
+		
 		return hour + ":" + minute;
 	}
 	

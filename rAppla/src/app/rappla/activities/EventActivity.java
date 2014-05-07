@@ -3,7 +3,9 @@ package app.rappla.activities;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.MenuItem;
 import app.rappla.R;
@@ -22,6 +24,8 @@ public class EventActivity extends Activity
 
 	private static EventActivity instance;
 	public final static String eventIDKey = "eventID";
+	public final static String isAlarmKey = "isAlarm";
+	
 	
 
 
@@ -38,9 +42,20 @@ public class EventActivity extends Activity
 		
 		myEvent = RapplaActivity.getInstance().getCalender().getElementByUniqueID(eventID);
 		
+		assert(myEvent!=null);
+				
 		setContentView(R.layout.layout_rappla);
 		configureActionBar(savedInstanceState);
+		
+		if(extras.getBoolean(isAlarmKey, false))
+		{
+			Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+			v.vibrate(new long[]{0,150,150,250, 100, 100}, -1);
+			getActionBar().setSelectedNavigationItem(1);
+		}
 	}
+	
+	
 	
 	private void configureActionBar(Bundle savedInstanceState)
 	{

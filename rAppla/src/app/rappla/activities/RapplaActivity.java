@@ -14,7 +14,7 @@ public class RapplaActivity extends Activity
 {
 	public static final String ICAL_URL = "http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3";
 	
-	RapplaFragment[] fragments = new RapplaFragment[] { new WeekPagerFragment(), new DayFragment(), new TrainFragment() };
+	RapplaFragment[] fragments = new RapplaFragment[] { new WeekPagerFragment(), new DayFragment()};
 	private Tab[] tabs = new Tab[fragments.length];
 
 	private RaplaCalendar calendar;

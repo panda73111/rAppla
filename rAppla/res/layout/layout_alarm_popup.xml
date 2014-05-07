@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="165dp"
+        android:layout_height="215dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="TODO"
+        android:src="@drawable/stickynote" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:layout_alignTop="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:background="@null"
+        android:ems="10"
+        android:focusable="false"
+        android:gravity="top"
+        android:inputType="none" >
+
+        <requestFocus />
+    </EditText>
+
+    <LinearLayout
+            style="?android:attr/buttonBarStyle"
+        android:id="@+id/frameLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imageView1"
+        android:layout_alignRight="@+id/imageView1"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/editText1" >
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+            android:padding="0dp"
+            android:layout_weight="1"
+            android:text="Button" />
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="0dp"
+			android:padding="0px"
+            android:layout_weight="1"
+            android:text="Button" />
+
+    </LinearLayout>
+
+</RelativeLayout>

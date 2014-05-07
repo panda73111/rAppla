@@ -37,7 +37,7 @@ public class OnAlarmClickListener implements OnClickListener
 				{
 					alarm.getDate().set(year, monthOfYear, dayOfMonth);
 					alarm.updateViews();
-					alarm.updateState();
+					alarm.applyState();
 				}
 			};
 			new DatePickerDialog(c, odsl, eventDate.get(Calendar.YEAR), eventDate.get(Calendar.MONTH), eventDate.get(Calendar.DAY_OF_MONTH))
@@ -52,7 +52,7 @@ public class OnAlarmClickListener implements OnClickListener
 					alarm.getDate().set(Calendar.HOUR_OF_DAY, hour);
 					alarm.getDate().set(Calendar.MINUTE, minute);
 					alarm.updateViews();
-					alarm.updateState();
+					alarm.applyState();
 				}
 			};
 			new TimePickerDialog(c, otsl, eventDate.get(Calendar.HOUR_OF_DAY), eventDate.get(Calendar.MINUTE), true).show();
