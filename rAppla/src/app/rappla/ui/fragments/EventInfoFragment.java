@@ -66,7 +66,7 @@ public class EventInfoFragment extends RapplaFragment
 		titleView.setText(event.getTitle());
 		
 		Calendar startTime		= event.getStartTime();
-		Calendar endTime		= event.getStartTime();
+		Calendar endTime		= event.getEndTime();
 		
 		TextView beginView		= (TextView) getActivity().findViewById(R.id.beginView);
 		beginView.setText(startTime.get(Calendar.HOUR_OF_DAY) + ":" + startTime.get(Calendar.MINUTE));
