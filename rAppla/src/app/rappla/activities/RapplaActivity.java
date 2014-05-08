@@ -26,7 +26,7 @@ import app.rappla.ui.fragments.WeekPagerFragment;
 
 public class RapplaActivity extends Activity
 {
-	private static final String ICAL_URL = "http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3";
+	public static final String ICAL_URL = "http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3";
 	private static final int TAB_CNT = 2;
 	private static final int WEEKPAGER_FRAGMENT_INDEX = 0;
 	private static final int DAY_FRAGMENT_INDEX = 1;
