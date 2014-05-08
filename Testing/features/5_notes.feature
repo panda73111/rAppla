@@ -10,7 +10,7 @@ Feature: Notes feature
 	
 	Then I press "Notizen"
 	
-	Then I enter "cucumbertest" into "noteTextEdit"
+	Then I enter text "cucumbertest" into field with id "editText1"
 	
 	Then I press "Speichern"
 	

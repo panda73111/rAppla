@@ -17,11 +17,13 @@
         android:layout_width="430dp"
         android:layout_height="430dp"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/stickynote" />
+        android:src="@drawable/stickynote" 
+        android:labelFor="@+id/editText1" />
 
     <EditText
         android:id="@+id/editText1"
-        android:contentDescription="noteTextEdit"
+        android:contentDescription="@string/notetextedit"
+        
         android:layout_width="250dp"
         android:layout_height="350dp"
         android:layout_centerHorizontal	="true"
