@@ -22,15 +22,13 @@ public class DaySlidePagerAdaper extends FragmentPagerAdapter
 	public Fragment getItem(int position)
 	{
 		position -= posOffset;
+
 		Log.d("day adapter", "getting position: " + position);
 		Fragment fr = new DayFragment();
+
 		Calendar date = Calendar.getInstance();
-		int dayOfWeek;
-		do
-		{
-			date.set(Calendar.DAY_OF_YEAR, date.get(Calendar.DAY_OF_YEAR) + position);
-			dayOfWeek = date.get(Calendar.DAY_OF_WEEK);
-		} while (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY);
+		date.set(Calendar.DAY_OF_YEAR, date.get(Calendar.DAY_OF_YEAR) + position);
+
 		((DayFragment) fr).setDate(date);
 		return fr;
 	}
