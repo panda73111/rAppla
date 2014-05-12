@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,7 @@ import app.rappla.DaySlidePagerAdaper;
 import app.rappla.R;
 import app.rappla.StaticContext;
 
-public class DayPagerFragment extends RapplaFragment implements RapplaPagerFragment
+public class DayPagerFragment extends RapplaFragment implements RapplaPagerFragment, OnPageChangeListener
 {
 	private ViewPager pager;
 	private FragmentPagerAdapter pageAdapter;
@@ -40,6 +41,7 @@ public class DayPagerFragment extends RapplaFragment implements RapplaPagerFragm
 		pagePosition = TODAY_PAGE;
 		pager.setAdapter(pageAdapter);
 		pager.setCurrentItem(pagePosition);
+		pager.setOnPageChangeListener(this);
 		return pager;
 	}
 	
@@ -68,7 +70,6 @@ public class DayPagerFragment extends RapplaFragment implements RapplaPagerFragm
 		}
 	}
 	
-
 	public void goToToday()
 	{
 		while(pagePosition > TODAY_PAGE)
@@ -83,4 +84,13 @@ public class DayPagerFragment extends RapplaFragment implements RapplaPagerFragm
 		}		
 	}
 
+	@Override
+	public void onPageScrollStateChanged(int arg0){}
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2){}
+	@Override
+	public void onPageSelected(int arg0)
+	{
+		pagePosition = arg0;
+	}
 }
