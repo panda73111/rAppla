@@ -30,16 +30,16 @@ class Customer {
 			double thisAmount = 0;
 			Rental each = (Rental) enum_rentals.nextElement();
 			// determine amounts for each line
-			thisAmount = each.getCharge();
+			thisAmount = each.getMovie().getCharge(this);
 
-			frequentRenterPoints += each.getFrequentRenterPoints();
+			frequentRenterPoints += each.getMovie().getFrequentRenterPoints(this);
 
 			// show figures for this rental
 			result += "\t" + each.getMovie().getTitle() + "\t" + "\t"
 					+ each.getDaysRented() + "\t"
-					+ String.valueOf(each.getCharge()) + "\n";
+					+ String.valueOf(each.getMovie().getCharge(this)) + "\n";
 
-			totalAmount += each.getCharge();
+			totalAmount += each.getMovie().getCharge(this);
 		}
 		// add footer lines
 		result += "Amount owed is " + String.valueOf(getTotalCharge()) + "\n";
@@ -53,7 +53,7 @@ class Customer {
 		Enumeration enum_rentals = rentals.elements();
 		while (enum_rentals.hasMoreElements()) {
 			Rental each = (Rental) enum_rentals.nextElement();
-			result += each.getCharge();
+			result += each.getMovie().getCharge(this);
 		}
 		return result;
 	}
@@ -63,13 +63,13 @@ class Customer {
 		Enumeration enum_rentals = rentals.elements();
 		while (enum_rentals.hasMoreElements()) {
 			Rental each = (Rental) enum_rentals.nextElement();
-			result += each.getFrequentRenterPoints();
+			result += each.getMovie().getFrequentRenterPoints(this);
 		}
 		return result;
 	}
 
 	private double amountFor(Rental aRental) {
-		return aRental.getCharge();
+		return aRental.getMovie().getCharge(this);
 	}
 
 }
