@@ -13,11 +13,13 @@ import app.rappla.DaySlidePagerAdaper;
 import app.rappla.R;
 import app.rappla.StaticContext;
 
-public class DayPagerFragment extends RapplaFragment
+public class DayPagerFragment extends RapplaFragment implements RapplaPagerFragment
 {
 	private ViewPager pager;
 	private FragmentPagerAdapter pageAdapter;
 	private int pagePosition;
+	private static final int PAGECOUNT		= Integer.MAX_VALUE ; 			
+	private static final int TODAY_PAGE  	= PAGECOUNT/2 ;
 
 	public DayPagerFragment()
 	{
@@ -32,10 +34,10 @@ public class DayPagerFragment extends RapplaFragment
 		// Infinite scrolling realized by setting the starting position
 		// to Integer.MAX_VALUE / 2 and therefore being able to scroll
 		// in both directions (almost endlessly)
-		int halfMax = Integer.MAX_VALUE / 2;
+
 		pager = (ViewPager) inflater.inflate(R.layout.pager_day, container, false);
-		pageAdapter = new DaySlidePagerAdaper(getChildFragmentManager(), halfMax);
-		pagePosition = halfMax;
+		pageAdapter = new DaySlidePagerAdaper(getChildFragmentManager(), TODAY_PAGE);
+		pagePosition = TODAY_PAGE;
 		pager.setAdapter(pageAdapter);
 		pager.setCurrentItem(pagePosition);
 		return pager;
@@ -65,4 +67,20 @@ public class DayPagerFragment extends RapplaFragment
 			throw new RuntimeException(e);
 		}
 	}
+	
+
+	public void goToToday()
+	{
+		while(pagePosition > TODAY_PAGE)
+		{
+			pagePosition--;
+			pager.setCurrentItem(pagePosition);
+		}
+		while(pagePosition < TODAY_PAGE)
+		{
+			pagePosition++;
+			pager.setCurrentItem(pagePosition);
+		}		
+	}
+
 }

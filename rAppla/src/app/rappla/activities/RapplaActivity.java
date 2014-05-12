@@ -19,9 +19,9 @@ import app.rappla.RapplaGestureListener;
 import app.rappla.RapplaTabListener;
 import app.rappla.calendar.RaplaCalendar;
 import app.rappla.inet.DownloadRaplaTask;
-import app.rappla.ui.fragments.DayFragment;
 import app.rappla.ui.fragments.DayPagerFragment;
 import app.rappla.ui.fragments.RapplaFragment;
+import app.rappla.ui.fragments.RapplaPagerFragment;
 import app.rappla.ui.fragments.WeekPagerFragment;
 
 public class RapplaActivity extends Activity
@@ -29,7 +29,7 @@ public class RapplaActivity extends Activity
 	public static final String ICAL_URL = "http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3";
 	private static final int TAB_CNT = 2;
 	private static final int WEEKPAGER_FRAGMENT_INDEX = 0;
-	private static final int DAY_FRAGMENT_INDEX = 1;
+	private static final int DAYPAGER_FRAGMENT_INDEX = 1;
 
 	private RapplaFragment[] fragments;
 	private Tab[] tabs;
@@ -52,7 +52,7 @@ public class RapplaActivity extends Activity
 		instance = this;
 		fragments = new RapplaFragment[TAB_CNT];
 		fragments[WEEKPAGER_FRAGMENT_INDEX] = new WeekPagerFragment();
-		fragments[DAY_FRAGMENT_INDEX] = new DayPagerFragment();
+		fragments[DAYPAGER_FRAGMENT_INDEX] = new DayPagerFragment();
 		tabs = new Tab[TAB_CNT];
 
 		gestDetector = new GestureDetector(this, new RapplaGestureListener());
@@ -87,9 +87,9 @@ public class RapplaActivity extends Activity
 		return (WeekPagerFragment) fragments[WEEKPAGER_FRAGMENT_INDEX];
 	}
 
-	public DayFragment getDayFragment()
+	public DayPagerFragment getDayPagerFragment()
 	{
-		return (DayFragment) fragments[DAY_FRAGMENT_INDEX];
+		return (DayPagerFragment) fragments[DAYPAGER_FRAGMENT_INDEX];
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class RapplaActivity extends Activity
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main, menu);
+		inflater.inflate(R.menu.actionbar_main, menu);
 		return true;
 	}
 
@@ -148,6 +148,8 @@ public class RapplaActivity extends Activity
 			return onSettingsButtonPressed(item);
 		case R.id.action_refresh:
 			return onRefreshButtonPressed(item);
+		case R.id.action_today:
+			return onTodayButtonPressed(item);
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -163,6 +165,25 @@ public class RapplaActivity extends Activity
 	{
 		Intent myIntent = new Intent(this, SettingsActivity.class);
 		startActivity(myIntent);
+		return true;
+	}
+
+	public boolean onTodayButtonPressed(MenuItem item)
+	{
+		RapplaPagerFragment fragment;
+		
+		switch (getActionBar().getSelectedNavigationIndex())
+		{
+		case WEEKPAGER_FRAGMENT_INDEX:
+			fragment = getWeekPagerFragment();
+			break;
+		case DAYPAGER_FRAGMENT_INDEX:
+			fragment = getDayPagerFragment();
+			break;
+		default:
+			return false;
+		}
+		fragment.goToToday();
 		return true;
 	}
 
@@ -185,8 +206,8 @@ public class RapplaActivity extends Activity
 		case WEEKPAGER_FRAGMENT_INDEX:
 			fr = getWeekPagerFragment();
 			break;
-		case DAY_FRAGMENT_INDEX:
-			fr = getDayFragment();
+		case DAYPAGER_FRAGMENT_INDEX:
+			fr = getDayPagerFragment();
 			break;
 		default:
 			return;

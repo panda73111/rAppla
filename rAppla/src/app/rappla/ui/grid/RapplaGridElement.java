@@ -4,7 +4,7 @@ import android.content.Context;
 import android.widget.Button;
 import app.rappla.R;
 import app.rappla.calendar.RaplaEvent;
-import app.rappla.ui.fragments.CalenderFragment;
+import app.rappla.ui.fragments.CalendarFragment;
 
 public class RapplaGridElement
 {
@@ -61,12 +61,12 @@ public class RapplaGridElement
 
 	private RapplaGridElementLayout createEventLayout(RaplaEvent raplaEvent, int column)
 	{
-		int eventLength = (int) (raplaEvent.getDurationInMinutes() / CalenderFragment.timeInterval);
-		int eventOffset = (int) (raplaEvent.getTimeDifferenceInMinutes(CalenderFragment.getEarliestStart(raplaEvent.getDate())) / CalenderFragment.timeInterval);
+		int eventLength = (int) (raplaEvent.getDurationInMinutes() / CalendarFragment.timeInterval);
+		int eventOffset = (int) (raplaEvent.getTimeDifferenceInMinutes(CalendarFragment.getEarliestStart(raplaEvent.getDate())) / CalendarFragment.timeInterval);
 
 		// Sorgt dafür, dass kein Event länger als der Tag werden kann
 		// TODO: Das geht noch schöner
-		eventLength = (int) Math.min(CalenderFragment.getDayDuration() / CalenderFragment.timeInterval - eventOffset, eventLength);
+		eventLength = (int) Math.min(CalendarFragment.getDayDuration() / CalendarFragment.timeInterval - eventOffset, eventLength);
 
 		return new RapplaGridElementLayout(column, eventOffset, eventLength);
 	}

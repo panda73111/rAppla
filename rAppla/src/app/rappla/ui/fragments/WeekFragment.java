@@ -14,7 +14,7 @@ import app.rappla.calendar.RaplaEvent;
 import app.rappla.ui.grid.RapplaGrid;
 import app.rappla.ui.grid.RapplaGridElement;
 
-public class WeekFragment extends CalenderFragment
+public class WeekFragment extends CalendarFragment
 {
 	private Calendar date;
 

@@ -9,7 +9,7 @@ import app.rappla.*;
 import app.rappla.calendar.*;
 import app.rappla.ui.grid.*;
 
-public class DayFragment extends CalenderFragment
+public class DayFragment extends CalendarFragment
 {
 	private Calendar date;
 
