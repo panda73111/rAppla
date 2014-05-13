@@ -35,6 +35,12 @@ public class EventActivity extends Activity
 		super.onCreate(savedInstanceState);
 		Log.d("EventActivity", "onCreate");
 
+		
+		if(instance!=null)
+		{
+			instance.finish();
+			instance = null;
+		}
 		instance = this;
 		Bundle extras = getIntent().getExtras();
 		
@@ -54,7 +60,11 @@ public class EventActivity extends Activity
 			getActionBar().setSelectedNavigationItem(1);
 		}
 	}
-	
+	public void onDestroy()
+	{
+		super.onDestroy();
+		instance = null;
+	}
 	
 	
 	private void configureActionBar(Bundle savedInstanceState)

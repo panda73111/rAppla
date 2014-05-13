@@ -43,7 +43,7 @@ public class RapplaActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-
+		
 		if (savedInstanceState != null)
 		{
 			RapplaActivity.isTest = savedInstanceState.getBoolean("isTest", false);
@@ -100,10 +100,6 @@ public class RapplaActivity extends Activity
 		outState.putInt("selectedTab", i);
 	}
 
-	public void onStart()
-	{
-		super.onStart();
-	}
 
 	private void configureActionBar(Bundle savedInstanceState)
 	{

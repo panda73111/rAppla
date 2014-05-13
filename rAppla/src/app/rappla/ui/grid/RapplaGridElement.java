@@ -39,7 +39,7 @@ public class RapplaGridElement
 		
 		button.setBackgroundResource(eventImage);
 		
-		String eventName = getEventName(raplaEvent);
+		String eventName = raplaEvent.getEventNameWithoutProfessor();
 		
 		button.setText(eventName);
 		button.setPadding(10, 20, 10, 10);
@@ -48,16 +48,6 @@ public class RapplaGridElement
 		return button;
 	}
 
-	private String getEventName(RaplaEvent raplaEvent)
-	{
-		String 	eventName 					= raplaEvent.getTitle();
-		int 	separatorIndex				= eventName.indexOf("[");
-		
-		if(separatorIndex > 0)
-			return eventName.substring(0, separatorIndex);
-		else
-			return eventName;
-	}
 
 	private RapplaGridElementLayout createEventLayout(RaplaEvent raplaEvent, int column)
 	{
