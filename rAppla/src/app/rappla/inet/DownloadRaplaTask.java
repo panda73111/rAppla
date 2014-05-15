@@ -13,22 +13,25 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import app.rappla.OnTaskCompleted;
 import app.rappla.activities.RapplaActivity;
 import app.rappla.calendar.ParseRaplaTask;
+import app.rappla.calendar.RaplaCalendar;
 
 public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 {
 	private ProgressDialog dlg;
-	private Activity activity;
+	private Context ctx;
+	private OnTaskCompleted<RaplaCalendar> callbackListener;
 
-	public DownloadRaplaTask(Context context)
+	public DownloadRaplaTask(Context context, OnTaskCompleted<RaplaCalendar> listener)
 	{
-		activity = (Activity) context;
+		ctx = context;
+		callbackListener = listener;
 		dlg = new ProgressDialog(context);
 		dlg.setTitle("Aktuallisiere");
 		dlg.setMessage("Bitte warten...");
@@ -53,8 +56,6 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 		dlg.setProgress(0);
 		if (!RapplaActivity.isTest)
 			dlg.show();
-
-		activity.setProgressBarIndeterminateVisibility(true);
 	}
 
 	@Override
@@ -112,6 +113,7 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 	protected void onProgressUpdate(Double... values)
 	{
 		super.onProgressUpdate(values);
+		
 		dlg.setProgress(values[0].intValue());
 	}
 
@@ -123,7 +125,7 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 		if (!RapplaActivity.isTest)
 			dlg.dismiss();
 
-		activity.setProgressBarIndeterminateVisibility(false);
+		callbackListener.onTaskCompleted(null);
 	}
 
 	@Override
@@ -134,9 +136,12 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 		if (!RapplaActivity.isTest)
 			dlg.dismiss();
 
-		if (result != null)
-			new ParseRaplaTask(activity).execute(result);
-		else
-			activity.setProgressBarIndeterminateVisibility(false);
+		if (result == null)
+		{
+			callbackListener.onTaskCompleted(null);
+			return;
+		}
+
+		new ParseRaplaTask(ctx, callbackListener).execute(result);
 	}
 }
