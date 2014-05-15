@@ -26,6 +26,7 @@ public class WeekSlidePagerAdaper extends FragmentPagerAdapter
 		Fragment fr = new WeekFragment();
 		Calendar date = Calendar.getInstance();
 		date.set(Calendar.WEEK_OF_YEAR, date.get(Calendar.WEEK_OF_YEAR) + position);
+		//TODO: Year wrap
 		((WeekFragment) fr).setDate(date);
 		return fr;
 	}

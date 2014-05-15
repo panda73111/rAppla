@@ -1,59 +1,78 @@
 package app.rappla.ui.grid;
 
 import android.content.Context;
+import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import app.rappla.R;
 import app.rappla.calendar.RaplaEvent;
 import app.rappla.ui.fragments.CalenderFragment;
 
-public class RapplaGridElement
+public class RapplaGridElement extends ViewGroup
 {
-	protected static final int eventImage = R.drawable.event;
-	
-	
-	private Button eventButton;
 	private RapplaGridElementLayout eventLayout;
 
+	private ImageView bgView;
+	private TextView textView;
+
+	public RapplaGridElement(Context context, AttributeSet attrs)
+	{
+		super(context, attrs);
+	}
+	
 	public RapplaGridElement(Context context, RaplaEvent raplaEvent, RapplaGridElementLayout layout)
 	{
-		eventButton = createEventButton(context, raplaEvent);
+		super(context);
+		init(context, raplaEvent);
 		eventLayout = layout;
 	}
 
 	public RapplaGridElement(Context context, RaplaEvent raplaEvent, int column, int offset, int length)
 	{
-		eventButton = createEventButton(context, raplaEvent);
+		super(context);
+		init(context, raplaEvent);
 		eventLayout = new RapplaGridElementLayout(column, offset, length);
 	}
 
 	public RapplaGridElement(Context context, RaplaEvent raplaEvent, int column)
 	{
-		eventButton = createEventButton(context, raplaEvent);
+		super(context);
+		init(context, raplaEvent);
 		eventLayout = createEventLayout(raplaEvent, column);
 	}
 
-	private Button createEventButton(Context context, RaplaEvent raplaEvent)
+	private void init(Context context, RaplaEvent raplaEvent)
+	{
+		bgView = new ImageView(context);
+		textView = new TextView(context);
+
+		bgView.setImageResource(R.drawable.event);
+		textView.setText(getEventName(raplaEvent));
+
+		addView(bgView);
+		addView(textView);
+	}
+
+	private void addEventButton(Context context, RaplaEvent raplaEvent)
 	{
 		Button button = new Button(context);
 		button.setOnClickListener(new EventClickListener(raplaEvent.getUniqueEventID(), context));
-		
-		button.setBackgroundResource(eventImage);
-		
+
 		String eventName = getEventName(raplaEvent);
-		
+
 		button.setText(eventName);
 		button.setPadding(10, 20, 10, 10);
 		button.setTextSize(12);
-		
-		return button;
 	}
 
 	private String getEventName(RaplaEvent raplaEvent)
 	{
-		String 	eventName 					= raplaEvent.getTitle();
-		int 	separatorIndex				= eventName.indexOf("[");
-		
-		if(separatorIndex > 0)
+		String eventName = raplaEvent.getTitle();
+		int separatorIndex = eventName.indexOf("[");
+
+		if (separatorIndex > 0)
 			return eventName.substring(0, separatorIndex);
 		else
 			return eventName;
@@ -71,13 +90,21 @@ public class RapplaGridElement
 		return new RapplaGridElementLayout(column, eventOffset, eventLength);
 	}
 
-	public Button getEventButton()
-	{
-		return eventButton;
-	}
-
 	public RapplaGridElementLayout getEventLayout()
 	{
 		return eventLayout;
+	}
+
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh)
+	{
+		super.onSizeChanged(w, h, oldw, oldh);
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b)
+	{
+		bgView.layout(l, t, r, b);
+		textView.layout(l, t, r, b);
 	}
 }
