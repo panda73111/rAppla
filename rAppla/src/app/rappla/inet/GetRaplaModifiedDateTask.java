@@ -1,6 +1,9 @@
 package app.rappla.inet;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import org.apache.http.Header;
 import org.apache.http.HttpException;
@@ -10,22 +13,21 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.joda.time.DateTime;
 
 import android.os.AsyncTask;
 import app.rappla.OnTaskCompleted;
 
-public class CheckForRaplaChangesTask extends AsyncTask<String, Double, Boolean>
+public class GetRaplaModifiedDateTask extends AsyncTask<String, Double, Date>
 {
-	private OnTaskCompleted<Boolean> callbackListener;
+	private OnTaskCompleted<Date> callbackListener;
 
-	public CheckForRaplaChangesTask(OnTaskCompleted<Boolean> listener)
+	public GetRaplaModifiedDateTask(OnTaskCompleted<Date> listener)
 	{
 		callbackListener = listener;
 	}
 
 	@Override
-	protected Boolean doInBackground(String... uri)
+	protected Date doInBackground(String... uri)
 	{
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpResponse response;
@@ -39,8 +41,11 @@ public class CheckForRaplaChangesTask extends AsyncTask<String, Double, Boolean>
 				if (header.length == 0)
 					throw new HttpException("Last-Modified header not found");
 
-				DateTime modifiedTime = DateTime.parse(header[0].toString());
-				return modifiedTime.isAfterNow();
+				SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+				Date modifiedTime = format.parse(header[0].getValue());
+				// Log.d("CheckForRaplaChangesTask", "modifiedTime: " +
+				// modifiedTime);
+				return modifiedTime;
 			} else
 			{
 				// Closes the connection
@@ -49,19 +54,21 @@ public class CheckForRaplaChangesTask extends AsyncTask<String, Double, Boolean>
 			}
 		} catch (Exception e)
 		{
+			// Log.d("CheckForRaplaChangesTask", "got error: " +
+			// e.getMessage());
 		}
 		return null;
 	}
 
 	@Override
-	protected void onCancelled(Boolean result)
+	protected void onCancelled(Date result)
 	{
 		super.onCancelled(result);
 		callbackListener.onTaskCompleted(result);
 	}
 
 	@Override
-	protected void onPostExecute(Boolean result)
+	protected void onPostExecute(Date result)
 	{
 		super.onPostExecute(result);
 		callbackListener.onTaskCompleted(result);
