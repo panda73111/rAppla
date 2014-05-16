@@ -1,28 +1,31 @@
 package app.rappla.activities;
 
+import java.util.Date;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.Window;
-import android.widget.Toast;
+import app.rappla.OnTaskCompleted;
 import app.rappla.R;
-import app.rappla.RapplaBackgroundUpdateService;
 import app.rappla.RapplaGestureListener;
 import app.rappla.RapplaTabListener;
 import app.rappla.calendar.RaplaCalendar;
 import app.rappla.inet.DownloadRaplaTask;
+import app.rappla.inet.GetRaplaModifiedDateTask;
 import app.rappla.ui.fragments.DayPagerFragment;
 import app.rappla.ui.fragments.RapplaFragment;
 import app.rappla.ui.fragments.RapplaPagerFragment;
@@ -42,12 +45,33 @@ public class RapplaActivity extends Activity
 	private GestureDetector gestDetector;
 	private static RapplaActivity instance;
 	public static boolean isTest = false;
+	private Date calendarDownloadDate;
+
+	private OnTaskCompleted<RaplaCalendar> raplaDownloadedHandler = new OnTaskCompleted<RaplaCalendar>()
+	{
+		@Override
+		public void onTaskCompleted(RaplaCalendar result)
+		{
+			if (result == null)
+				// something went wrong
+				return;
+
+			calendarDownloadDate = new Date();
+
+			result.save();
+			setCalendar(result);
+			// hide spinning icon in the action bar
+			setProgressBarIndeterminateVisibility(false);
+		}
+	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
+
+		loadSettings();
+
 		if (savedInstanceState != null)
 		{
 			RapplaActivity.isTest = savedInstanceState.getBoolean("isTest", false);
@@ -62,26 +86,31 @@ public class RapplaActivity extends Activity
 		gestDetector = new GestureDetector(this, new RapplaGestureListener());
 		calendar = RaplaCalendar.load();
 
+		// enable spinning icon in the action bar
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
 		if (calendar == null)
 		{
 			// calendar is not saved locally, download it
 			calendar = new RaplaCalendar();
-			new DownloadRaplaTask(this).execute(ICAL_URL);
+			// show spinning icon in the action bar
+			setProgressBarIndeterminateVisibility(true);
+			// start background download
+			new DownloadRaplaTask(this, raplaDownloadedHandler).execute(ICAL_URL);
 		}
-
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setProgressBarIndeterminateVisibility(true);
 
 		configureActionBar(savedInstanceState);
 		setContentView(R.layout.layout_rappla);
-		
-		Intent intent = new Intent(this, RapplaBackgroundUpdateService.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 234324243, intent, 0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()
-                + (5 * 1000), pendingIntent);
-        Toast.makeText(this, "Alarm set in " + 5 + " seconds",
-                Toast.LENGTH_LONG).show();
+
+		checkForRaplaChanges();
+	}
+
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+
+		saveSettings();
 	}
 
 	public int getFragmentCount()
@@ -111,7 +140,6 @@ public class RapplaActivity extends Activity
 		int i = getActionBar().getSelectedNavigationIndex();
 		outState.putInt("selectedTab", i);
 	}
-
 
 	private void configureActionBar(Bundle savedInstanceState)
 	{
@@ -165,7 +193,10 @@ public class RapplaActivity extends Activity
 
 	public boolean onRefreshButtonPressed(MenuItem item)
 	{
-		new DownloadRaplaTask(this).execute(ICAL_URL);
+		// show spinning icon in the action bar
+		setProgressBarIndeterminateVisibility(true);
+		// start background download
+		new DownloadRaplaTask(this, raplaDownloadedHandler).execute(ICAL_URL);
 		return true;
 	}
 
@@ -179,7 +210,7 @@ public class RapplaActivity extends Activity
 	public boolean onTodayButtonPressed(MenuItem item)
 	{
 		RapplaPagerFragment fragment;
-		
+
 		switch (getActionBar().getSelectedNavigationIndex())
 		{
 		case WEEKPAGER_FRAGMENT_INDEX:
@@ -225,6 +256,26 @@ public class RapplaActivity extends Activity
 		fragTransaction.commit();
 	}
 
+	private void checkForRaplaChanges()
+	{
+		final Context context = this;
+		new GetRaplaModifiedDateTask(new OnTaskCompleted<Date>()
+		{
+			@Override
+			public void onTaskCompleted(Date result)
+			{
+				if (result != null && result.after(calendarDownloadDate))
+				{
+					// show spinning icon in the action bar
+					setProgressBarIndeterminateVisibility(true);
+					// start background download
+					new DownloadRaplaTask(context, raplaDownloadedHandler).execute(ICAL_URL);
+				}
+				// TODO: what to do when checking failed?
+			}
+		}).execute(ICAL_URL);
+	}
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event)
 	{
@@ -234,5 +285,19 @@ public class RapplaActivity extends Activity
 	public static RapplaActivity getInstance()
 	{
 		return instance;
+	}
+
+	private void loadSettings()
+	{
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		calendarDownloadDate = new Date(preferences.getLong("calendarDownloadDate", new Date().getTime()));
+	}
+
+	private void saveSettings()
+	{
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putLong("calendarDownloadDate", calendarDownloadDate.getTime());
+		editor.commit();
 	}
 }
