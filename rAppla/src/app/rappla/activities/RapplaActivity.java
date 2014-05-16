@@ -3,9 +3,11 @@ package app.rappla.activities;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.GestureDetector;
@@ -14,7 +16,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.Window;
+import android.widget.Toast;
 import app.rappla.R;
+import app.rappla.RapplaBackgroundUpdateService;
 import app.rappla.RapplaGestureListener;
 import app.rappla.RapplaTabListener;
 import app.rappla.calendar.RaplaCalendar;
@@ -70,6 +74,14 @@ public class RapplaActivity extends Activity
 
 		configureActionBar(savedInstanceState);
 		setContentView(R.layout.layout_rappla);
+		
+		Intent intent = new Intent(this, RapplaBackgroundUpdateService.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 234324243, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()
+                + (5 * 1000), pendingIntent);
+        Toast.makeText(this, "Alarm set in " + 5 + " seconds",
+                Toast.LENGTH_LONG).show();
 	}
 
 	public int getFragmentCount()

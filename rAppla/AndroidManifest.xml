@@ -45,5 +45,7 @@
     	    >
     	    
     	</activity>
+        <receiver android:name=".RapplaBackgroundUpdateService" >
+        </receiver>
     </application>
 </manifest>
