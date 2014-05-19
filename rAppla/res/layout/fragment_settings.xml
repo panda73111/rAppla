@@ -3,16 +3,13 @@
     android:key="rappla_preferences" >
 
     <CheckBoxPreference
-        android:key="gmailSync"
-        android:title="@string/gmailSync" />
-
-    <CheckBoxPreference
-        android:key="pushNotifications"
-        android:title="@string/pushNotifications" />
-
-    <CheckBoxPreference
         android:key="offlineSync"
-        android:title="@string/offlineSync" />
+        android:title="@string/pushNotifications" />    
+    
+    <CheckBoxPreference
+        android:dependency="offlineSync"
+        android:key="onlyWifiSync"
+        android:title="@string/wifiSync" />
 
     <ListPreference
         android:dependency="offlineSync"

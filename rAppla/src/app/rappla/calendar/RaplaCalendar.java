@@ -15,7 +15,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import app.rappla.StaticContext;
+import app.rappla.activities.RapplaActivity;
 
 @SuppressWarnings("serial")
 public class RaplaCalendar implements Serializable
@@ -131,7 +134,7 @@ public class RaplaCalendar implements Serializable
 		}
 	}
 
-	public void save()
+	public void save(Context context)
 	{
 		android.util.Log.d("RaplaCalendar", "saving calendar");
 		try
@@ -140,9 +143,24 @@ public class RaplaCalendar implements Serializable
 			ObjectOutputStream objOutStr = new ObjectOutputStream(outStr);
 			objOutStr.writeObject(this);
 			objOutStr.close();
+
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.putInt(RapplaActivity.lastCalendarHashString, hashCode());
+			editor.commit();
 		} catch (IOException ex)
 		{
 			android.util.Log.d("RaplaCalendar", "error saving calendar: " + ex);
 		}
+	}
+	public int hashCode()
+	{
+		Set<Integer> iset = eventCal.keySet();
+		int hash = 0;
+		for(Integer i : iset)
+		{
+			hash+=i;
+		}
+		return hash;
 	}
 }

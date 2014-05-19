@@ -18,7 +18,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import app.rappla.OnTaskCompleted;
-import app.rappla.activities.RapplaActivity;
 import app.rappla.calendar.ParseRaplaTask;
 import app.rappla.calendar.RaplaCalendar;
 
@@ -27,13 +26,19 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 	private ProgressDialog dlg;
 	private Context ctx;
 	private OnTaskCompleted<RaplaCalendar> callbackListener;
-
+	private boolean showDialog = true;
+	
+	public DownloadRaplaTask(Context context, OnTaskCompleted<RaplaCalendar> listener, boolean showDialog)
+	{
+		this(context, listener);
+		this.showDialog = showDialog;
+	}
 	public DownloadRaplaTask(Context context, OnTaskCompleted<RaplaCalendar> listener)
 	{
 		ctx = context;
 		callbackListener = listener;
 		dlg = new ProgressDialog(context);
-		dlg.setTitle("Aktuallisiere");
+		dlg.setTitle("Aktualisiere");
 		dlg.setMessage("Bitte warten...");
 		dlg.setCancelable(true);
 		dlg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -54,7 +59,7 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 		super.onPreExecute();
 
 		dlg.setProgress(0);
-		if (!RapplaActivity.isTest)
+		if (showDialog)
 			dlg.show();
 	}
 
@@ -122,10 +127,11 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 	{
 		super.onCancelled();
 
-		if (!RapplaActivity.isTest)
+		if (showDialog)
 			dlg.dismiss();
 
-		callbackListener.onTaskCompleted(null);
+		if(callbackListener != null)
+			callbackListener.onTaskCompleted(null);
 	}
 
 	@Override
@@ -133,15 +139,16 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 	{
 		super.onPostExecute(result);
 
-		if (!RapplaActivity.isTest)
+		if (showDialog)
 			dlg.dismiss();
 
 		if (result == null)
 		{
-			callbackListener.onTaskCompleted(null);
+			if(callbackListener != null)
+				callbackListener.onTaskCompleted(null);
 			return;
 		}
 
-		new ParseRaplaTask(ctx, callbackListener).execute(result);
+		new ParseRaplaTask(ctx, callbackListener, showDialog).execute(result);
 	}
 }

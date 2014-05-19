@@ -9,13 +9,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import app.rappla.OnTaskCompleted;
-import app.rappla.activities.RapplaActivity;
 
 public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalendar>
 {
 	private ProgressDialog dlg;
 	private OnTaskCompleted<RaplaCalendar> callbackListener;
-
+	private boolean showDialog = true;
+	
+	public ParseRaplaTask(Context context, OnTaskCompleted<RaplaCalendar> listener, boolean showDialog)
+	{
+		this(context, listener);
+		this.showDialog = showDialog;
+	}
 	public ParseRaplaTask(Context context, OnTaskCompleted<RaplaCalendar> listener)
 	{
 		callbackListener = listener;
@@ -39,7 +44,7 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 	{
 		super.onPreExecute();
 
-		if (!RapplaActivity.isTest)
+		if (showDialog)
 			dlg.show();
 	}
 
@@ -65,20 +70,22 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 	{
 		super.onCancelled();
 
-		if (!RapplaActivity.isTest)
+		if (showDialog)
 			dlg.dismiss();
 
-		callbackListener.onTaskCompleted(null);
+		if(callbackListener != null)
+			callbackListener.onTaskCompleted(null);
 	}
 
 	@Override
 	protected void onPostExecute(RaplaCalendar result)
 	{
 		super.onPostExecute(result);
-
-		if (!RapplaActivity.isTest)
+	
+		if (showDialog)
 			dlg.dismiss();
 
-		callbackListener.onTaskCompleted(result);
+		if(callbackListener != null)
+			callbackListener.onTaskCompleted(result);
 	}
 }

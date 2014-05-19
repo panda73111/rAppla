@@ -1,13 +1,13 @@
 package app.rappla.activities;
 
-import java.util.Date;
-
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,11 +21,11 @@ import android.view.MotionEvent;
 import android.view.Window;
 import app.rappla.OnTaskCompleted;
 import app.rappla.R;
+import app.rappla.RapplaBackgroundUpdateService;
 import app.rappla.RapplaGestureListener;
 import app.rappla.RapplaTabListener;
 import app.rappla.calendar.RaplaCalendar;
 import app.rappla.inet.DownloadRaplaTask;
-import app.rappla.inet.GetRaplaModifiedDateTask;
 import app.rappla.ui.fragments.DayPagerFragment;
 import app.rappla.ui.fragments.RapplaFragment;
 import app.rappla.ui.fragments.RapplaPagerFragment;
@@ -33,11 +33,17 @@ import app.rappla.ui.fragments.WeekPagerFragment;
 
 public class RapplaActivity extends Activity
 {
+	public static final String lastCalendarHashString = "lastCalendarHash";
+	
 	public static final String ICAL_URL = "http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3";
 	private static final int TAB_CNT = 2;
 	private static final int WEEKPAGER_FRAGMENT_INDEX = 0;
 	private static final int DAYPAGER_FRAGMENT_INDEX = 1;
+	private static final String selectedTabKey = "selectedTab";
 
+	private static final int SETTINGS_REQ_CODE = 3456;
+	private static final int NOTIFIER_REQ_CODE = 1234;
+	
 	private RapplaFragment[] fragments;
 	private Tab[] tabs;
 
@@ -45,7 +51,6 @@ public class RapplaActivity extends Activity
 	private GestureDetector gestDetector;
 	private static RapplaActivity instance;
 	public static boolean isTest = false;
-	private Date calendarDownloadDate;
 
 	private OnTaskCompleted<RaplaCalendar> raplaDownloadedHandler = new OnTaskCompleted<RaplaCalendar>()
 	{
@@ -56,9 +61,13 @@ public class RapplaActivity extends Activity
 				// something went wrong
 				return;
 
-			calendarDownloadDate = new Date();
-
-			result.save();
+			if(getCalender()!=null)
+			{
+				if(result.hashCode()==getCalender().hashCode())
+					return;
+			}
+			
+			result.save(RapplaActivity.getInstance());
 			setCalendar(result);
 			// hide spinning icon in the action bar
 			setProgressBarIndeterminateVisibility(false);
@@ -69,8 +78,6 @@ public class RapplaActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-
-		loadSettings();
 
 		if (savedInstanceState != null)
 		{
@@ -103,6 +110,7 @@ public class RapplaActivity extends Activity
 		setContentView(R.layout.layout_rappla);
 
 		checkForRaplaChanges();
+		configureNotifier();
 	}
 
 	@Override
@@ -138,7 +146,7 @@ public class RapplaActivity extends Activity
 	{
 		super.onSaveInstanceState(outState);
 		int i = getActionBar().getSelectedNavigationIndex();
-		outState.putInt("selectedTab", i);
+		outState.putInt(selectedTabKey, i);
 	}
 
 	private void configureActionBar(Bundle savedInstanceState)
@@ -163,7 +171,7 @@ public class RapplaActivity extends Activity
 
 		int selectedIndex = 0;
 		if (savedInstanceState != null)
-			selectedIndex = savedInstanceState.getInt("selectedTab");
+			selectedIndex = savedInstanceState.getInt(selectedTabKey);
 		actionBar.selectTab(tabs[selectedIndex]);
 	}
 
@@ -203,7 +211,7 @@ public class RapplaActivity extends Activity
 	public boolean onSettingsButtonPressed(MenuItem item)
 	{
 		Intent myIntent = new Intent(this, SettingsActivity.class);
-		startActivity(myIntent);
+		startActivityForResult(myIntent,SETTINGS_REQ_CODE);
 		return true;
 	}
 
@@ -224,6 +232,15 @@ public class RapplaActivity extends Activity
 		}
 		fragment.goToToday();
 		return true;
+	}
+
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode == SETTINGS_REQ_CODE)
+		{
+			configureNotifier();
+		}
 	}
 
 	public RaplaCalendar getCalender()
@@ -259,21 +276,7 @@ public class RapplaActivity extends Activity
 	private void checkForRaplaChanges()
 	{
 		final Context context = this;
-		new GetRaplaModifiedDateTask(new OnTaskCompleted<Date>()
-		{
-			@Override
-			public void onTaskCompleted(Date result)
-			{
-				if (result != null && result.after(calendarDownloadDate))
-				{
-					// show spinning icon in the action bar
-					setProgressBarIndeterminateVisibility(true);
-					// start background download
-					new DownloadRaplaTask(context, raplaDownloadedHandler).execute(ICAL_URL);
-				}
-				// TODO: what to do when checking failed?
-			}
-		}).execute(ICAL_URL);
+		new DownloadRaplaTask(context, raplaDownloadedHandler).execute(ICAL_URL);
 	}
 
 	@Override
@@ -287,17 +290,33 @@ public class RapplaActivity extends Activity
 		return instance;
 	}
 
-	private void loadSettings()
-	{
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		calendarDownloadDate = new Date(preferences.getLong("calendarDownloadDate", new Date().getTime()));
-	}
-
 	private void saveSettings()
 	{
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.putLong("calendarDownloadDate", calendarDownloadDate.getTime());
+		editor.putInt(lastCalendarHashString, getCalender().hashCode());
 		editor.commit();
+	}
+
+	private void configureNotifier()
+	{
+		Intent intent = new Intent(this, RapplaBackgroundUpdateService.class);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), NOTIFIER_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+		
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		
+		boolean doNotify = preferences.getBoolean("offlineSync", false);
+		long interval = Long.valueOf(preferences.getString("updateInterval", "86400"));
+		
+		if(!doNotify)
+		{
+			alarmManager.cancel(pendingIntent);
+		}
+		else
+		{
+			alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, interval, interval, pendingIntent);
+		}
 	}
 }
