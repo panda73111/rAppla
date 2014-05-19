@@ -1,8 +1,8 @@
 package Chapter_1;
 
 class Rental {
-	private Movie movie;
-	private int daysRented;
+	Movie movie;
+	int daysRented;
 
 	public Rental(Movie newmovie, int newdaysRented) {
 		movie = newmovie;
@@ -16,8 +16,6 @@ class Rental {
 	public Movie getMovie() {
 		return movie;
 	}
-
-	int getFrequentRenterPoints() {
-		return movie.getFrequentRenterPoints(daysRented);
-	}
+	
+	
 }
