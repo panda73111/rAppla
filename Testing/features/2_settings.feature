@@ -9,9 +9,11 @@ Feature: Settings feature
 	 
 	Then I press "Einstellungen"
 	 
-	Then I see "Mit GMail synchronisieren"
+	Then I see "Push-Benachrichtigungen"
+	Then I see "Nur im Wifi aktualisieren"
+	Then I see "Aktualisierungsintervall"
 	 
-	Then I press "Rapla offline Bereitstellen"
+	Then I press "Push-Benachrichtigungen"
 	 
 	Then I press "Aktualisierungsintervall"
 	 
