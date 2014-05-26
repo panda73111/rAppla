@@ -12,6 +12,7 @@
         android:title="@string/wifiSync" />
 
     <ListPreference
+        android:id="@+id/interval"
         android:dependency="offlineSync"
         android:dialogTitle="@string/updateInterval"
         android:entries="@array/UpdateIntervals_Entries"

@@ -51,7 +51,7 @@ public class RapplaWidgetProvider extends AppWidgetProvider
 		}
 		catch(NullPointerException e)
 		{
-			Log.e("RaplaWidget", "Nulpointerexception");
+			Log.e("RaplaWidget", "Nullpointerexception");
 			e.printStackTrace();
 			return; // Something somewhere went terribly wrong
 		}

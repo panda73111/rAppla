@@ -43,7 +43,7 @@
     <!-- Preferences -->
     <string name="wifiSync">Nur im Wifi aktualisieren</string>
     <string name="gmailSync">Mit GMail synchronisieren</string>
-    <string name="pushNotifications">Push Benachrichtigungen\nbei Planänderung</string>
+    <string name="pushNotifications">Push-Benachrichtigungen</string>
     <string name="updateInterval">Aktualisierungsintervall</string>
     <string name="updateInterval_summary">Der Rapla wird alle _TIME_ synchronisiert.</string>
     <string name="offlineSync">Rapla offline Bereitstellen</string>
