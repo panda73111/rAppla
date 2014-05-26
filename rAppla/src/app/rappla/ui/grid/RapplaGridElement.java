@@ -9,6 +9,8 @@ import app.rappla.ui.fragments.CalendarFragment;
 public class RapplaGridElement
 {
 	protected static final int eventImage = R.drawable.event;
+	protected static final int[] eventImages = {R.drawable.event, R.drawable.event_blue, R.drawable.event_green};
+	
 	
 	
 	private Button eventButton;
@@ -37,7 +39,7 @@ public class RapplaGridElement
 		Button button = new Button(context);
 		button.setOnClickListener(new EventClickListener(raplaEvent.getUniqueEventID(), context));
 		
-		button.setBackgroundResource(eventImage);
+		button.setBackgroundResource(eventImages[(int) (Math.random()*eventImages.length)]);
 		
 		String eventName = raplaEvent.getEventNameWithoutProfessor();
 		
