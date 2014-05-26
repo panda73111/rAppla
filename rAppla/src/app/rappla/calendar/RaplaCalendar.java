@@ -109,6 +109,10 @@ public class RaplaCalendar implements Serializable
 				}
 			}
 			date.set(Calendar.DAY_OF_YEAR, date.get(Calendar.DAY_OF_YEAR)+1);
+			date.set(Calendar.HOUR_OF_DAY, 0);
+			date.set(Calendar.MINUTE, 0);
+			date.set(Calendar.SECOND, 0);
+			
 		}
 		
 		return result;

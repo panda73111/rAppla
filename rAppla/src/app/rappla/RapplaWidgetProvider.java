@@ -39,9 +39,11 @@ public class RapplaWidgetProvider extends AppWidgetProvider
 			
 			Calendar startTime 	= nextEvent.getStartTime();
 			Calendar endTime 	= nextEvent.getEndTime();
+
+			// if this ever makes problems, its because of the "%12" on month
 			
 			text = nextEvent.getTitle() + '\n' + 
-					startTime.get(Calendar.DAY_OF_MONTH) + '/' + startTime.get(Calendar.MONTH)+1 + '/' + startTime.get(Calendar.YEAR) + '\n' +
+					startTime.get(Calendar.DAY_OF_MONTH) + '/' + (startTime.get(Calendar.MONTH)%12+1) + '/' + startTime.get(Calendar.YEAR) + '\n' +
 					
 					startTime.get(Calendar.HOUR_OF_DAY) + ':' + startTime.get(Calendar.MINUTE) + 
 					'-' + 
