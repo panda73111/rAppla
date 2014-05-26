@@ -86,6 +86,33 @@ public class RaplaCalendar implements Serializable
 		// the month in the Calendar class is zero based
 		return eventCal.get(getDateHash(day, month - 1, year));
 	}
+	public RaplaEvent getNextEvent()
+	{
+		return getNextEvent(Calendar.getInstance());
+	}
+	public RaplaEvent getNextEvent(Calendar date)
+	{	
+		RaplaEvent result = null;
+		
+		while(result==null)
+		{
+			Set<RaplaEvent> eventsToday = getEventsAtDate(date);
+			Iterator<RaplaEvent> dayIterator = eventsToday.iterator();
+
+			while(dayIterator.hasNext())
+			{
+				RaplaEvent event = dayIterator.next();
+				Calendar eventStart = event.getStartTime();
+				if(eventStart.after(date) && (result == null || eventStart.before(result)))
+				{
+					result = event;
+				}
+			}
+			date.set(Calendar.DAY_OF_YEAR, date.get(Calendar.DAY_OF_YEAR)+1);
+		}
+		
+		return result;
+	}
 
 	private void addEvent(RaplaEvent event)
 	{
