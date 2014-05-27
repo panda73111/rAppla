@@ -1,18 +1,17 @@
 package app.rappla.ui.grid;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.widget.Button;
 import app.rappla.R;
 import app.rappla.calendar.RaplaEvent;
-import app.rappla.ui.fragments.CalendarFragment;
 
 public class RapplaGridElement
 {
 	protected static final int eventImage = R.drawable.event;
 	protected static final int[] eventImages = {R.drawable.event, R.drawable.event_blue, R.drawable.event_green};
 	
-	
-	
+	private static Typeface font = null;
 	private Button eventButton;
 	private RapplaGridElementLayout eventLayout;
 
@@ -24,14 +23,12 @@ public class RapplaGridElement
 
 	public RapplaGridElement(Context context, RaplaEvent raplaEvent, int column, int offset, int length)
 	{
-		eventButton = createEventButton(context, raplaEvent);
-		eventLayout = new RapplaGridElementLayout(column, offset, length);
+		this(context, raplaEvent, new RapplaGridElementLayout(column, offset, length));
 	}
 
 	public RapplaGridElement(Context context, RaplaEvent raplaEvent, int column)
 	{
-		eventButton = createEventButton(context, raplaEvent);
-		eventLayout = createEventLayout(raplaEvent, column);
+		this(context, raplaEvent, new RapplaGridElementLayout(column, raplaEvent));
 	}
 
 	private Button createEventButton(Context context, RaplaEvent raplaEvent)
@@ -40,6 +37,7 @@ public class RapplaGridElement
 		button.setOnClickListener(new EventClickListener(raplaEvent.getUniqueEventID(), context));
 		
 		button.setBackgroundResource(eventImages[(int) (Math.random()*eventImages.length)]);
+		button.setTypeface(getFont(context));
 		
 		String eventName = raplaEvent.getEventNameWithoutProfessor();
 		
@@ -50,19 +48,6 @@ public class RapplaGridElement
 		return button;
 	}
 
-
-	private RapplaGridElementLayout createEventLayout(RaplaEvent raplaEvent, int column)
-	{
-		int eventLength = (int) (raplaEvent.getDurationInMinutes() / CalendarFragment.timeInterval);
-		int eventOffset = (int) (raplaEvent.getTimeDifferenceInMinutes(CalendarFragment.getEarliestStart(raplaEvent.getDate())) / CalendarFragment.timeInterval);
-
-		// Sorgt dafür, dass kein Event länger als der Tag werden kann
-		// TODO: Das geht noch schöner
-		eventLength = (int) Math.min(CalendarFragment.getDayDuration() / CalendarFragment.timeInterval - eventOffset, eventLength);
-
-		return new RapplaGridElementLayout(column, eventOffset, eventLength);
-	}
-
 	public Button getEventButton()
 	{
 		return eventButton;
@@ -71,5 +56,11 @@ public class RapplaGridElement
 	public RapplaGridElementLayout getEventLayout()
 	{
 		return eventLayout;
+	}
+	public static Typeface getFont(Context context)
+	{
+		if(font==null)
+			font = Typeface.createFromAsset(context.getAssets(), "fonts/Graziano.ttf");
+		return font;
 	}
 }
