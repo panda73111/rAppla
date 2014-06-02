@@ -75,7 +75,12 @@
 	
     <string name="ok">OK</string>
 	<string name="cancel">Abbrechen</string>
-	<string name="url_dialog"></string>
+	<string name="url_dialog">Bitte fügen sie im untenstehenden Textfeld 
+	    die URL ihres Raplas ein. 
+	    Die URL kann in den Einstellungen nachträglich geändert werden.</string>
+	
+	<string name="calendarURL">Kalender-URL</string>
+	<string name="calendarURL_summary">Keine URL vergeben</string>
 	
     
 </resources>

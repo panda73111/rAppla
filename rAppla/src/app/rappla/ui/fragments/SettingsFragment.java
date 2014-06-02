@@ -1,14 +1,18 @@
 package app.rappla.ui.fragments;
 
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
 import app.rappla.R;
+import app.rappla.activities.RapplaActivity;
+import app.rappla.activities.SettingsActivity;
 
 public class SettingsFragment extends PreferenceFragment
 {
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -33,6 +37,21 @@ public class SettingsFragment extends PreferenceFragment
 			}
 		});
 		updateLP();
+		EditTextPreference ep = (EditTextPreference) findPreference("ICAL_URL");
+		ep.setOnPreferenceChangeListener(new OnPreferenceChangeListener()
+		{	
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue)
+			{
+				preference.setSummary((String)newValue);
+				SettingsActivity.calendarWasChanged = true;
+				return true;
+			}
+		});
+		
+		String url = RapplaActivity.getCalendarURL(getActivity());
+		if(url!=null)
+			ep.setSummary(url);
 	}
 
 	private void updateLP()

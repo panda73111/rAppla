@@ -21,12 +21,17 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import app.rappla.OnTaskCompleted;
 import app.rappla.R;
@@ -130,8 +135,18 @@ public class RapplaActivity extends Activity
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+		LinearLayout vg = new LinearLayout(this);
 		final EditText inputText = new EditText(this);
-
+		TextView message = new TextView(this);
+		message.setText(R.string.url_dialog);
+		message.setGravity(Gravity.CENTER_HORIZONTAL);
+		
+		vg.setOrientation(LinearLayout.VERTICAL);
+		
+		
+		vg.addView(message);
+		vg.addView(inputText);
+		
 		OnClickListener listener = new OnClickListener()
 		{
 			@Override
@@ -140,20 +155,8 @@ public class RapplaActivity extends Activity
 				switch (which)
 				{
 				case Dialog.BUTTON_POSITIVE:
-					String inputString = inputText.getText().toString();
-
-					try
-					{
-						new URL(inputString).toURI(); // this is made to check whether its a valid URL
-						
-						inputString.replace("page=calendar", "page=ical");
-						
-						
-					} catch (Exception ex)
-					{
-						// Invalid URL
-					}
-					setCalendarURL(RapplaActivity.this, inputString);
+					applyURL(inputText.getText().toString());
+					onRefreshButtonPressed(null);
 					break;
 				case Dialog.BUTTON_NEGATIVE:
 					Toast.makeText(RapplaActivity.this, "Kein Kalendar geladen.", Toast.LENGTH_LONG).show();
@@ -163,10 +166,10 @@ public class RapplaActivity extends Activity
 		};
 
 		builder	.setTitle("Kalender URL")
-		.setMessage(R.string.url_dialog)
 				.setNegativeButton(R.string.cancel, listener)
 				.setPositiveButton(R.string.ok, listener)
-				.setView(inputText);
+				.setView(vg);
+				//.setMessage(R.string.url_dialog);
 
 		AlertDialog dialog = builder.create();
 		dialog.show();
@@ -265,7 +268,8 @@ public class RapplaActivity extends Activity
 		setProgressBarIndeterminateVisibility(true);
 		// start background download
 
-		item.setVisible(false);
+		if(item!=null)
+			item.setVisible(false);
 
 		new DownloadRaplaTask(this, raplaDownloadedHandler).execute(getCalendarURL(this));
 		return true;
@@ -303,9 +307,24 @@ public class RapplaActivity extends Activity
 		if (requestCode == SETTINGS_REQ_CODE)
 		{
 			configureNotifier();
+			applyURL(getCalendarURL(this));
+			if(resultCode == SettingsActivity.RESULT_UPDATE_CALENDAR)
+				onRefreshButtonPressed(null);
 		}
 	}
 
+	private boolean isValidURL(String url)
+	{	
+		try
+		{
+			new URL(url).toURI(); // this is made to check whether its a valid URL
+			return true;
+			
+		} catch (Exception ex)
+		{
+			return false;
+		}
+	}
 	public RaplaCalendar getCalender()
 	{
 		return calendar;
@@ -387,5 +406,17 @@ public class RapplaActivity extends Activity
 		Editor editor = preferences.edit();
 		editor.putString(ICAL_URL_KEY, url);
 		editor.commit();
+	}
+	public void applyURL(String url)
+	{
+		url = url.replace("page=calendar", "page=ical");
+		
+		if(!isValidURL(url))
+		{
+			Toast.makeText(RapplaActivity.this, "Kein Kalendar geladen.", Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		setCalendarURL(RapplaActivity.this, url);
 	}
 }

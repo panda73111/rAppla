@@ -15,6 +15,8 @@ public class SettingsActivity extends Activity
 {
 	ViewGroup myViewGroup = null;
 	SettingsFragment settingsFragment = null;
+	public static boolean calendarWasChanged = false;
+	public static final int RESULT_UPDATE_CALENDAR = 1792311;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -44,7 +46,13 @@ public class SettingsActivity extends Activity
 	public void onBackPressed()
 	{
 		Intent intent = this.getIntent();
-		setResult(RESULT_OK, intent);
+		if (calendarWasChanged)
+		{
+			calendarWasChanged = false;
+			setResult(RESULT_UPDATE_CALENDAR, intent);
+		} else
+			setResult(RESULT_OK, intent);
+
 		finish();
 	}
 

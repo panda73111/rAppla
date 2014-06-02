@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="rappla_preferences" >
-
+	
+    <EditTextPreference
+        android:key="ICAL_URL"
+        android:title="@string/calendarURL"
+        android:summary="@string/calendarURL_summary"
+        android:inputType="text"
+        android:textIsSelectable="true"
+        />
+    
     <CheckBoxPreference
         android:key="offlineSync"
         android:title="@string/pushNotifications" />    
