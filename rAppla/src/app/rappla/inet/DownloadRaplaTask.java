@@ -70,6 +70,9 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 		HttpResponse response;
 		try
 		{
+			if(uri[0]==null)
+				return null;
+			
 			response = httpclient.execute(new HttpGet(uri[0]));
 			StatusLine statusLine = response.getStatusLine();
 			if (statusLine.getStatusCode() == HttpStatus.SC_OK)

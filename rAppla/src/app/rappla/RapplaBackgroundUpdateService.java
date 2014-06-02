@@ -59,7 +59,7 @@ public class RapplaBackgroundUpdateService extends BroadcastReceiver
 		}, false);
 
 		Log.d("BackgroundUpdateService", "Downloading Rapla");
-		downloadTask.execute(RapplaActivity.ICAL_URL);
+		downloadTask.execute(RapplaActivity.getCalendarURL(context));
 
 	}
 	private void showNotification(Context context)

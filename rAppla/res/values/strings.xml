@@ -69,9 +69,11 @@
 	<string name="alarmsaved">Wecker gestellt</string> 
 	<string name="notetextedit">noteTextEdit</string> 
 	<string name="today">Heute</string>
-	<string name="ok">OK</string>
 	<string name="toEvent">Zum Event</string>
 	
-    
+    <string name="ok">OK</string>
+	<string name="cancel">Abbrechen</string>
+	<string name="url_dialog"></string>
+	
     
 </resources>
