@@ -97,9 +97,13 @@ public class RaplaCalendar implements Serializable
 		while(result==null)
 		{
 			Set<RaplaEvent> eventsToday = getEventsAtDate(date);
-			Iterator<RaplaEvent> dayIterator = eventsToday.iterator();
+			
+			Iterator<RaplaEvent> dayIterator = null;
+			
+			if(eventsToday!=null)
+				dayIterator = eventsToday.iterator();
 
-			while(dayIterator.hasNext())
+			while(dayIterator != null && dayIterator.hasNext())
 			{
 				RaplaEvent event = dayIterator.next();
 				Calendar eventStart = event.getStartTime();

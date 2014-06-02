@@ -35,7 +35,8 @@ public class RapplaActivity extends Activity
 {
 	public static final String lastCalendarHashString = "lastCalendarHash";
 	
-	public static final String ICAL_URL = "http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3";
+	public static String ICAL_URL = "http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3";
+	
 	private static final int TAB_CNT = 2;
 	private static final int WEEKPAGER_FRAGMENT_INDEX = 0;
 	private static final int DAYPAGER_FRAGMENT_INDEX = 1;
@@ -46,7 +47,8 @@ public class RapplaActivity extends Activity
 	
 	private RapplaFragment[] fragments;
 	private Tab[] tabs;
-
+	private Menu menu;
+	
 	private RaplaCalendar calendar;
 	private GestureDetector gestDetector;
 	private static RapplaActivity instance;
@@ -63,14 +65,17 @@ public class RapplaActivity extends Activity
 
 			if(getCalender()!=null)
 			{
-				if(result.hashCode()==getCalender().hashCode())
-					return;
+				if(result.hashCode()!=getCalender().hashCode())
+				{
+					result.save(RapplaActivity.getInstance());
+					setCalendar(result);
+				}
 			}
 			
-			result.save(RapplaActivity.getInstance());
-			setCalendar(result);
 			// hide spinning icon in the action bar
 			setProgressBarIndeterminateVisibility(false);
+			MenuItem item = menu.findItem(R.id.action_refresh);
+			item.setVisible(true);
 		}
 	};
 
@@ -100,8 +105,6 @@ public class RapplaActivity extends Activity
 		{
 			// calendar is not saved locally, download it
 			calendar = new RaplaCalendar();
-			// show spinning icon in the action bar
-			setProgressBarIndeterminateVisibility(true);
 			// start background download
 			new DownloadRaplaTask(this, raplaDownloadedHandler).execute(ICAL_URL);
 		}
@@ -180,6 +183,7 @@ public class RapplaActivity extends Activity
 	{
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.actionbar_main, menu);
+		this.menu = menu;
 		return true;
 	}
 
@@ -204,6 +208,9 @@ public class RapplaActivity extends Activity
 		// show spinning icon in the action bar
 		setProgressBarIndeterminateVisibility(true);
 		// start background download
+		
+		item.setVisible(false);
+		
 		new DownloadRaplaTask(this, raplaDownloadedHandler).execute(ICAL_URL);
 		return true;
 	}
