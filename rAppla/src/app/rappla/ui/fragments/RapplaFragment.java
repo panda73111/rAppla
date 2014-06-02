@@ -45,12 +45,15 @@ public abstract class RapplaFragment extends Fragment
 		getView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 	          @Override
 	          public void onGlobalLayout() {
-	              fragmentWidth = getView().getWidth();
-	              fragmentHeight = getView().getHeight();
-	              if(fragmentWidth > 0)
-	              {
-	            	  getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
-	              }
+	        	  if(getView() != null)
+	        	  {
+		              fragmentWidth = getView().getWidth();
+		              fragmentHeight = getView().getHeight();
+		              if(fragmentWidth > 0)
+		              {
+		            	  getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+		              }  
+	        	  }
 	              doGlobalLayout();
 	          }
 	        });

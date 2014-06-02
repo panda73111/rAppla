@@ -3,19 +3,26 @@ package app.rappla.activities;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.content.Context;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Vibrator;
+import android.support.v4.app.NotificationCompat;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 import app.rappla.R;
 import app.rappla.calendar.RaplaCalendar;
 import app.rappla.calendar.RaplaEvent;
 import app.rappla.notes.Notes;
 
-public class AlarmPopupDialog extends Activity
+public class AlarmPopupDialog extends Activity implements OnClickListener
 {
 	RaplaEvent event;
 	CharSequence note;
+	private static final int notificationID = 132; // This number is totally random.
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -25,14 +32,27 @@ public class AlarmPopupDialog extends Activity
 		this.setFinishOnTouchOutside(true);
 
 		Bundle extras = getIntent().getExtras();
-
 		if (extras == null)
 			return;
 
 		note = getNote(extras);
 		event = findEvent(extras);
+		
+		
+		setTitle(event.getEventNameWithoutProfessor());
 
-		vibrateOnStartup();
+		configureButton();
+		
+		notificationOnStartup();
+	}
+
+	private void configureButton()
+	{
+		Button okButton = (Button) findViewById(R.id.okButton);
+		Button toEventButton = (Button) findViewById(R.id.toEventButton);
+		okButton.setOnClickListener(this);
+		toEventButton.setOnClickListener(this);
+		
 	}
 
 	public void onStart()
@@ -40,6 +60,12 @@ public class AlarmPopupDialog extends Activity
 		super.onStart();
 		TextView noteView = (TextView) findViewById(R.id.noteText);
 		noteView.setText(note);
+	}
+	public void onDestroy()
+	{
+		super.onDestroy();
+    	NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    	nm.cancel(notificationID);
 	}
 
 	private CharSequence getNote(Bundle extras)
@@ -67,24 +93,69 @@ public class AlarmPopupDialog extends Activity
 			event = calendar.getElementByUniqueID(uniqueID);
 		} catch (NullPointerException e)
 		{
+			e.printStackTrace();
 			return null;
 		}
 
 		return event;
 	}
 
-	private void vibrateOnStartup()
+	private void notificationOnStartup()
 	{
-		NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		Notification notif = new Notification();
-		notif.ledARGB = 0xFFff4500;
-		notif.flags = Notification.FLAG_SHOW_LIGHTS;
-		notif.ledOnMS = 100;
-		notif.ledOffMS = 100;
-		nm.notify(0, notif);
+		Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+    	NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+	
+    	PendingIntent eventIntent = PendingIntent.getActivity(this, 0, getEventActivityIntent(), PendingIntent.FLAG_UPDATE_CURRENT);
+    	
+    	NotificationCompat.Builder mBuilder =
+    	        new NotificationCompat.Builder(this)
+    	        .setSmallIcon(R.drawable.ic_launcher)
+    	        .setContentTitle(event.getTitle())
+    	        .setContentText(note)
+    	        .setLights(0xFFff4500, 100, 100)
+    	        .setSound(notificationSound)
+    	        .setVibrate(new long[] { 0, 150, 150, 250, 100, 100 })
+    	        .setContentIntent(eventIntent);
+    	Notification notification = mBuilder.build();
+    	
+		nm.notify(notificationID, notification);
+	}
+	private Intent getEventActivityIntent()
+	{
+    	Intent resultIntent = new Intent(this, EventActivity.class);	
+    	resultIntent.putExtra(EventActivity.eventIDKey, event.getUniqueEventID());
+    	return resultIntent;
+	}
 
-		Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		v.vibrate(new long[] { 0, 150, 150, 250, 100, 100 }, -1);
+	@Override
+	public void onClick(View v)
+	{
+		switch(v.getId())
+		{
+		case R.id.okButton:
+			onClickOK();
+			break;
+		case R.id.toEventButton:
+			onClickToEventButton();
+			break;
+		default:
+			break;
+		}
+	}
+
+	private void onClickToEventButton()
+	{
+		EventActivity eventActivity = EventActivity.getInstance();
+		if(eventActivity != null)
+		{
+			eventActivity.finish();
+		}
+		startActivity(getEventActivityIntent());
+	}
+
+	private void onClickOK()
+	{
+		finish();
 	}
 
 }

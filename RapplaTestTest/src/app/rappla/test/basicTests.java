@@ -40,7 +40,7 @@ public class basicTests extends  android.test.ActivityUnitTestCase<RapplaActivit
 	}
 	public void testRaplaDownloadTask()
 	{
-		DownloadRaplaTask task =  new DownloadRaplaTask(activity);
+		DownloadRaplaTask task =  new DownloadRaplaTask(activity, null);
 		task.execute(RapplaActivity.ICAL_URL);
 	}
 	public void testTabsAreCreated()

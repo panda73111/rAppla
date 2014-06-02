@@ -13,24 +13,32 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import app.rappla.activities.RapplaActivity;
+import app.rappla.OnTaskCompleted;
 import app.rappla.calendar.ParseRaplaTask;
+import app.rappla.calendar.RaplaCalendar;
 
 public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 {
 	private ProgressDialog dlg;
-	private Activity activity;
-
-	public DownloadRaplaTask(Context context)
+	private Context ctx;
+	private OnTaskCompleted<RaplaCalendar> callbackListener;
+	private boolean showDialog = true;
+	
+	public DownloadRaplaTask(Context context, OnTaskCompleted<RaplaCalendar> listener, boolean showDialog)
 	{
-		activity = (Activity) context;
+		this(context, listener);
+		this.showDialog = showDialog;
+	}
+	public DownloadRaplaTask(Context context, OnTaskCompleted<RaplaCalendar> listener)
+	{
+		ctx = context;
+		callbackListener = listener;
 		dlg = new ProgressDialog(context);
-		dlg.setTitle("Aktuallisiere");
+		dlg.setTitle("Aktualisiere");
 		dlg.setMessage("Bitte warten...");
 		dlg.setCancelable(true);
 		dlg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -51,10 +59,8 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 		super.onPreExecute();
 
 		dlg.setProgress(0);
-		if (!RapplaActivity.isTest)
+		if (showDialog)
 			dlg.show();
-
-		activity.setProgressBarIndeterminateVisibility(true);
 	}
 
 	@Override
@@ -64,6 +70,9 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 		HttpResponse response;
 		try
 		{
+			if(uri[0]==null)
+				return null;
+			
 			response = httpclient.execute(new HttpGet(uri[0]));
 			StatusLine statusLine = response.getStatusLine();
 			if (statusLine.getStatusCode() == HttpStatus.SC_OK)
@@ -112,6 +121,7 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 	protected void onProgressUpdate(Double... values)
 	{
 		super.onProgressUpdate(values);
+		
 		dlg.setProgress(values[0].intValue());
 	}
 
@@ -120,10 +130,11 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 	{
 		super.onCancelled();
 
-		if (!RapplaActivity.isTest)
+		if (showDialog)
 			dlg.dismiss();
 
-		activity.setProgressBarIndeterminateVisibility(false);
+		if(callbackListener != null)
+			callbackListener.onTaskCompleted(null);
 	}
 
 	@Override
@@ -131,12 +142,16 @@ public class DownloadRaplaTask extends AsyncTask<String, Double, InputStream>
 	{
 		super.onPostExecute(result);
 
-		if (!RapplaActivity.isTest)
+		if (showDialog)
 			dlg.dismiss();
 
-		if (result != null)
-			new ParseRaplaTask(activity).execute(result);
-		else
-			activity.setProgressBarIndeterminateVisibility(false);
+		if (result == null)
+		{
+			if(callbackListener != null)
+				callbackListener.onTaskCompleted(null);
+			return;
+		}
+
+		new ParseRaplaTask(ctx, callbackListener, showDialog).execute(result);
 	}
 }

@@ -15,7 +15,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import app.rappla.StaticContext;
+import app.rappla.activities.RapplaActivity;
 
 @SuppressWarnings("serial")
 public class RaplaCalendar implements Serializable
@@ -83,6 +86,41 @@ public class RaplaCalendar implements Serializable
 		// the month in the Calendar class is zero based
 		return eventCal.get(getDateHash(day, month - 1, year));
 	}
+	public RaplaEvent getNextEvent()
+	{
+		return getNextEvent(Calendar.getInstance());
+	}
+	public RaplaEvent getNextEvent(Calendar date)
+	{	
+		RaplaEvent result = null;
+		
+		while(result==null)
+		{
+			Set<RaplaEvent> eventsToday = getEventsAtDate(date);
+			
+			Iterator<RaplaEvent> dayIterator = null;
+			
+			if(eventsToday!=null)
+				dayIterator = eventsToday.iterator();
+
+			while(dayIterator != null && dayIterator.hasNext())
+			{
+				RaplaEvent event = dayIterator.next();
+				Calendar eventStart = event.getStartTime();
+				if(eventStart.after(date) && (result == null || eventStart.before(result)))
+				{
+					result = event;
+				}
+			}
+			date.set(Calendar.DAY_OF_YEAR, date.get(Calendar.DAY_OF_YEAR)+1);
+			date.set(Calendar.HOUR_OF_DAY, 0);
+			date.set(Calendar.MINUTE, 0);
+			date.set(Calendar.SECOND, 0);
+			
+		}
+		
+		return result;
+	}
 
 	private void addEvent(RaplaEvent event)
 	{
@@ -131,7 +169,7 @@ public class RaplaCalendar implements Serializable
 		}
 	}
 
-	public void save()
+	public void save(Context context)
 	{
 		android.util.Log.d("RaplaCalendar", "saving calendar");
 		try
@@ -140,9 +178,24 @@ public class RaplaCalendar implements Serializable
 			ObjectOutputStream objOutStr = new ObjectOutputStream(outStr);
 			objOutStr.writeObject(this);
 			objOutStr.close();
+
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.putInt(RapplaActivity.lastCalendarHashString, hashCode());
+			editor.commit();
 		} catch (IOException ex)
 		{
 			android.util.Log.d("RaplaCalendar", "error saving calendar: " + ex);
 		}
+	}
+	public int hashCode()
+	{
+		Set<Integer> iset = eventCal.keySet();
+		int hash = 0;
+		for(Integer i : iset)
+		{
+			hash+=i;
+		}
+		return hash;
 	}
 }

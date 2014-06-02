@@ -9,7 +9,7 @@ import app.rappla.*;
 import app.rappla.calendar.*;
 import app.rappla.ui.grid.*;
 
-public class DayFragment extends CalenderFragment
+public class DayFragment extends CalendarFragment
 {
 	private Calendar date;
 
@@ -18,14 +18,14 @@ public class DayFragment extends CalenderFragment
 		setDate(Calendar.getInstance());
 		setBackground = true;
 	}
-	
+
 	public void setDate(Calendar date)
 	{
 		this.date = date;
 		setTitle("Einzeltag " + date.get(Calendar.YEAR) + "/" + date.get(Calendar.DAY_OF_YEAR));
 		setBackground = true;
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
@@ -36,18 +36,18 @@ public class DayFragment extends CalenderFragment
 
 		return rootView;
 	}
-	
+
 	public Calendar getDate()
 	{
 		return date;
 	}
-	
+
 	protected void configureGrid()
 	{
 		if (LOG_EVENTS)
 			Log.d(title, "configureGrid");
-		
-		RapplaGrid calGrid = (RapplaGrid) getView();
+
+		RapplaGrid calGrid = (RapplaGrid) getView().findViewById(R.id.layout_day);
 
 		Set<RaplaEvent> events = getCalender().getEventsAtDate(date);
 

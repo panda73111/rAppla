@@ -40,23 +40,23 @@
 
         <Button
             style="?android:attr/buttonBarButtonStyle"
-            android:id="@+id/button2"
+            android:id="@+id/okButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
             android:padding="0dp"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="@string/ok"/>
 
         <Button
             style="?android:attr/buttonBarButtonStyle"
-            android:id="@+id/button1"
+            android:id="@+id/toEventButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
 			android:padding="0px"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="@string/toEvent"/>
 
     </LinearLayout>
 

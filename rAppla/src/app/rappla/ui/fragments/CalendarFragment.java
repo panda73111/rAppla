@@ -8,7 +8,7 @@ import android.content.Context;
 import app.rappla.calendar.RaplaEvent;
 import app.rappla.ui.grid.RapplaGridElement;
 
-public abstract class CalenderFragment extends RapplaFragment
+public abstract class CalendarFragment extends RapplaFragment
 {
 	public static final int timeInterval = 15; // In minutes
 

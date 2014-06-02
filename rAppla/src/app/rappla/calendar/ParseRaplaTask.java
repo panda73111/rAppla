@@ -4,21 +4,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
-import app.rappla.activities.RapplaActivity;
+import app.rappla.OnTaskCompleted;
 
 public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalendar>
 {
 	private ProgressDialog dlg;
-	private Activity activity;
-
-	public ParseRaplaTask(Context context)
+	private OnTaskCompleted<RaplaCalendar> callbackListener;
+	private boolean showDialog = true;
+	
+	public ParseRaplaTask(Context context, OnTaskCompleted<RaplaCalendar> listener, boolean showDialog)
 	{
-		activity = (Activity) context;
+		this(context, listener);
+		this.showDialog = showDialog;
+	}
+	public ParseRaplaTask(Context context, OnTaskCompleted<RaplaCalendar> listener)
+	{
+		callbackListener = listener;
 		dlg = new ProgressDialog(context);
 		dlg.setTitle("Lade Kalender");
 		dlg.setMessage("Bitte warten...");
@@ -39,10 +44,8 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 	{
 		super.onPreExecute();
 
-		if (!RapplaActivity.isTest)
+		if (showDialog)
 			dlg.show();
-
-		activity.setProgressBarIndeterminateVisibility(true);
 	}
 
 	@Override
@@ -67,31 +70,22 @@ public class ParseRaplaTask extends AsyncTask<InputStream, Integer, RaplaCalenda
 	{
 		super.onCancelled();
 
-		if (!RapplaActivity.isTest)
+		if (showDialog)
 			dlg.dismiss();
 
-		activity.setProgressBarIndeterminateVisibility(false);
+		if(callbackListener != null)
+			callbackListener.onTaskCompleted(null);
 	}
 
 	@Override
 	protected void onPostExecute(RaplaCalendar result)
 	{
 		super.onPostExecute(result);
-
-		if (!RapplaActivity.isTest)
+	
+		if (showDialog)
 			dlg.dismiss();
 
-		if (result == null)
-		{
-			activity.setProgressBarIndeterminateVisibility(false);
-			return;
-		}
-
-		result.save();
-
-		RapplaActivity activity = RapplaActivity.getInstance();
-		activity.setCalendar(result);
-
-		activity.setProgressBarIndeterminateVisibility(false);
+		if(callbackListener != null)
+			callbackListener.onTaskCompleted(result);
 	}
 }

@@ -14,7 +14,7 @@ import app.rappla.calendar.RaplaEvent;
 import app.rappla.ui.grid.RapplaGrid;
 import app.rappla.ui.grid.RapplaGridElement;
 
-public class WeekFragment extends CalenderFragment
+public class WeekFragment extends CalendarFragment
 {
 	private Calendar date;
 
@@ -39,11 +39,11 @@ public class WeekFragment extends CalenderFragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		View rootView = (RapplaGrid) inflater.inflate(R.layout.layout_week, container, false);
-		
+		View rootView = inflater.inflate(R.layout.layout_week, container, false);
+
 		if (LOG_EVENTS)
 			Log.d(title, "onCreateView");
-		
+
 		return rootView;
 	}
 
@@ -53,7 +53,7 @@ public class WeekFragment extends CalenderFragment
 			Log.d(title, "configureGrid");
 
 		ArrayList<RapplaGridElement> dayElements;
-		RapplaGrid calGrid = (RapplaGrid) getView();
+		RapplaGrid calGrid = (RapplaGrid) getView().findViewById(R.id.layout_week);
 
 		for (int i = 0; i < 5; i++)
 		{

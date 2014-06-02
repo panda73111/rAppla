@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,13 @@ import app.rappla.R;
 import app.rappla.StaticContext;
 import app.rappla.WeekSlidePagerAdaper;
 
-public class WeekPagerFragment extends RapplaFragment
+public class WeekPagerFragment extends RapplaFragment implements RapplaPagerFragment, OnPageChangeListener
 {
 	private ViewPager pager;
 	private FragmentPagerAdapter pageAdapter;
 	private int pagePosition;
+	private static final int PAGECOUNT		= Integer.MAX_VALUE ; 			
+	private static final int TODAY_PAGE  	= PAGECOUNT/2 ;
 
 	public WeekPagerFragment()
 	{
@@ -32,12 +35,12 @@ public class WeekPagerFragment extends RapplaFragment
 		// Infinite scrolling realized by setting the starting position
 		// to Integer.MAX_VALUE / 2 and therefore being able to scroll
 		// in both directions (almost endlessly)
-		int halfMax = Integer.MAX_VALUE / 2;
 		pager = (ViewPager) inflater.inflate(R.layout.pager_week, container, false);
-		pageAdapter = new WeekSlidePagerAdaper(getChildFragmentManager(), halfMax);
-		pagePosition = halfMax;
+		pageAdapter = new WeekSlidePagerAdaper(getChildFragmentManager(), TODAY_PAGE);
+		pagePosition = TODAY_PAGE;
 		pager.setAdapter(pageAdapter);
 		pager.setCurrentItem(pagePosition);
+		pager.setOnPageChangeListener(this);
 		return pager;
 	}
 	
@@ -64,5 +67,29 @@ public class WeekPagerFragment extends RapplaFragment
 		{
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public void goToToday()
+	{
+		while(pagePosition > TODAY_PAGE)
+		{
+			pagePosition--;
+			pager.setCurrentItem(pagePosition);
+		}
+		while(pagePosition < TODAY_PAGE)
+		{
+			pagePosition++;
+			pager.setCurrentItem(pagePosition);
+		}		
+	}
+
+	@Override
+	public void onPageScrollStateChanged(int arg0){}
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2){}
+	@Override
+	public void onPageSelected(int arg0)
+	{
+		pagePosition = arg0;
 	}
 }

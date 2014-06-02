@@ -1,7 +1,7 @@
 package app.rappla.ui.grid;
 
 import android.content.Context;
-import android.util.AttributeSet;
+import android.graphics.Typeface;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,8 +13,10 @@ import app.rappla.ui.fragments.CalenderFragment;
 public class RapplaGridElement extends ViewGroup
 {
 	private RapplaGridElementLayout eventLayout;
+	protected static final int[] eventImages = {R.drawable.event, R.drawable.event_blue, R.drawable.event_green};
 
 	private ImageView bgView;
+	private static Typeface font = null;
 	private TextView textView;
 
 	public RapplaGridElement(Context context, AttributeSet attrs)
@@ -60,7 +62,7 @@ public class RapplaGridElement extends ViewGroup
 		Button button = new Button(context);
 		button.setOnClickListener(new EventClickListener(raplaEvent.getUniqueEventID(), context));
 
-		String eventName = getEventName(raplaEvent);
+		String eventName = raplaEvent.getEventNameWithoutProfessor();
 
 		button.setText(eventName);
 		button.setPadding(10, 20, 10, 10);
@@ -100,6 +102,11 @@ public class RapplaGridElement extends ViewGroup
 	{
 		super.onSizeChanged(w, h, oldw, oldh);
 	}
+	public static Typeface getFont(Context context)
+	{
+		if(font==null)
+			font = Typeface.createFromAsset(context.getAssets(), "fonts/Graziano.ttf");
+		return font;
 
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b)
