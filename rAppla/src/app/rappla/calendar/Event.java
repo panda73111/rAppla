@@ -226,6 +226,9 @@ public class Event implements Constants
 		} else if (up.startsWith("LOCATION"))
 		{
 			location = new Location(icalStr);
+		}  else if (up.startsWith("EXDATE"))
+		{
+			exdate = new Exdate(icalStr);
 		} else
 		{
 			//System.out.println("Ignoring: " + icalStr);
@@ -333,6 +336,10 @@ public class Event implements Constants
 		this.lastModified = lastModified;
 	}
 
+	public Exdate getExdate()
+	{
+		return exdate;
+	}
 	public Rrule getRrule()
 	{
 		return rrule;

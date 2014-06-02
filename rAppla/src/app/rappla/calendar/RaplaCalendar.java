@@ -46,14 +46,21 @@ public class RaplaCalendar implements Serializable
 			addEvent(re);
 
 			Rrule rule = e.getRrule();
+			Exdate exdate = e.getExdate();
+			
 			if (rule != null)
 			{
 				// is recurring event
 				List<Date> recurrences = rule.generateRecurrances(e.getStartDate(), null);
+				List<Date> exDates = null;
+				if(exdate!=null)
+					exDates = exdate.getDates();
 
+				
 				for (Date d : recurrences)
 				{
-					addEvent(RaplaEvent.FromRecurringRaplaEvent(re, d.toCalendar()));
+					if(exDates == null || !exDates.contains(d))
+						addEvent(RaplaEvent.FromRecurringRaplaEvent(re, d.toCalendar()));
 				}
 			}
 
