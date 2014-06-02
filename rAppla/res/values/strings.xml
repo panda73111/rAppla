@@ -62,7 +62,7 @@
     <string name="title">Titel</string> 
     <string name="endtime">Ende</string> 
     <string name="ressources">Ressourcen</string> 
-    <string name="empty">"THIS IS A BIG ASS TEXT"</string> 
+    <string name="empty"> abcd</string> 
     <string name="infos">"Infos"</string> 
     <string name="date">Datum</string> 
 	<string name="notesaved">Notiz gespeichert</string> 
