@@ -52,7 +52,7 @@ public class NotesFragment extends RapplaFragment
 		if (!Notes.isInitialized())
 			Notes.loadNoteFile(getActivity());
 		
-		Button		saveButton	= (Button)		getActivity().findViewById(R.id.button1);
+		Button		saveButton	= (Button)		getActivity().findViewById(R.id.saveButton);
 		EditText 	noteTextView= (EditText) 	getActivity().findViewById(R.id.editText1);
 		
 		noteTextView.setBackgroundDrawable(null);

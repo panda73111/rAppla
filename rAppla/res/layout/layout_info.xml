@@ -8,6 +8,7 @@
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/empty"
         android:src="@drawable/event" />
     <ImageView
         android:id="@+id/imagePin"
@@ -15,38 +16,47 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
+        android:contentDescription="@string/empty"
         android:src="@drawable/pin" />
 
-    <TextView
-        android:id="@+id/ressourcesView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="110dp"
-        android:gravity="center"
-        android:text="@string/empty"
-        android:textAlignment="gravity"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
     
     <TextView
         android:id="@+id/titleView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ressourcesView"
-        android:layout_marginBottom="175dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/imagePin"
+        
+        android:maxLines = "3"
+        android:scrollbars = "vertical"
+        android:textSize="32sp"
+        android:gravity="center"
+        android:text="@string/empty"
+        android:textAlignment="gravity"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <TextView
+        android:id="@+id/profView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleView"
+        android:layout_marginTop="20dp"
+        
+        android:maxLines = "3"
+        android:scrollbars = "vertical"
+        android:textSize="32sp"
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="@string/empty"
         android:textAlignment="gravity"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
+    
     <TextView
         android:id="@+id/dateView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ressourcesView"
-        android:layout_marginBottom="130dp"
+        android:layout_below="@+id/profView"
+        android:layout_marginTop="25dp"
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="@string/empty"
@@ -57,8 +67,8 @@
         android:id="@+id/beginView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ressourcesView"
-        android:layout_marginBottom="70dp"
+        android:layout_below="@+id/dateView"
+        android:layout_marginTop="10dp"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="45dp"
         
@@ -72,8 +82,8 @@
         android:id="@+id/endView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ressourcesView"
-        android:layout_marginBottom="70dp"
+        android:layout_below="@+id/dateView"
+        android:layout_marginTop="10dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="45dp"
         
@@ -86,13 +96,27 @@
         android:id="@+id/minusText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ressourcesView"
-        android:layout_marginBottom="70dp"
+        android:layout_below="@+id/dateView"
+        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="-"
+        android:text="@string/minus"
         android:textAlignment="gravity"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
+    <TextView
+        android:id="@+id/ressourcesView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/minusText"
+        android:layout_marginTop="25dp"
+        
+        android:maxLines = "3"
+        android:scrollbars = "vertical"
+        android:gravity="center"
+        android:text="@string/empty"
+        android:textAlignment="gravity"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

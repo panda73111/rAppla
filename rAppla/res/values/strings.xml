@@ -82,5 +82,5 @@
 	<string name="calendarURL">Kalender-URL</string>
 	<string name="calendarURL_summary">Keine URL vergeben</string>
 	
-    
+    <string name="minus">-</string>
 </resources>

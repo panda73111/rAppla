@@ -33,7 +33,8 @@
         </activity>
         <activity
             android:name="app.rappla.activities.EventActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="orientation"
+            android:windowSoftInputMode="adjustNothing"
             android:screenOrientation="portrait"
     	    android:launchMode="singleInstance"
             android:label="Event" >

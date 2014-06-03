@@ -118,6 +118,16 @@ public class RaplaEvent implements Comparable<RaplaEvent>, Serializable
 		else
 			return eventName;
 	}
+	public String getProfessor()
+	{
+		String 	profName 					= getTitle();
+		int 	separatorIndex				= profName.indexOf("[");
+		
+		if(separatorIndex > 0)
+			return profName.substring(separatorIndex+1, profName.length()-1);
+		else
+			return profName;
+	}
 	
 	public String getResources()
 	{
