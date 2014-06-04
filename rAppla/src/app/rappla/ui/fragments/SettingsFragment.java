@@ -64,8 +64,10 @@ public class SettingsFragment extends PreferenceFragment
 		ListPreference lp = (ListPreference) findPreference("updateInterval");
 
 		if (index == -1)
+		{
 			lp.setValueIndex(0);
-
+			index = 0;
+		}
 		String summary = getResources().getString(R.string.updateInterval_summary).replace("_TIME_", lp.getEntries()[index]);
 
 		lp.setSummary(summary);

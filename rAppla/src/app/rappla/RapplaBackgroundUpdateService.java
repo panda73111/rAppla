@@ -20,7 +20,8 @@ import app.rappla.inet.DownloadRaplaTask;
 
 public class RapplaBackgroundUpdateService extends BroadcastReceiver
 {
-
+	public static final int ID_UPDATE_NOTIFICATION = 97035;
+	
 	@Override
 	public void onReceive(final Context context, final Intent arg1)
 	{
@@ -72,14 +73,14 @@ public class RapplaBackgroundUpdateService extends BroadcastReceiver
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
 				.setSmallIcon(R.drawable.ic_launcher)
-				.setContentTitle("Rapla has changed!")
-				.setContentText("this is a random note.")
+				.setContentTitle("Der Rapla hat sich Verändert!")
+				.setContentText("Öffnen sie die Rapla-App um die Änderugnen einzusehen.")
 				.setLights(0xFFff4500, 100, 100)
 				.setSound(notificationSound).setVibrate(new long[] { 0, 150, 150, 250, 100, 100 })
 				.setContentIntent(eventIntent);
 		Notification notification = mBuilder.build();
 
-		nm.notify(123, notification);
+		nm.notify(ID_UPDATE_NOTIFICATION, notification);
 	}
 
 	private int getCalendarHash(Context context)

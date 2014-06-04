@@ -2,28 +2,37 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="app.rappla"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName="1.0" >
+
     <uses-sdk
         android:minSdkVersion="17"
         android:targetSdkVersion="18" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-	<uses-permission android:name="android.permission.VIBRATE"/>
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true" />
+
     <application
+        android:name="app.rappla.StaticContext"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:vmSafeMode="false"  
-		android:name="app.rappla.StaticContext">
-        
+        android:vmSafeMode="false" >
         <activity
             android:name="app.rappla.activities.RapplaActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Rappla" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -34,36 +43,33 @@
         <activity
             android:name="app.rappla.activities.EventActivity"
             android:configChanges="orientation"
-            android:windowSoftInputMode="adjustNothing"
+            android:label="Event"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-    	    android:launchMode="singleInstance"
-            android:label="Event" >
+            android:windowSoftInputMode="adjustNothing" >
         </activity>
-    	<activity 
-    	    android:name="app.rappla.activities.AlarmPopupDialog"
-    	    android:label="Alarm"
-    	    android:theme="@android:style/Theme.Dialog"
-    	    android:launchMode="singleInstance"
-    	    >
-    	    
-    	</activity>
-        
+        <activity
+            android:name="app.rappla.activities.AlarmPopupDialog"
+            android:label="Alarm"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
+
         <receiver android:name=".RapplaBackgroundUpdateService" >
         </receiver>
-        
-        <receiver 
-            android:name="RapplaWidgetProvider" 
+        <receiver
+            android:name="RapplaWidgetProvider"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name"
-    		android:widgetCategory="home_screen">
-    
-    	<intent-filter>
-        	<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-    	</intent-filter>
-    	
-    	<meta-data 
-    	    android:name="android.appwidget.provider"
-            android:resource="@xml/rapplawidget_info" />
-</receiver>
+            android:widgetCategory="home_screen" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/rapplawidget_info" />
+        </receiver>
     </application>
+
 </manifest>

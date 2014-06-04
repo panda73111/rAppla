@@ -3,14 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
     <ImageView
         android:id="@+id/widgetImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/stickynote"
         android:labelFor="@+id/widgetText"
-        android:contentDescription=""/>
+        android:contentDescription="@string/empty"/>
+        
+</RelativeLayout>
+
+<!-- 
+
 
     <TextView
         android:id="@+id/widgetText"
@@ -30,6 +34,4 @@
         android:inputType="none"
         android:ems="10"
         android:gravity="center"/>
-    
-    
-</RelativeLayout>
+   -->

@@ -11,6 +11,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -125,8 +126,18 @@ public class RapplaActivity extends Activity
 		configureActionBar(savedInstanceState);
 		setContentView(R.layout.layout_rappla);
 
-		// checkForRaplaChanges();
+		
 		configureNotifier();
+	}
+	
+	public void onStart()
+	{
+		super.onStart();
+		// Cancel still open notifications
+		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		nm.cancel(RapplaBackgroundUpdateService.ID_UPDATE_NOTIFICATION);
+		
+		setCalendar(calendar);
 	}
 
 	private void openURLDialog()
