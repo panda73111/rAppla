@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:columnCount="2"
-    android:rowCount="2" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
 
     <ImageView
+        android:id="@drawable/timebar"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_column="0"
-        android:layout_row="1"
         android:contentDescription="@string/timeBar"
+        android:paddingTop="40px"
+        android:scaleType="fitXY"
         android:src="@drawable/timebar" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_column="1"
-        android:layout_row="0"
-        android:contentDescription="@string/dayBar"
-        android:src="@drawable/daybar" />
-
-    <app.rappla.ui.grid.RapplaGrid
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res/app.rappla"
-        android:id="@+id/layout_week"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_column="1"
-        android:layout_row="1"
-        app:columnCount="5"
-        app:rowCount="50" />
+        android:orientation="vertical" >
 
-</GridLayout>
+        <ImageView
+            android:id="@drawable/daybar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/dayBar"
+            android:scaleType="fitXY"
+            android:src="@drawable/daybar" />
+
+        <app.rappla.ui.grid.RapplaGrid
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res/app.rappla"
+            android:id="@+id/layout_week"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:columnCount="5"
+            app:rowCount="48" />
+    </LinearLayout>
+
+</LinearLayout>

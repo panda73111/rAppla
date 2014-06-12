@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="horizontal" >
 
     <ImageView
+        android:id="@drawable/timebar"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:contentDescription="@string/timeBar"
+        android:scaleType="fitXY"
         android:src="@drawable/timebar" />
 
     <app.rappla.ui.grid.RapplaGrid
@@ -17,6 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:columnCount="1"
-        app:rowCount="45" />
+        app:rowCount="48" />
 
 </LinearLayout>
