@@ -71,7 +71,7 @@ public class RapplaGrid extends ViewGroup
 	public boolean addElement(RapplaGridElement element)
 	{
 		RapplaGridElementLayout layout = element.getEventLayout();
-		return addElementAt(element.getEventButton(), layout.column, layout.offset, layout.rowSpan);
+		return addElementAt(element, layout.column, layout.offset, layout.rowSpan);
 	}
 
 	public boolean addElementAt(View element, int col, int row)
