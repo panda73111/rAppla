@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Set;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,6 +41,11 @@ public class WeekFragment extends CalendarFragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
 		View rootView = inflater.inflate(R.layout.layout_week, container, false);
+
+		BitmapDrawable bd = (BitmapDrawable) this.getResources().getDrawable(R.drawable.daybar);
+		int daybarheight = bd.getBitmap().getHeight();
+
+		rootView.findViewById(R.drawable.timebar).setPadding(0, daybarheight, 0, 0);
 
 		if (LOG_EVENTS)
 			Log.d(title, "onCreateView");
