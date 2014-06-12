@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.text.Layout.Alignment;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -20,19 +21,27 @@ import android.widget.RemoteViews;
 import app.rappla.activities.RapplaActivity;
 import app.rappla.calendar.RaplaCalendar;
 import app.rappla.calendar.RaplaEvent;
-import app.rappla.ui.grid.RapplaGridElement;
 
 public class RapplaWidgetProvider extends AppWidgetProvider
 {
+	private static Typeface font = null;
 	private static final float TEXTWIDTH_RATIO = 0.9f;
 	private static String eventID = null;
-	
-	
+	private TextPaint textPaint;
+
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
 		Intent intent = new Intent(context, RapplaActivity.class);
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.layout_widget);
+
+		if (font == null)
+			font = Typeface.createFromAsset(context.getAssets(), "fonts/Graziano.ttf");
+
+		textPaint = new TextPaint();
+		textPaint.setColor(Color.BLACK);
+		textPaint.setTextSize(100);
+		textPaint.setTypeface(font);
 
 		RapplaActivity activity = RapplaActivity.getInstance();
 		RaplaCalendar calendar;
@@ -41,13 +50,12 @@ public class RapplaWidgetProvider extends AppWidgetProvider
 		else
 			calendar = activity.getCalender();
 		RaplaEvent nextEvent = calendar.getNextEvent();
-		
-		if(nextEvent.getUniqueEventID().equals(eventID))
+
+		if (nextEvent.getUniqueEventID().equals(eventID))
 		{
 			return;
 		}
-		
-		
+
 		Bitmap bitmap = getWidgetBitmap(context, nextEvent);
 
 		for (int i = 0; i < appWidgetIds.length; i++)
@@ -58,7 +66,7 @@ public class RapplaWidgetProvider extends AppWidgetProvider
 			views.setImageViewBitmap(R.id.widgetImage, bitmap);
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
-		
+
 		eventID = nextEvent.getUniqueEventID();
 	}
 
@@ -72,8 +80,7 @@ public class RapplaWidgetProvider extends AppWidgetProvider
 			bitmap = resBitmap.copy(Bitmap.Config.ARGB_8888, true);
 			Canvas canvas = new Canvas(bitmap);
 
-
-			drawString(context, canvas, getText(nextEvent), (int) (canvas.getWidth()*(1-TEXTWIDTH_RATIO)/2), 100);
+			drawString(context, canvas, getText(nextEvent), (int) (canvas.getWidth() * (1 - TEXTWIDTH_RATIO) / 2), 100);
 		} catch (NullPointerException e)
 		{
 			Log.e("RaplaWidget", "Nullpointerexception");
@@ -94,20 +101,16 @@ public class RapplaWidgetProvider extends AppWidgetProvider
 				+ (startTime.get(Calendar.MONTH) % 12 + 1) + '/' + startTime.get(Calendar.YEAR) + '\n' + startTime.get(Calendar.HOUR_OF_DAY) + ':'
 				+ startTime.get(Calendar.MINUTE) + '-' + endTime.get(Calendar.HOUR_OF_DAY) + ':' + endTime.get(Calendar.MINUTE);
 	}
-	private void drawString(Context context, Canvas canvas, String str, int x, int y) {
 
-		TextPaint paint = new TextPaint();
-		paint.setColor(Color.BLACK);
-		paint.setTextSize(100);
-		paint.setTypeface(RapplaGridElement.getFont(context));
-		
-		StaticLayout mTextLayout = new StaticLayout(str, paint, (int) (canvas.getWidth()*0.9), Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
+	private void drawString(Context context, Canvas canvas, String str, int x, int y)
+	{
+		StaticLayout mTextLayout = new StaticLayout(str, textPaint, (int) (canvas.getWidth() * 0.9), Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
 
 		canvas.save();
 
 		canvas.translate(x, y);
 		mTextLayout.draw(canvas);
 		canvas.restore();
-		
+
 	}
 }
