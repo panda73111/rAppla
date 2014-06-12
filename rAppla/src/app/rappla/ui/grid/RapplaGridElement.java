@@ -3,6 +3,8 @@ package app.rappla.ui.grid;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,7 +12,7 @@ import app.rappla.R;
 import app.rappla.calendar.RaplaEvent;
 import app.rappla.ui.fragments.CalendarFragment;
 
-public class RapplaGridElement extends ViewGroup
+public class RapplaGridElement extends View
 {
 	private RapplaGridElementLayout eventLayout;
 	protected static final int[] eventImages = { R.drawable.event, R.drawable.event_blue, R.drawable.event_green };
@@ -50,8 +52,17 @@ public class RapplaGridElement extends ViewGroup
 		bgView = new ImageView(context);
 		textView = new TextView(context);
 
-		bgView.setImageResource(R.drawable.event);
+		LayoutParams bgLayout = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+		LayoutParams textLayout = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+
+		bgView.setImageResource(eventImages[(int) (Math.random() * eventImages.length)]);
+		bgView.setLayoutParams(bgLayout);
+
 		textView.setText(getEventName(raplaEvent));
+		textView.setLayoutParams(textLayout);
+		textView.setTypeface(getFont(context));
+		textView.setPadding(10, 10, 10, 10);
+		textView.setTextAlignment(TEXT_ALIGNMENT_CENTER);
 
 		addView(bgView);
 		addView(textView);
@@ -101,7 +112,10 @@ public class RapplaGridElement extends ViewGroup
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b)
 	{
+		Log.d("RapplaGridElement", "layout at " + l + "|" + t + "|" + r + "b" + (changed ? " changed" : ""));
 		bgView.layout(l, t, r, b);
 		textView.layout(l, t, r, b);
 	}
+	
+	
 }
