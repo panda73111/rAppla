@@ -143,9 +143,12 @@ public class RapplaActivity extends Activity
 	private void openURLDialog()
 	{
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
+		
+		
 		LinearLayout vg = new LinearLayout(this);
 		final EditText inputText = new EditText(this);
+		inputText.setId(123456);
+		
 		TextView message = new TextView(this);
 		message.setText(R.string.url_dialog);
 		message.setGravity(Gravity.CENTER_HORIZONTAL);
