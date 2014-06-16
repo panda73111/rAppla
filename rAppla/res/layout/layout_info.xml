@@ -64,13 +64,24 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
     
     <TextView
+        android:id="@+id/minusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateView"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="@string/minus"
+        android:textAlignment="gravity"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
+    <TextView
         android:id="@+id/beginView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dateView"
         android:layout_marginTop="10dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="45dp"
+        android:layout_toLeftOf="@+id/minusText"
         
         
         android:gravity="center"
@@ -84,25 +95,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/dateView"
         android:layout_marginTop="10dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="45dp"
+        android:layout_toRightOf="@+id/minusText"
         
         android:gravity="center"
         android:text="@string/empty"
         android:textAlignment="gravity"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:id="@+id/minusText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dateView"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:text="@string/minus"
-        android:textAlignment="gravity"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/ressourcesView"
