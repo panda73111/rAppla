@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -197,12 +198,16 @@ public class RaplaCalendar implements Serializable
 	}
 	public int hashCode()
 	{
-		Set<Integer> iset = eventCal.keySet();
-		int hash = 0;
-		for(Integer i : iset)
-		{
-			hash+=i;
-		}
+        int hash = 0;
+        Collection<Set<RaplaEvent>> allEventSets = eventCal.values();
+
+        for(Set<RaplaEvent> eventSet : allEventSets)
+        {
+            for(RaplaEvent event : eventSet)
+            {
+                hash+=event.hashCode();
+            }
+        }
 		return hash;
 	}
 }

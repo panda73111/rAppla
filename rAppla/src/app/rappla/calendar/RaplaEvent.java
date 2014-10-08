@@ -263,4 +263,41 @@ public class RaplaEvent implements Comparable<RaplaEvent>, Serializable
 		return this.startTime.compareTo(another.startTime);
 	}
 
+    public int hashCode()
+    {
+        int hash = 0;
+
+        if(uid!=null)
+            hash += uid.hashCode();
+        if(startTime!=null)
+            hash += startTime.hashCode();
+        if(endTime!=null)
+            hash += endTime.hashCode();
+        if(type!=null)
+            hash += type.hashCode();
+        if(title!=null)
+            hash += title.hashCode();
+        if(resources!=null)
+            hash += resources.hashCode();
+        if(language!=null)
+            hash += language.hashCode();
+        if(course!=null)
+            hash += course.hashCode();
+        if(changesAllowedBy!=null)
+            hash += changesAllowedBy.hashCode();
+
+        hash += plannedHours;
+
+        if(note!=null)
+            hash += note.hashCode();
+        if(createdBy!=null)
+            hash += createdBy.hashCode();
+        if(lastChangeBy!=null)
+            hash += lastChangeBy.hashCode();
+        if(persons!=null)
+            hash += persons.hashCode();
+
+        return hash;
+    }
+
 }
