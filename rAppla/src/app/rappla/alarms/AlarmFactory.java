@@ -16,8 +16,8 @@ public class AlarmFactory
 	private static PendingIntent createPendingIntent(String eventID, Calendar alarmDate, Context context)
 	{
 		Intent intent = new Intent(context, AlarmPopupDialog.class);
-	    
-	    intent.putExtra(EventActivity.eventIDKey, eventID);
+        intent.setAction("ALARM_ACTION");
+        intent.putExtra(EventActivity.eventIDKey, eventID);
 	    intent.putExtra(EventActivity.isAlarmKey, true);
 
 	    return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

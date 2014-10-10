@@ -29,8 +29,9 @@
         <activity
             android:name="app.rappla.activities.RapplaActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="Rappla" >
-            <intent-filter>
+            android:label="Rappla"
+            android:launchMode="singleInstance">
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -54,8 +55,22 @@
             android:theme="@android:style/Theme.Dialog" >
         </activity>
 
-        <receiver android:name=".RapplaBackgroundUpdateService" >
+        <!--
+        <receiver android:name=".RapplaBackgroundUpdateService">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED">
+                </action>
+                <category android:name="android.intent.category.HOME">
+                </category>
+            </intent-filter>
         </receiver>
+        -->
+        <service android:name=".RaplaBackgroundService">
+            <intent-filter>
+                <action android:name="app.rappla.activities.RapplaActivity"></action>
+            </intent-filter>
+        </service>
+
         <receiver
             android:name="RapplaWidgetProvider"
             android:icon="@drawable/ic_launcher"

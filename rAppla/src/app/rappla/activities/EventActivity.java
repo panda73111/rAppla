@@ -11,6 +11,7 @@ import android.view.GestureDetector;
 import android.view.MenuItem;
 import app.rappla.R;
 import app.rappla.RapplaTabListener;
+import app.rappla.calendar.RaplaCalendar;
 import app.rappla.calendar.RaplaEvent;
 import app.rappla.ui.fragments.AlarmFragment;
 import app.rappla.ui.fragments.EventInfoFragment;
@@ -19,102 +20,99 @@ import app.rappla.ui.fragments.RapplaFragment;
 
 public class EventActivity extends Activity
 {
-	RaplaEvent myEvent;
-	RapplaFragment[] fragments = new RapplaFragment[] { new EventInfoFragment(), new NotesFragment(), new AlarmFragment() };
-	private Tab[] tabs = new Tab[fragments.length];
-	GestureDetector gestureListener;
-	
-	private static EventActivity instance;
-	public final static String eventIDKey = "eventID";
-	public final static String isAlarmKey = "isAlarm";
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		Log.d("EventActivity", "onCreate");
+    public final static String eventIDKey = "eventID";
+    public final static String isAlarmKey = "isAlarm";
+    private static EventActivity instance;
+    RaplaEvent myEvent;
+    RapplaFragment[] fragments = new RapplaFragment[]{new EventInfoFragment(), new NotesFragment(), new AlarmFragment()};
+    GestureDetector gestureListener;
+    private Tab[] tabs = new Tab[fragments.length];
 
-		if (instance != null)
-		{
-			instance.finish();
-			instance = null;
-		}
-		instance = this;
-		Bundle extras = getIntent().getExtras();
+    public static EventActivity getInstance() {
+        return instance;
+    }
 
-		String eventID = extras.getString(eventIDKey);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d("EventActivity", "onCreate");
 
-		myEvent = RapplaActivity.getInstance().getCalender().getElementByUniqueID(eventID);
+        if (instance != null) {
+            instance.finish();
+            instance = null;
+        }
+        instance = this;
+        Bundle extras = getIntent().getExtras();
 
-		assert (myEvent != null);
+        String eventID = extras.getString(eventIDKey);
 
-		setContentView(R.layout.layout_rappla);
-		configureActionBar(savedInstanceState);
-		
-		if (extras.getBoolean(isAlarmKey, false))
-		{
-			Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-			v.vibrate(new long[] { 0, 150, 150, 250, 100, 100 }, -1);
-			getActionBar().setSelectedNavigationItem(1);
-		}
-	}
+        RapplaActivity rapplaActivity = RapplaActivity.getInstance();
+        RaplaCalendar calendar = null;
 
-	public void onDestroy()
-	{
-		super.onDestroy();
-		instance = null;
-	}
+        if (rapplaActivity != null) {
+            calendar = rapplaActivity.getActiveCalendar();
+        } else {
+            calendar = RaplaCalendar.load();
+        }
+        myEvent = calendar.getElementByUniqueID(eventID);
 
-	private void configureActionBar(Bundle savedInstanceState)
-	{
-		ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setTitle(myEvent.getTitle());
-		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		for (int i = 0; i < tabs.length; i++)
-		{
-			// Set title
-			tabs[i] = actionBar.newTab().setText(fragments[i].getTitle());
-			// Add Listener
-			tabs[i].setTabListener(new RapplaTabListener(fragments[i]));
-			// Add Tab to actionBar
-			actionBar.addTab(tabs[i]);
-		}
+        assert (myEvent != null);
 
-		int selectedIndex = 0;
-		if (savedInstanceState != null)
-			selectedIndex = savedInstanceState.getInt("selectedTab");
-		actionBar.selectTab(tabs[selectedIndex]);
-	}
+        setContentView(R.layout.layout_rappla);
+        configureActionBar(savedInstanceState);
 
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch (item.getItemId())
-		{
-		case android.R.id.home:
-			onBackPressed();
-			break;
-		default:
-		}
-		return true;
-	}
+        if (extras.getBoolean(isAlarmKey, false)) {
+            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(new long[]{0, 150, 150, 250, 100, 100}, -1);
+            getActionBar().setSelectedNavigationItem(1);
+        }
+    }
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState)
-	{
-		super.onSaveInstanceState(outState);
-		int i = getActionBar().getSelectedNavigationIndex();
-		outState.putInt("selectedTab", i);
-	}
+	public void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
 
-	public RaplaEvent getEvent()
-	{
-		return myEvent;
-	}
+    private void configureActionBar(Bundle savedInstanceState) {
+        ActionBar actionBar = getActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setTitle(myEvent.getTitle());
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
-	public static EventActivity getInstance()
-	{
-		return instance;
-	}
+        for (int i = 0; i < tabs.length; i++) {
+            // Set title
+            tabs[i] = actionBar.newTab().setText(fragments[i].getTitle());
+            // Add Listener
+            tabs[i].setTabListener(new RapplaTabListener(fragments[i]));
+            // Add Tab to actionBar
+            actionBar.addTab(tabs[i]);
+        }
+
+        int selectedIndex = 0;
+        if (savedInstanceState != null)
+            selectedIndex = savedInstanceState.getInt("selectedTab");
+        actionBar.selectTab(tabs[selectedIndex]);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            default:
+        }
+        return true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        int i = getActionBar().getSelectedNavigationIndex();
+        outState.putInt("selectedTab", i);
+    }
+
+    public RaplaEvent getEvent() {
+        return myEvent;
+    }
 }

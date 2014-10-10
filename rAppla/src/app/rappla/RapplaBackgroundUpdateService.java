@@ -1,5 +1,6 @@
 package app.rappla;
 
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -20,14 +21,14 @@ import app.rappla.inet.DownloadRaplaTask;
 
 public class RapplaBackgroundUpdateService extends BroadcastReceiver
 {
-	public static final int ID_UPDATE_NOTIFICATION = 97035;
-	
-	@Override
-	public void onReceive(final Context context, final Intent arg1)
-	{
-		Log.d("BackgroundUpdateService", "Intent recieved");
+    public static final int ID_UPDATE_NOTIFICATION = 97035;
 
-		if (isWifiOnly(context))
+    @Override
+    public void onReceive(final Context context, final Intent intent) {
+        Log.d("BackgroundUpdateService", "Intent recieved. Action: " + intent.getAction());
+
+
+        if (isWifiOnly(context))
 		{
 			ConnectivityManager connManager = (ConnectivityManager) StaticContext.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 			NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
@@ -69,13 +70,14 @@ public class RapplaBackgroundUpdateService extends BroadcastReceiver
 		NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		Intent resultIntent = new Intent(context, RapplaActivity.class);
-		PendingIntent eventIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        resultIntent.setAction("NotificationButton");
+        PendingIntent eventIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
 				.setSmallIcon(R.drawable.ic_launcher)
-				.setContentTitle("Der Rapla hat sich Verändert!")
-				.setContentText("Öffnen sie die Rapla-App um die Änderugnen einzusehen.")
-				.setLights(0xFFff4500, 100, 100)
+                .setContentTitle("Der Rapla hat sich VerÃ¤ndert!")
+                .setContentText("Ã–ffnen sie die Rapla-App um die Ã„nderugnen einzusehen.")
+                .setLights(0xFFff4500, 100, 100)
 				.setSound(notificationSound).setVibrate(new long[] { 0, 150, 150, 250, 100, 100 })
 				.setContentIntent(eventIntent);
 		Notification notification = mBuilder.build();

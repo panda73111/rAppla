@@ -9,6 +9,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,9 +21,10 @@ import app.rappla.notes.Notes;
 
 public class AlarmPopupDialog extends Activity implements OnClickListener
 {
-	RaplaEvent event;
+    private static final int notificationID = 132; // This number is totally random.
+    private static final String defaultNote = "Keine Notiz";
+    RaplaEvent event;
 	CharSequence note;
-	private static final int notificationID = 132; // This number is totally random.
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -75,9 +77,12 @@ public class AlarmPopupDialog extends Activity implements OnClickListener
 
 		String uniqueID = extras.getString(EventActivity.eventIDKey);
 		if (uniqueID == null)
-			return null;
+            return defaultNote;
 
-		return Notes.get(uniqueID);
+        CharSequence note = Notes.get(uniqueID);
+        if (note == null || note.equals(""))
+            return defaultNote;
+        return note;
 
 	}
 
@@ -85,12 +90,26 @@ public class AlarmPopupDialog extends Activity implements OnClickListener
 	{
 		RaplaEvent event;
 
+        // Find the Calendar
+
+        RapplaActivity activity = RapplaActivity.getInstance();
+        RaplaCalendar calendar = null;
+        if (activity != null) {
+            calendar = activity.getActiveCalendar();
+        }
+        if (activity == null || calendar == null) {
+            calendar = RaplaCalendar.load();
+        }
+
+        if (calendar == null) {
+            Log.e("RaplaAlarmPupupDialog", "No calendar found!");
+            return null;
+        }
+
 		try
 		{
-			RapplaActivity main = RapplaActivity.getInstance();
-			String uniqueID = extras.getString(EventActivity.eventIDKey);
-			RaplaCalendar calendar = main.getCalender();
-			event = calendar.getElementByUniqueID(uniqueID);
+            String uniqueID = extras.getString(EventActivity.eventIDKey);
+            event = calendar.getElementByUniqueID(uniqueID);
 		} catch (NullPointerException e)
 		{
 			e.printStackTrace();
@@ -130,14 +149,17 @@ public class AlarmPopupDialog extends Activity implements OnClickListener
 	@Override
 	public void onClick(View v)
 	{
-		switch(v.getId())
-		{
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        switch (v.getId()) {
 		case R.id.okButton:
 			onClickOK();
-			break;
+            nm.cancel(notificationID);
+            break;
 		case R.id.toEventButton:
 			onClickToEventButton();
-			break;
+            nm.cancel(notificationID);
+            break;
 		default:
 			break;
 		}
