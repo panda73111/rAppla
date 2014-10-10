@@ -1,159 +1,100 @@
 package app.rappla.alarms;
 
-import java.io.Serializable;
-import java.util.Calendar;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import app.rappla.R;
 
-@SuppressWarnings("serial")
-@SuppressLint("SimpleDateFormat")
-public class Alarm implements Serializable
-{
-	public static final int dateButtonID = 1;
-	public static final int timeButtonID = 2;
-	public static final int activateButtonID = 3;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 
-	private static final int alarmOnResource = R.drawable.alarmon;
-	private static final int alarmOffResource = R.drawable.alarmoff;
+import app.rappla.RapplaUtils;
 
-	Calendar alarmDate;
-	boolean isActive = true;
-	transient boolean wasModified = false;
-	String eventID;
 
-	transient LinearLayout alarmGroup;
-	transient RelativeLayout alarmSubGroup;
-	transient Button dateButton;
-	transient Button timeButton;
-	transient Button alarmButton;
-	transient Context context;
+public class Alarm implements Serializable {
+    public static final String serializedAlarmsFileName = "RapplaAlarms.ser";
+    public static HashMap<String, ArrayList<Alarm>> allAlarms = null;
+    Calendar alarmDate;
+    boolean isActive = true;
+    transient boolean wasModified = false;
+    String eventID;
 
-	public Alarm(Calendar a, String eventID)
-	{
-		this.alarmDate = Calendar.getInstance();
-		this.isActive = true;
-		this.eventID = eventID;
-		this.wasModified = false;
 
-		if (a != null)
-		{
-			alarmDate.setTime(a.getTime());
-		}
-	}
+    public Alarm(Calendar a, String eventID) {
+        this.alarmDate = Calendar.getInstance();
+        this.isActive = true;
+        this.eventID = eventID;
+        this.wasModified = false;
 
-	public void initViews(Context c, ViewGroup parent)
-	{
-		this.context = c;
+        if (a != null) {
+            alarmDate.setTime(a.getTime());
+        }
+    }
 
-		OnAlarmClickListener oacl = new OnAlarmClickListener(c, alarmDate, this);
-		Drawable bd = c.getResources().getDrawable(alarmOnResource);
-		int height = bd.getIntrinsicHeight();
-		int width = bd.getIntrinsicWidth();
+    public static boolean alarmsAreLoaded() {
+        return allAlarms != null;
+    }
 
-		alarmButton = new Button(c);
-		alarmButton.setId(activateButtonID);
-		alarmButton.setOnClickListener(oacl);
+    public static void saveAlarmFile(Context context) {
+        try {
+            RapplaUtils.writeSerializedObject(context, serializedAlarmsFileName, allAlarms);
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+    }
 
-		dateButton = new Button(c);
-		dateButton.setId(dateButtonID);
-		dateButton.setOnClickListener(oacl);
+    public static void loadAlarmFile(Context context) {
+        try {
+            allAlarms = RapplaUtils.readSerializedObject(context, serializedAlarmsFileName);
+        } catch (FileNotFoundException e) {
+        } catch (ClassNotFoundException | IOException i) {
+            i.printStackTrace();
+        } finally {
+            if (allAlarms == null)
+                allAlarms = new HashMap<>();
+        }
+    }
 
-		timeButton = new Button(c);
-		timeButton.setId(timeButtonID);
-		timeButton.setOnClickListener(oacl);
+    public static ArrayList<Alarm> getAlarmsAtEvent(Context context, String eventID) {
+        if (!alarmsAreLoaded())
+            loadAlarmFile(context);
+        ArrayList<Alarm> alarms = allAlarms.get(eventID);
+        if (alarms == null)
+            alarms = new ArrayList<>();
+        return alarms;
+    }
 
-		alarmGroup = new LinearLayout(c);
-		alarmSubGroup = new RelativeLayout(c);
+    public static void setAlarmsAtEvent(Context context, String eventID, ArrayList<Alarm> alarms) {
+        if (!alarmsAreLoaded())
+            loadAlarmFile(context);
+        allAlarms.put(eventID, alarms);
+    }
 
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		lp.addRule(RelativeLayout.BELOW, dateButton.getId());
+    public Calendar getDate() {
+        return alarmDate;
+    }
 
-		alarmSubGroup.addView(dateButton);
-		alarmSubGroup.addView(timeButton, lp);
-		alarmGroup.addView(alarmButton, width, height);
-		alarmGroup.addView(alarmSubGroup);
-		parent.addView(alarmGroup);
+    private void startAlarm(Context context) {
+        AlarmFactory.startAlarm(eventID, alarmDate, context);
+    }
 
-		updateViews();
-	}
+    private void cancelAlarm(Context context) {
+        AlarmFactory.cancelAlarm(eventID, alarmDate, context);
+    }
 
-	public void updateViews()
-	{
-		if (dateButton != null)
-		{
-			dateButton.setText(toDateString(alarmDate));
-		}
-		if (timeButton != null)
-		{
-			timeButton.setText(toTimeString(alarmDate));
-		}
-		if (alarmButton != null)
-		{
-			if (isActive)
-				alarmButton.setBackgroundResource(alarmOnResource);
-			else
-				alarmButton.setBackgroundResource(alarmOffResource);
-		}
-	}
+    public void applyState(Context c) {
+        if (isActive)
+            startAlarm(c);
+        else
+            cancelAlarm(c);
+    }
 
-	public Calendar getDate()
-	{
-		return alarmDate;
-	}
+    public void setActive(boolean isActive) {
+        if (this.isActive == isActive)
+            return;
 
-	private void startAlarm()
-	{
-		AlarmFactory.startAlarm(eventID, alarmDate, context);
-	}
-
-	private void cancelAlarm()
-	{
-		AlarmFactory.cancelAlarm(eventID, alarmDate, context);
-	}
-
-	public void applyState()
-	{
-		if (isActive)
-			startAlarm();
-		else
-			cancelAlarm();
-	}
-
-	public void setActive(boolean isActive)
-	{
-		if (this.isActive == isActive)
-			return;
-
-		this.isActive = isActive;
-		this.wasModified = true;
-
-		updateViews();
-	}
-
-	private String toDateString(Calendar date)
-	{
-		int day = date.get(Calendar.DAY_OF_MONTH);
-		int month = date.get(Calendar.MONTH);
-		int year = date.get(Calendar.YEAR);
-		return day + "/" + (month + 1) + "/" + year;
-	}
-
-	private String toTimeString(Calendar date)
-	{
-		String hour = "" + date.get(Calendar.HOUR_OF_DAY);
-		String minute = "" + date.get(Calendar.MINUTE);
-
-		if (minute.length() == 1)
-			minute = "0" + minute;
-
-		return hour + ":" + minute;
-	}
+        this.isActive = isActive;
+        this.wasModified = true;
+    }
 }

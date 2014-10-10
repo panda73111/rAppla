@@ -7,8 +7,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MenuItem;
+
 import app.rappla.R;
 import app.rappla.RapplaTabListener;
 import app.rappla.calendar.RaplaCalendar;
@@ -18,14 +18,13 @@ import app.rappla.ui.fragments.EventInfoFragment;
 import app.rappla.ui.fragments.NotesFragment;
 import app.rappla.ui.fragments.RapplaFragment;
 
-public class EventActivity extends Activity
-{
+public class EventActivity extends Activity {
     public final static String eventIDKey = "eventID";
     public final static String isAlarmKey = "isAlarm";
     private static EventActivity instance;
     RaplaEvent myEvent;
     RapplaFragment[] fragments = new RapplaFragment[]{new EventInfoFragment(), new NotesFragment(), new AlarmFragment()};
-    GestureDetector gestureListener;
+
     private Tab[] tabs = new Tab[fragments.length];
 
     public static EventActivity getInstance() {
@@ -47,7 +46,7 @@ public class EventActivity extends Activity
         String eventID = extras.getString(eventIDKey);
 
         RapplaActivity rapplaActivity = RapplaActivity.getInstance();
-        RaplaCalendar calendar = null;
+        RaplaCalendar calendar;
 
         if (rapplaActivity != null) {
             calendar = rapplaActivity.getActiveCalendar();
@@ -69,13 +68,17 @@ public class EventActivity extends Activity
         }
     }
 
-	public void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         instance = null;
     }
 
     private void configureActionBar(Bundle savedInstanceState) {
         ActionBar actionBar = getActionBar();
+
+        if (actionBar == null)
+            return;
+
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setTitle(myEvent.getTitle());
         actionBar.setDisplayHomeAsUpEnabled(true);
