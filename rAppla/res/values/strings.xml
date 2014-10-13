@@ -4,7 +4,7 @@
     <string name="app_name">rAppla</string>
     <string name="settings">Einstellungen</string>
 
-    
+
     <string-array name="UpdateIntervals_Entries">
         <item>1 min</item>
         <item>5 min</item>
@@ -38,8 +38,8 @@
     <string name="week">Woche</string>
     <string name="day">Tag</string>
     <string name="train">Bahn</string>
-    
-    
+
+
     <!-- Preferences -->
     <string name="wifiSync">Nur im Wifi aktualisieren</string>
     <string name="gmailSync">Mit GMail synchronisieren</string>
@@ -47,40 +47,46 @@
     <string name="updateInterval">Aktualisierungsintervall</string>
     <string name="updateInterval_summary">Der Rapla wird alle _TIME_ synchronisiert.</string>
     <string name="offlineSync">Rapla offline Bereitstellen</string>
-    
+
 
     <!-- Actionbar -->
     <string name="refresh">Aktualisieren</string>
-    
-    
+
+
     <string name="notes">Notizen</string>
     <string name="alarms">Wecker</string>
-    <string name="save">Speichern</string> 
-    <string name="add">Hinzufügen</string> 
-    <string name="Begin">starttime</string> 
-    <string name="starttime">Begin</string> 
-    <string name="title">Titel</string> 
-    <string name="endtime">Ende</string> 
-    <string name="ressources">Ressourcen</string> 
-    <string name="empty"> abcd</string> 
-    <string name="infos">"Infos"</string> 
-    <string name="date">Datum</string> 
-	<string name="notesaved">Notiz gespeichert</string> 
-	<string name="alarmsaved">Wecker gestellt</string> 
-	<string name="notetextedit">noteTextEdit</string> 
-	<string name="today">Heute</string>
-	<string name="toEvent">Zum Event</string>
-	<string name="dayBar">dayBar</string>
-	<string name="timeBar">timeBar</string>
-	
+    <string name="save">Speichern</string>
+    <string name="add">Hinzufügen</string>
+    <string name="Begin">starttime</string>
+    <string name="starttime">Begin</string>
+
+    <string name="empty">empty</string>
+    <string name="endtime">Ende</string>
+    <string name="ressources">Ressourcen</string>
+
+
+    <string name="infos">"Infos"</string>
+    <string name="date">Datum</string>
+    <string name="notesaved">Notiz gespeichert</string>
+    <string name="alarmsaved">Wecker gestellt</string>
+    <string name="notetextedit">noteTextEdit</string>
+    <string name="today">Heute</string>
+    <string name="toEvent">Zum Event</string>
+    <string name="dayBar">dayBar</string>
+    <string name="timeBar">timeBar</string>
+
     <string name="ok">OK</string>
-	<string name="cancel">Abbrechen</string>
+    <string name="cancel">Abbrechen</string>
 	<string name="url_dialog">Bitte fügen sie im untenstehenden Textfeld 
 	    die URL ihres Raplas ein. 
 	    Die URL kann in den Einstellungen nachträglich geändert werden.</string>
-	
-	<string name="calendarURL">Kalender-URL</string>
-	<string name="calendarURL_summary">Keine URL vergeben</string>
-	
-    <string name="minus">-</string>
+
+    <string name="calendarURL">Kalender-URL</string>
+    <string name="calendarURL_summary">Keine URL vergeben</string>
+
+    <string name="title">%TITLE%</string>
+    <string name="professor">%PROFESSOR%</string>
+    <string name="eventRessources">%RESSOURCES%</string>
+    <string name="eventDate">%DATE%</string>
+    <string name="timeText" formatted="false">%BEGIN%-%END%</string>
 </resources>

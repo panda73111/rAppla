@@ -3,4 +3,5 @@
     <item name="dateButtonID" type="id" />
     <item name="timeButtonID" type="id" />
     <item name="activateButtonID" type="id" />
+    <item name="removeButtonID" type="id" />
 </resources>

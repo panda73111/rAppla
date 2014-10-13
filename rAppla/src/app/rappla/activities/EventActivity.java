@@ -21,9 +21,12 @@ import app.rappla.ui.fragments.RapplaFragment;
 public class EventActivity extends Activity {
     public final static String eventIDKey = "eventID";
     public final static String isAlarmKey = "isAlarm";
+    public final static String selectedTabKey = "selectedTab";
+
+
     private static EventActivity instance;
     RaplaEvent myEvent;
-    RapplaFragment[] fragments = new RapplaFragment[]{new EventInfoFragment(), new NotesFragment(), new AlarmFragment()};
+    RapplaFragment[] fragments = new RapplaFragment[3];
 
     private Tab[] tabs = new Tab[fragments.length];
 
@@ -36,15 +39,42 @@ public class EventActivity extends Activity {
         super.onCreate(savedInstanceState);
         Log.d("EventActivity", "onCreate");
 
+        createInstance();
+
+        Bundle extras = getIntent().getExtras();
+        String eventID = extras.getString(eventIDKey);
+        loadEvent(eventID);
+
+        setContentView(R.layout.layout_rappla);
+
+        configureFragments(savedInstanceState);
+
+        // if this Activity is started as a result of an Alarm going off
+        if (extras.getBoolean(isAlarmKey, false)) {
+            vibrate();
+        }
+    }
+
+    private void configureFragments(Bundle savedInstanceState) {
+        fragments = new RapplaFragment[]{new EventInfoFragment(), new NotesFragment(), new AlarmFragment()};
+        configureActionBar(savedInstanceState);
+    }
+
+    private void vibrate() {
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(new long[]{0, 150, 150, 250, 100, 100}, -1);
+        getActionBar().setSelectedNavigationItem(1);
+    }
+
+    private void createInstance() {
         if (instance != null) {
             instance.finish();
             instance = null;
         }
         instance = this;
-        Bundle extras = getIntent().getExtras();
+    }
 
-        String eventID = extras.getString(eventIDKey);
-
+    private void loadEvent(String eventID) {
         RapplaActivity rapplaActivity = RapplaActivity.getInstance();
         RaplaCalendar calendar;
 
@@ -54,28 +84,16 @@ public class EventActivity extends Activity {
             calendar = RaplaCalendar.load();
         }
         myEvent = calendar.getElementByUniqueID(eventID);
-
-
-        assert (myEvent != null);
-
-        setContentView(R.layout.layout_rappla);
-        configureActionBar(savedInstanceState);
-
-        if (extras.getBoolean(isAlarmKey, false)) {
-            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            v.vibrate(new long[]{0, 150, 150, 250, 100, 100}, -1);
-            getActionBar().setSelectedNavigationItem(1);
-        }
     }
 
     public void onDestroy() {
         super.onDestroy();
         instance = null;
+        Log.d("EventActivity", "onDestroy");
     }
 
     private void configureActionBar(Bundle savedInstanceState) {
         ActionBar actionBar = getActionBar();
-
         if (actionBar == null)
             return;
 
@@ -94,7 +112,7 @@ public class EventActivity extends Activity {
 
         int selectedIndex = 0;
         if (savedInstanceState != null)
-            selectedIndex = savedInstanceState.getInt("selectedTab");
+            selectedIndex = savedInstanceState.getInt(selectedTabKey);
         actionBar.selectTab(tabs[selectedIndex]);
     }
 
@@ -110,9 +128,13 @@ public class EventActivity extends Activity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        ActionBar actionBar = getActionBar();
+        int i = actionBar.getSelectedNavigationIndex();
+        actionBar.removeAllTabs();
+        outState.putInt(selectedTabKey, i);
+        outState.putString(eventIDKey, myEvent.getUniqueEventID());
+
         super.onSaveInstanceState(outState);
-        int i = getActionBar().getSelectedNavigationIndex();
-        outState.putInt("selectedTab", i);
     }
 
     public RaplaEvent getEvent() {

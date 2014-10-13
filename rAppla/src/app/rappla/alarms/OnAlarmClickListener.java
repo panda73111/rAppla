@@ -13,16 +13,19 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 import app.rappla.R;
+import app.rappla.ui.fragments.AlarmFragment;
 
 public class OnAlarmClickListener implements OnClickListener {
     Context context;
-    Alarm alarm;
     AlarmHolder alarmHolder;
+    AlarmFragment alarmFragment;
+    Alarm alarm;
 
-    public OnAlarmClickListener(Context c, AlarmHolder alarmHolder, Alarm alarm) {
+    public OnAlarmClickListener(Context c, AlarmHolder alarmHolder, AlarmFragment parent) {
         this.context = c;
         this.alarmHolder = alarmHolder;
-        this.alarm = alarm;
+        this.alarmFragment = parent;
+        alarm = alarmHolder.getAlarm();
     }
 
     @Override
@@ -34,6 +37,9 @@ public class OnAlarmClickListener implements OnClickListener {
             case R.id.timeButtonID:
                 onTimeClick();
                 break;
+            case R.id.removeButtonID:
+                onRemoveClick();
+                break;
             case R.id.activateButtonID:
                 alarm.setActive(!alarm.isActive);
                 alarmHolder.updateViews();
@@ -41,20 +47,24 @@ public class OnAlarmClickListener implements OnClickListener {
         }
     }
 
+    private void onRemoveClick() {
+        alarmFragment.removeAlarm(alarmHolder);
+    }
+
     private void onDateClick() {
-        OnDateSetListener odsl = new OnDateSetListener() {
+        OnDateSetListener dateSetListener = new OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 alarm.getDate().set(year, monthOfYear, dayOfMonth);
                 alarmHolder.updateViews();
             }
         };
-        new DatePickerDialog(context, odsl, alarm.getDate().get(Calendar.YEAR), alarm.getDate().get(Calendar.MONTH),
+        new DatePickerDialog(context, dateSetListener, alarm.getDate().get(Calendar.YEAR), alarm.getDate().get(Calendar.MONTH),
                 alarm.getDate().get(Calendar.DAY_OF_MONTH)).show();
     }
 
     private void onTimeClick() {
 
-        OnTimeSetListener otsl = new OnTimeSetListener() {
+        OnTimeSetListener timeSetListener = new OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker arg0, int hour, int minute) {
                 alarm.getDate().set(Calendar.HOUR_OF_DAY, hour);
@@ -62,7 +72,7 @@ public class OnAlarmClickListener implements OnClickListener {
                 alarmHolder.updateViews();
             }
         };
-        new TimePickerDialog(context, otsl, alarm.getDate().get(Calendar.HOUR_OF_DAY),
+        new TimePickerDialog(context, timeSetListener, alarm.getDate().get(Calendar.HOUR_OF_DAY),
                 alarm.getDate().get(Calendar.MINUTE), true).show();
     }
 

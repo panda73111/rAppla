@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/imageView1"
@@ -10,95 +10,70 @@
         android:layout_height="fill_parent"
         android:contentDescription="@string/empty"
         android:src="@drawable/event" />
+
     <ImageView
         android:id="@+id/imagePin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:contentDescription="@string/empty"
         android:src="@drawable/pin" />
 
-    
+
     <TextView
         android:id="@+id/titleView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/imagePin"
-        
-        android:maxLines = "3"
-        android:scrollbars = "vertical"
-        android:textSize="32sp"
+        android:layout_centerHorizontal="true"
+
         android:gravity="center"
-        android:text="@string/empty"
+        android:maxLines="3"
+        android:scrollbars="vertical"
+        android:text="@string/title"
         android:textAlignment="gravity"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="32sp" />
+
     <TextView
         android:id="@+id/profView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titleView"
-        android:layout_marginTop="20dp"
-        
-        android:maxLines = "3"
-        android:scrollbars = "vertical"
-        android:textSize="32sp"
         android:layout_centerHorizontal="true"
+
+        android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="@string/empty"
+        android:maxLines="3"
+        android:scrollbars="vertical"
+        android:text="@string/professor"
         android:textAlignment="gravity"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    
-    
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="32sp" />
+
+
     <TextView
         android:id="@+id/dateView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profView"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-        android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="@string/empty"
-        android:textAlignment="gravity"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    
-    <TextView
-        android:id="@+id/minusText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dateView"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:text="@string/minus"
-        android:textAlignment="gravity"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    
-    <TextView
-        android:id="@+id/beginView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dateView"
-        android:layout_marginTop="10dp"
-        android:layout_toLeftOf="@+id/minusText"
-        
-        
-        android:gravity="center"
-        android:text="@string/empty"
+        android:text="@string/eventDate"
         android:textAlignment="gravity"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/endView"
+        android:id="@+id/timeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dateView"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/minusText"
-        
         android:gravity="center"
-        android:text="@string/empty"
+        android:text="@string/timeText"
         android:textAlignment="gravity"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -107,14 +82,14 @@
         android:id="@+id/ressourcesView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/timeText"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/minusText"
         android:layout_marginTop="25dp"
-        
-        android:maxLines = "3"
-        android:scrollbars = "vertical"
+
         android:gravity="center"
-        android:text="@string/empty"
+        android:maxLines="3"
+        android:scrollbars="vertical"
+        android:text="@string/eventRessources"
         android:textAlignment="gravity"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
