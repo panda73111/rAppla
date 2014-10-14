@@ -1,26 +1,20 @@
 package app.rappla;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import app.rappla.activities.RapplaActivity;
+import app.rappla.alarms.RapplaNotification;
 import app.rappla.calendar.RaplaCalendar;
 import app.rappla.inet.DownloadRaplaTask;
 
 public class RaplaBackgroundService extends Service {
-
-    public static final int ID_UPDATE_NOTIFICATION = 97035;
 
     public IBinder onBind(Intent intent) {
         return null;
@@ -71,7 +65,6 @@ public class RaplaBackgroundService extends Service {
                     Log.d("BackgroundUpdateService", "new CalendarHash is different!");
 
 
-
                     result.save(context);
                     Log.d("BackgroundUpdateService", "Showing Notification");
                     showNotification(StaticContext.getContext());
@@ -87,23 +80,11 @@ public class RaplaBackgroundService extends Service {
     }
 
     private void showNotification(Context context) {
-        Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
         Intent resultIntent = new Intent(context, RapplaActivity.class);
         resultIntent.setAction("NotificationButton");
         PendingIntent eventIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle("Der Rapla hat sich Verändert!")
-                .setContentText("Öffnen sie die Rapla-App um die Änderugnen einzusehen.")
-                .setLights(0xFFff4500, 100, 100)
-                .setSound(notificationSound).setVibrate(new long[]{0, 150, 150, 250, 100, 100})
-                .setContentIntent(eventIntent);
-        Notification notification = mBuilder.build();
-
-        nm.notify(ID_UPDATE_NOTIFICATION, notification);
+        RapplaNotification.showNotification(context, "Der Rapla hat sich verändert!", "Öffnen Sie rAppla um die Änderungen einzusehen.", eventIntent, R.integer.Notification_ID_RapplaUpdate);
     }
 
 
