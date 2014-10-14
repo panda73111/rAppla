@@ -68,6 +68,7 @@ public class EventInfoFragment extends RapplaFragment {
         text = text.replace("%BEGIN%", RapplaUtils.toTimeString(startTime));
         text = text.replace("%END%", RapplaUtils.toTimeString(endTime));
         timeView.setText(text);
+        timeView.setTypeface(font);
 
         TextView resView = (TextView) getActivity().findViewById(R.id.ressourcesView);
         resView.setText(event.getResources());
