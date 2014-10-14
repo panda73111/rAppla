@@ -1,7 +1,5 @@
 package app.rappla.activities;
 
-import java.net.URL;
-
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -17,10 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.Menu;
@@ -32,12 +27,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import app.rappla.OnTaskCompleted;
 import app.rappla.R;
 import app.rappla.RaplaBackgroundService;
-import app.rappla.RapplaBackgroundUpdateService;
 import app.rappla.RapplaGestureListener;
+import app.rappla.RapplaPreferences;
 import app.rappla.RapplaTabListener;
+import app.rappla.RapplaUtils;
 import app.rappla.calendar.RaplaCalendar;
 import app.rappla.inet.DownloadRaplaTask;
 import app.rappla.ui.fragments.DayPagerFragment;
@@ -47,25 +44,20 @@ import app.rappla.ui.fragments.WeekPagerFragment;
 
 public class RapplaActivity extends Activity
 {
-	public static final String lastCalendarHashString = "lastCalendarHash";
-
-	private static final String ICAL_URL_KEY = "ICAL_URL";
-	// "http://rapla.dhbw-karlsruhe.de/rapla?page=iCal&user=vollmer&file=tinf12b3";
-
 	private static final int TAB_CNT = 2;
 	private static final int WEEKPAGER_FRAGMENT_INDEX = 0;
 	private static final int DAYPAGER_FRAGMENT_INDEX = 1;
-	private static final String selectedTabKey = "selectedTab";
 
-	private static final int SETTINGS_REQ_CODE = 3456;
-	private static final int NOTIFIER_REQ_CODE = 1234;
+
     private static RapplaActivity instance;
     private RapplaFragment[] fragments;
 	private Tab[] tabs;
 	private Menu menu;
     private RaplaCalendar activeCalendar;
     private GestureDetector gestDetector;
-	private OnTaskCompleted<RaplaCalendar> raplaDownloadedHandler = new OnTaskCompleted<RaplaCalendar>()
+
+
+    private OnTaskCompleted<RaplaCalendar> raplaDownloadedHandler = new OnTaskCompleted<RaplaCalendar>()
 	{
 		@Override
 		public void onTaskCompleted(RaplaCalendar result)
@@ -88,21 +80,11 @@ public class RapplaActivity extends Activity
 		}
 	};
 
-	public static RapplaActivity getInstance() {
+
+    public static RapplaActivity getInstance() {
         return instance;
     }
 
-    public static String getCalendarURL(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getString(ICAL_URL_KEY, null);
-    }
-
-	public static void setCalendarURL(Context context, String url) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        Editor editor = preferences.edit();
-        editor.putString(ICAL_URL_KEY, url);
-        editor.commit();
-    }
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,13 +105,13 @@ public class RapplaActivity extends Activity
         if (activeCalendar == null) {
             // activeCalendar is not saved locally, download it
 
-            if (getCalendarURL(this) == null) {
+            if (RapplaPreferences.getSavedCalendarURL(this) == null) {
                 openURLDialog();
             }
 
             activeCalendar = new RaplaCalendar();
             // start background download
-            new DownloadRaplaTask(this, raplaDownloadedHandler).execute(getCalendarURL(this));
+            new DownloadRaplaTask(this, raplaDownloadedHandler).execute(RapplaPreferences.getSavedCalendarURL(this));
         }
 
         configureActionBar(savedInstanceState);
@@ -143,7 +125,7 @@ public class RapplaActivity extends Activity
         super.onStart();
         // Cancel still open notifications
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.cancel(RapplaBackgroundUpdateService.ID_UPDATE_NOTIFICATION);
+        nm.cancel(R.integer.Notification_ID_RapplaUpdate);
 
         setActiveCalendar(activeCalendar);
     }
@@ -154,7 +136,7 @@ public class RapplaActivity extends Activity
 
         LinearLayout vg = new LinearLayout(this);
         final EditText inputText = new EditText(this);
-        inputText.setId(123456);
+        inputText.setId(R.id.ID_URL_Edit);
 
         TextView message = new TextView(this);
         message.setText(R.string.url_dialog);
@@ -195,15 +177,7 @@ public class RapplaActivity extends Activity
     protected void onDestroy() {
         super.onDestroy();
 
-        saveSettings();
-    }
-
-    public int getFragmentCount() {
-        return fragments.length;
-    }
-
-    public Fragment getFragment(int i) {
-        return fragments[i];
+        RapplaPreferences.setSavedCalendarHash(this, getActiveCalendar().hashCode());
     }
 
 	public WeekPagerFragment getWeekPagerFragment() {
@@ -218,7 +192,7 @@ public class RapplaActivity extends Activity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         int i = getActionBar().getSelectedNavigationIndex();
-        outState.putInt(selectedTabKey, i);
+        outState.putInt(RapplaPreferences.PREF_KEY_selectedTab, i);
     }
 
 	private void configureActionBar(Bundle savedInstanceState) {
@@ -241,7 +215,7 @@ public class RapplaActivity extends Activity
 
         int selectedIndex = 0;
         if (savedInstanceState != null)
-            selectedIndex = savedInstanceState.getInt(selectedTabKey);
+            selectedIndex = savedInstanceState.getInt(RapplaPreferences.PREF_KEY_selectedTab);
         actionBar.selectTab(tabs[selectedIndex]);
     }
 
@@ -275,13 +249,13 @@ public class RapplaActivity extends Activity
         if (item != null)
             item.setVisible(false);
 
-        new DownloadRaplaTask(this, raplaDownloadedHandler).execute(getCalendarURL(this));
+        new DownloadRaplaTask(this, raplaDownloadedHandler).execute(RapplaPreferences.getSavedCalendarURL(this));
         return true;
     }
 
     public boolean onSettingsButtonPressed(MenuItem item) {
         Intent myIntent = new Intent(this, SettingsActivity.class);
-        startActivityForResult(myIntent, SETTINGS_REQ_CODE);
+        startActivityForResult(myIntent, R.integer.Request_code_Settings);
         return true;
     }
 
@@ -305,24 +279,14 @@ public class RapplaActivity extends Activity
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == SETTINGS_REQ_CODE)
-		{
+        if (requestCode == R.integer.Request_code_Settings) {
 			configureNotifier();
-			applyURL(getCalendarURL(this));
-			if(resultCode == SettingsActivity.RESULT_UPDATE_CALENDAR)
+            applyURL(RapplaPreferences.getSavedCalendarURL(this));
+            if(resultCode == SettingsActivity.RESULT_UPDATE_CALENDAR)
 				onRefreshButtonPressed(null);
 		}
 	}
 
-    private boolean isValidURL(String url) {
-        try {
-            new URL(url).toURI(); // this is made to check whether its a valid URL
-            return true;
-
-        } catch (Exception ex) {
-            return false;
-        }
-    }
 
     public RaplaCalendar getActiveCalendar() {
         return activeCalendar;
@@ -356,22 +320,14 @@ public class RapplaActivity extends Activity
         return gestDetector.onTouchEvent(event);
     }
 
-    private void saveSettings() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putInt(lastCalendarHashString, getActiveCalendar().hashCode());
-        editor.commit();
-    }
-
     private void configureNotifier() {
         Intent intent = new Intent(this, RaplaBackgroundService.class);
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        boolean doNotify = preferences.getBoolean("offlineSync", false);
-        long interval = Long.valueOf(preferences.getString("updateInterval", "86400"));
+        boolean doNotify = RapplaPreferences.isOfflineSync(this);
+        long interval = RapplaPreferences.getSavedUpdateInterval(this);
 
         if (!doNotify) {
             alarmManager.cancel(pendingIntent);
@@ -383,14 +339,13 @@ public class RapplaActivity extends Activity
 
     public void applyURL(String url)
 	{
-		url = url.replace("page=calendar", "page=ical");
-		
-		if(!isValidURL(url))
-		{
+        url = RapplaUtils.validateIcalUrl(url);
+
+        if (url == null) {
             Toast.makeText(RapplaActivity.this, "Kein Kalender geladen.", Toast.LENGTH_LONG).show();
             return;
 		}
-		
-		setCalendarURL(RapplaActivity.this, url);
-	}
+
+        RapplaPreferences.setSavedCalendarURL(RapplaActivity.this, url);
+    }
 }

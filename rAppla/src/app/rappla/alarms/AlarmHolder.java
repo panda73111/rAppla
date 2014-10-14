@@ -73,25 +73,25 @@ public class AlarmHolder extends LinearLayout {
 
     private void configureActivateButton(Context c, OnAlarmClickListener alarmClickListener) {
         alarmButton = new Button(c);
-        alarmButton.setId(R.id.activateButtonID);
+        alarmButton.setId(R.id.ID_activateButton);
         alarmButton.setOnClickListener(alarmClickListener);
     }
 
     private void configureDateButton(Context c, OnAlarmClickListener alarmClickListener) {
         dateButton = new Button(c);
-        dateButton.setId(R.id.dateButtonID);
+        dateButton.setId(R.id.ID_dateButton);
         dateButton.setOnClickListener(alarmClickListener);
     }
 
     private void configureTimeButton(Context c, OnAlarmClickListener alarmClickListener) {
         timeButton = new Button(c);
-        timeButton.setId(R.id.timeButtonID);
+        timeButton.setId(R.id.ID_timeButton);
         timeButton.setOnClickListener(alarmClickListener);
     }
 
     private void configureRemoveButton(Context c, OnAlarmClickListener alarmClickListener) {
         removeButton = new Button(c);
-        removeButton.setId(R.id.removeButtonID);
+        removeButton.setId(R.id.ID_removeButton);
         removeButton.setOnClickListener(alarmClickListener);
         removeButton.setText("X");
     }

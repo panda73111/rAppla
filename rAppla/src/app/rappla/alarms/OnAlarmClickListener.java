@@ -31,16 +31,16 @@ public class OnAlarmClickListener implements OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.dateButtonID:
+            case R.id.ID_dateButton:
                 onDateClick();
                 break;
-            case R.id.timeButtonID:
+            case R.id.ID_timeButton:
                 onTimeClick();
                 break;
-            case R.id.removeButtonID:
+            case R.id.ID_removeButton:
                 onRemoveClick();
                 break;
-            case R.id.activateButtonID:
+            case R.id.ID_activateButton:
                 alarm.setActive(!alarm.isActive);
                 alarmHolder.updateViews();
                 break;

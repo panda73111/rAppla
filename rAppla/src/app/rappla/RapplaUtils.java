@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.util.Calendar;
 
 public class RapplaUtils {
@@ -47,5 +48,26 @@ public class RapplaUtils {
         out.writeObject(objectToWrite);
         out.close();
         fileOut.close();
+    }
+
+    /*
+        Returns null if the input URL can not be made valid
+        TODO: Make this thing actually useful
+     */
+    public static String validateIcalUrl(String url) {
+        url = url.replace("page=calendar", "page=ical");
+        if (!isValidURL(url))
+            return null;
+        return url;
+    }
+
+    public static boolean isValidURL(String url) {
+        try {
+            new URL(url).toURI(); // this is made to check whether its a valid URL
+            return true;
+
+        } catch (Exception ex) {
+            return false;
+        }
     }
 }

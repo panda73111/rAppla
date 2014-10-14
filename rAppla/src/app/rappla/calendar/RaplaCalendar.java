@@ -1,10 +1,8 @@
 package app.rappla.calendar;
 
+import android.content.Context;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -15,33 +13,27 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import app.rappla.RapplaPreferences;
+import app.rappla.RapplaUtils;
 import app.rappla.StaticContext;
-import app.rappla.activities.RapplaActivity;
 
 @SuppressWarnings("serial")
 public class RaplaCalendar implements Serializable
 {
 	private static final String CALENDAR_DB_FILE = "rapla.db";
-    private static RaplaCalendar activeCalendar = null;
 
 	private Hashtable<Integer, Set<RaplaEvent>> eventCal;
 
 	public RaplaCalendar()
 	{
-		eventCal = new Hashtable<Integer, Set<RaplaEvent>>();
-	}
+        eventCal = new Hashtable<>();
+    }
 
 	public static RaplaCalendar load() {
         android.util.Log.d("RaplaCalendar", "load");
+
         try {
-            InputStream inStr = StaticContext.getContext().openFileInput(CALENDAR_DB_FILE);
-            ObjectInputStream objInStr = new ObjectInputStream(inStr);
-            RaplaCalendar ret = (RaplaCalendar) objInStr.readObject();
-            objInStr.close();
-            return ret;
+            return RapplaUtils.readSerializedObject(StaticContext.getContext(), CALENDAR_DB_FILE);
         } catch (IOException ex) {
             android.util.Log.d("RaplaCalendar", "error loading calendar: " + ex);
             return null;
@@ -50,10 +42,6 @@ public class RaplaCalendar implements Serializable
             return null;
         }
 	}
-
-    public static RaplaCalendar getActiveCalendar() {
-        return activeCalendar;
-    }
 
     public void parse(Reader reader) throws CalendarFormatException, IOException {
         CalendarParser calParser = new ICalendarParser();
@@ -87,9 +75,7 @@ public class RaplaCalendar implements Serializable
     }
 
     public RaplaEvent getElementByUniqueID(String uid) {
-        Iterator<Set<RaplaEvent>> it = eventCal.values().iterator();
-        while (it.hasNext()) {
-            Set<RaplaEvent> entry = it.next();
+        for (Set<RaplaEvent> entry : eventCal.values()) {
             for (RaplaEvent event : entry) {
                 if (event.getUniqueEventID().equals(uid))
                     return event;
@@ -145,7 +131,7 @@ public class RaplaCalendar implements Serializable
         if (eventCal.containsKey(key)) {
             eventCal.get(key).add(event);
         } else {
-            Set<RaplaEvent> l = new TreeSet<RaplaEvent>();
+            Set<RaplaEvent> l = new TreeSet<>();
             l.add(event);
             eventCal.put(key, l);
         }
@@ -163,15 +149,9 @@ public class RaplaCalendar implements Serializable
     public void save(Context context) {
         android.util.Log.d("RaplaCalendar", "saving calendar");
         try {
-            OutputStream outStr = StaticContext.getContext().openFileOutput(CALENDAR_DB_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream objOutStr = new ObjectOutputStream(outStr);
-            objOutStr.writeObject(this);
-            objOutStr.close();
+            RapplaUtils.writeSerializedObject(context, CALENDAR_DB_FILE, this);
 
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putInt(RapplaActivity.lastCalendarHashString, hashCode());
-            editor.commit();
+            RapplaPreferences.setSavedCalendarHash(context, hashCode());
         } catch (IOException ex) {
             android.util.Log.d("RaplaCalendar", "error saving calendar: " + ex);
         }

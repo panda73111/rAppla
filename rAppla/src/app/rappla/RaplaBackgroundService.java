@@ -6,13 +6,11 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -39,8 +37,7 @@ public class RaplaBackgroundService extends Service {
 
         updateData();
 
-        // Nachdem unsere Methode abgearbeitet wurde, soll sich der Service
-        // selbst stoppen.
+        // Nachdem unsere Methode abgearbeitet wurde, soll sich der Service selbst stoppen.
         stopSelf();
         return START_STICKY;
     }
@@ -51,7 +48,7 @@ public class RaplaBackgroundService extends Service {
     }
 
     private void updateData() {
-        if (isWifiOnly(this)) {
+        if (RapplaPreferences.isWifiOnlySync(this)) {
             ConnectivityManager connManager = (ConnectivityManager) StaticContext.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
             if (!mWifi.isConnected()) {
@@ -60,7 +57,7 @@ public class RaplaBackgroundService extends Service {
             }
         }
 
-        final int notificationHash = getCalendarHash(this);
+        final int notificationHash = RapplaPreferences.getSavedCalendarHash(this);
 
         final Context context = getApplicationContext();
 
@@ -68,9 +65,14 @@ public class RaplaBackgroundService extends Service {
 
         DownloadRaplaTask downloadTask = new DownloadRaplaTask(this, new OnTaskCompleted<RaplaCalendar>() {
             public void onTaskCompleted(RaplaCalendar result) {
+                Log.d("BackgroundUpdateService", "new CalendarHash: " + result.hashCode());
+
                 if (notificationHash != result.hashCode()) {
+                    Log.d("BackgroundUpdateService", "new CalendarHash is different!");
+
+
+
                     result.save(context);
-                    Log.d("BackgroundUpdateService", "new CalendarHash: " + result.hashCode());
                     Log.d("BackgroundUpdateService", "Showing Notification");
                     showNotification(StaticContext.getContext());
                 } else {
@@ -80,7 +82,7 @@ public class RaplaBackgroundService extends Service {
         }, false);
 
         Log.d("BackgroundUpdateService", "Downloading Rapla");
-        downloadTask.execute(RapplaActivity.getCalendarURL(this));
+        downloadTask.execute(RapplaPreferences.getSavedCalendarURL(this));
 
     }
 
@@ -104,13 +106,5 @@ public class RaplaBackgroundService extends Service {
         nm.notify(ID_UPDATE_NOTIFICATION, notification);
     }
 
-    private int getCalendarHash(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getInt(RapplaActivity.lastCalendarHashString, 0);
-    }
 
-    private boolean isWifiOnly(Context context) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return preferences.getBoolean("onlyWifiSync", false);
-    }
 }

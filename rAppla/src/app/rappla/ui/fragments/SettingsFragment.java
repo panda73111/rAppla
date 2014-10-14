@@ -6,8 +6,9 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceFragment;
+
 import app.rappla.R;
-import app.rappla.activities.RapplaActivity;
+import app.rappla.RapplaPreferences;
 import app.rappla.activities.SettingsActivity;
 
 public class SettingsFragment extends PreferenceFragment
@@ -48,9 +49,9 @@ public class SettingsFragment extends PreferenceFragment
 				return true;
 			}
 		});
-		
-		String url = RapplaActivity.getCalendarURL(getActivity());
-		if(url!=null)
+
+        String url = RapplaPreferences.getSavedCalendarURL(getActivity());
+        if(url!=null)
 			ep.setSummary(url);
 	}
 

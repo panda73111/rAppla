@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="dateButtonID" type="id" />
-    <item name="timeButtonID" type="id" />
-    <item name="activateButtonID" type="id" />
-    <item name="removeButtonID" type="id" />
+    <!-- AlarmHolder -->
+    <item name="ID_dateButton" type="id" />
+    <item name="ID_timeButton" type="id" />
+    <item name="ID_activateButton" type="id" />
+    <item name="ID_removeButton" type="id" />
+
+
+    <!-- URL-Dialog -->
+    <item name="ID_URL_Edit" type="id" />
+
+    <!-- Notification-ID -->
+    <integer name="Notification_ID_RapplaUpdate">0</integer>
+    <integer name="Notification_ID_Alarm">1</integer>
+
+    <!-- Request-Codes -->
+    <integer name="Request_code_Settings">2</integer>
+    <integer name="Request_code_Notifier">3</integer>
 </resources>
