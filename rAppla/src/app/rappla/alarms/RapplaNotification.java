@@ -7,6 +7,7 @@ import android.content.Context;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import app.rappla.R;
 
@@ -22,7 +23,11 @@ public class RapplaNotification {
         return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     }
 
-    public static void showNotification(Context context, String title, String note, PendingIntent clickAction, int notificationID) {
+
+    /*
+       BigText and note are optional
+     */
+    public static void showNotification(Context context, String title, String note, String bigText, PendingIntent clickAction, int notificationID) {
         Uri notificationSound = getDefaultNotificationSound();
 
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -31,13 +36,20 @@ public class RapplaNotification {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(defaultIcon)
                 .setContentTitle(title)
-                .setContentText(note)
                 .setLights(ledSettings[0], ledSettings[1], ledSettings[2])
                 .setSound(notificationSound).setVibrate(vibrationPattern)
                 .setContentIntent(clickAction);
+
+        if (bigText != null)
+            mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText));
+        if (note != null)
+            mBuilder.setContentText(note);
+
+
         Notification notification = mBuilder.build();
 
         nm.notify(notificationID, notification);
+        Log.d("Notification", title + ": " + note);
     }
 
 

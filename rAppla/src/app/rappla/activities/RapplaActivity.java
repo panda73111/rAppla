@@ -53,7 +53,6 @@ public class RapplaActivity extends Activity
     private RapplaFragment[] fragments;
 	private Tab[] tabs;
 	private Menu menu;
-    private RaplaCalendar activeCalendar;
     private GestureDetector gestDetector;
 
 
@@ -97,19 +96,19 @@ public class RapplaActivity extends Activity
         tabs = new Tab[TAB_CNT];
 
         gestDetector = new GestureDetector(this, new RapplaGestureListener());
-        activeCalendar = RaplaCalendar.load();
+        RaplaCalendar.activeCalendar = RaplaCalendar.load();
 
         // enable spinning icon in the action bar
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-        if (activeCalendar == null) {
+        if (getActiveCalendar() == null) {
             // activeCalendar is not saved locally, download it
 
             if (RapplaPreferences.getSavedCalendarURL(this) == null) {
                 openURLDialog();
             }
 
-            activeCalendar = new RaplaCalendar();
+            RaplaCalendar.activeCalendar = new RaplaCalendar();
             // start background download
             new DownloadRaplaTask(this, raplaDownloadedHandler).execute(RapplaPreferences.getSavedCalendarURL(this));
         }
@@ -127,7 +126,7 @@ public class RapplaActivity extends Activity
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(R.integer.Notification_ID_RapplaUpdate);
 
-        setActiveCalendar(activeCalendar);
+        setActiveCalendar(getActiveCalendar());
     }
 
     private void openURLDialog() {
@@ -282,18 +281,18 @@ public class RapplaActivity extends Activity
         if (requestCode == R.integer.Request_code_Settings) {
 			configureNotifier();
             applyURL(RapplaPreferences.getSavedCalendarURL(this));
-            if(resultCode == SettingsActivity.RESULT_UPDATE_CALENDAR)
-				onRefreshButtonPressed(null);
-		}
+            if (resultCode == R.integer.Request_code_updateCalendar)
+                onRefreshButtonPressed(null);
+        }
 	}
 
 
     public RaplaCalendar getActiveCalendar() {
-        return activeCalendar;
+        return RaplaCalendar.activeCalendar;
     }
 
     public void setActiveCalendar(RaplaCalendar cal) {
-        activeCalendar = cal;
+        RaplaCalendar.activeCalendar = cal;
 
         // redraw grids
         FragmentManager frMan = getFragmentManager();

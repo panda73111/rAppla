@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="app.rappla"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0">
 
     <uses-sdk
         android:minSdkVersion="17"
@@ -25,13 +25,14 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:vmSafeMode="false" >
+        android:vmSafeMode="false">
         <activity
             android:name="app.rappla.activities.RapplaActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
             android:label="Rappla"
-            android:launchMode="singleInstance">
-        <intent-filter>
+            android:launchMode="singleTop">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -39,21 +40,18 @@
         </activity>
         <activity
             android:name="app.rappla.activities.SettingsActivity"
-            android:label="Settings" >
-        </activity>
+            android:label="Settings"></activity>
         <activity
             android:name="app.rappla.activities.EventActivity"
             android:configChanges="orientation"
             android:label="Event"
             android:launchMode="singleInstance"
-            android:windowSoftInputMode="adjustNothing" >
-        </activity>
+            android:windowSoftInputMode="adjustNothing"></activity>
         <activity
             android:name="app.rappla.activities.AlarmPopupDialog"
             android:label="Alarm"
             android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Dialog" >
-        </activity>
+            android:theme="@android:style/Theme.Dialog"></activity>
 
         <!--
         <receiver android:name=".RapplaBackgroundUpdateService">
@@ -75,7 +73,7 @@
             android:name="RapplaWidgetProvider"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_name"
-            android:widgetCategory="home_screen" >
+            android:widgetCategory="home_screen">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

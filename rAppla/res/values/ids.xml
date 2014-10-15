@@ -17,4 +17,5 @@
     <!-- Request-Codes -->
     <integer name="Request_code_Settings">2</integer>
     <integer name="Request_code_Notifier">3</integer>
+    <integer name="Request_code_updateCalendar">4</integer>
 </resources>

@@ -111,7 +111,7 @@ public class AlarmPopupDialog extends Activity implements OnClickListener {
 
     private void notificationOnStartup() {
         PendingIntent eventIntent = PendingIntent.getActivity(this, 0, getEventActivityIntent(), PendingIntent.FLAG_UPDATE_CURRENT);
-        RapplaNotification.showNotification(getApplicationContext(), event.getTitle(), note.toString(), eventIntent, R.integer.Notification_ID_Alarm);
+        RapplaNotification.showNotification(getApplicationContext(), event.getTitle(), note.toString(), null, eventIntent, R.integer.Notification_ID_Alarm);
     }
 
     private Intent getEventActivityIntent() {

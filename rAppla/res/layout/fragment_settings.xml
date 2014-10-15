@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:key="rappla_preferences" >
-	
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:key="rappla_preferences">
+
     <EditTextPreference
-        android:key="ICAL_URL"
-        android:title="@string/calendarURL"
-        android:summary="@string/calendarURL_summary"
         android:inputType="text"
+        android:key="ICAL_URL"
+        android:summary="@string/calendarURL_summary"
         android:textIsSelectable="true"
-        />
-    
+        android:title="@string/calendarURL" />
+
     <CheckBoxPreference
         android:key="offlineSync"
-        android:title="@string/pushNotifications" />    
-    
+        android:title="@string/pushNotifications" />
+
     <CheckBoxPreference
         android:dependency="offlineSync"
         android:key="onlyWifiSync"
@@ -25,7 +26,7 @@
         android:dialogTitle="@string/updateInterval"
         android:entries="@array/UpdateIntervals_Entries"
         android:entryValues="@array/UpdateIntervals_Values"
-        android:key="updateInterval"
+        android:key="updateIntervalString"
         android:summary="@string/updateInterval_summary"
         android:title="@string/updateInterval" />
 

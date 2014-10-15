@@ -13,7 +13,8 @@ import app.rappla.activities.SettingsActivity;
 
 public class SettingsFragment extends PreferenceFragment
 {
-	
+    private static final String updateIntervalListKey = "updateIntervalString";
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -25,17 +26,19 @@ public class SettingsFragment extends PreferenceFragment
 	public void onStart()
 	{
 		super.onStart();
-		ListPreference lp = (ListPreference) findPreference("updateInterval");
-		
-		lp.setOnPreferenceChangeListener(new OnPreferenceChangeListener()
-		{	
+        ListPreference lp = (ListPreference) findPreference(updateIntervalListKey);
+
+        lp.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			public boolean onPreferenceChange(Preference preference, Object newValue)
 			{
+                String newValueString = (String) newValue;
+
 				ListPreference lp = (ListPreference)preference;
-				int index = lp.findIndexOfValue((String)newValue);
-				updateLP(index);
-				return true;
-			}
+                int index = lp.findIndexOfValue(newValueString);
+                updateLP(index);
+                RapplaPreferences.setSavedUpdateInterval(getActivity(), Long.valueOf(newValueString));
+                return true;
+            }
 		});
 		updateLP();
 		EditTextPreference ep = (EditTextPreference) findPreference("ICAL_URL");
@@ -57,12 +60,12 @@ public class SettingsFragment extends PreferenceFragment
 
 	private void updateLP()
 	{
-		ListPreference lp = (ListPreference) findPreference("updateInterval");
-		updateLP(lp.findIndexOfValue(lp.getValue()));
-	}
+        ListPreference lp = (ListPreference) findPreference(updateIntervalListKey);
+        updateLP(lp.findIndexOfValue(lp.getValue()));
+    }
 	private void updateLP(int index)
 	{
-		ListPreference lp = (ListPreference) findPreference("updateInterval");
+        ListPreference lp = (ListPreference) findPreference(updateIntervalListKey);
 
 		if (index == -1)
 		{

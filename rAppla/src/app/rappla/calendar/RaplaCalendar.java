@@ -5,6 +5,7 @@ import android.content.Context;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Hashtable;
@@ -18,18 +19,18 @@ import app.rappla.RapplaUtils;
 import app.rappla.StaticContext;
 
 @SuppressWarnings("serial")
-public class RaplaCalendar implements Serializable
-{
-	private static final String CALENDAR_DB_FILE = "rapla.db";
+public class RaplaCalendar implements Serializable {
+    private static final String CALENDAR_DB_FILE = "rapla.db";
+    public static RaplaCalendar activeCalendar = null;
 
-	private Hashtable<Integer, Set<RaplaEvent>> eventCal;
+    private Hashtable<Integer, Set<RaplaEvent>> eventCal;
 
-	public RaplaCalendar()
-	{
+
+    public RaplaCalendar() {
         eventCal = new Hashtable<>();
     }
 
-	public static RaplaCalendar load() {
+    public static RaplaCalendar load() {
         android.util.Log.d("RaplaCalendar", "load");
 
         try {
@@ -41,7 +42,7 @@ public class RaplaCalendar implements Serializable
             android.util.Log.d("cal", "error loading calendar: " + ex);
             return null;
         }
-	}
+    }
 
     public void parse(Reader reader) throws CalendarFormatException, IOException {
         CalendarParser calParser = new ICalendarParser();
@@ -93,7 +94,7 @@ public class RaplaCalendar implements Serializable
         return eventCal.get(getDateHash(day, month - 1, year));
     }
 
-	public RaplaEvent getNextEvent() {
+    public RaplaEvent getNextEvent() {
         return getNextEvent(Calendar.getInstance());
     }
 
@@ -152,6 +153,7 @@ public class RaplaCalendar implements Serializable
             RapplaUtils.writeSerializedObject(context, CALENDAR_DB_FILE, this);
 
             RapplaPreferences.setSavedCalendarHash(context, hashCode());
+            activeCalendar = this;
         } catch (IOException ex) {
             android.util.Log.d("RaplaCalendar", "error saving calendar: " + ex);
         }
@@ -161,13 +163,66 @@ public class RaplaCalendar implements Serializable
         int hash = 0;
         Collection<Set<RaplaEvent>> allEventSets = eventCal.values();
 
-        for(Set<RaplaEvent> eventSet : allEventSets)
-        {
-            for(RaplaEvent event : eventSet)
-            {
-                hash+=event.hashCode();
+        for (Set<RaplaEvent> eventSet : allEventSets) {
+            for (RaplaEvent event : eventSet) {
+                hash += event.hashCode();
             }
         }
-		return hash;
-	}
+        return hash;
+    }
+
+    public ArrayList<EventModification> compare(RaplaCalendar otherCalendar) {
+        ArrayList<EventModification> allModifications = new ArrayList<>();
+        if (hashCode() == otherCalendar.hashCode())
+            return allModifications;
+
+        // GET ALL EVENTS INTO 2 ARRAYLISTS
+
+        ArrayList<RaplaEvent> allMyEvents = new ArrayList<>();
+        ArrayList<RaplaEvent> allOtherEvents = new ArrayList<>();
+        ArrayList<RaplaEvent> allMyRemainingEvents = new ArrayList<>();
+        ArrayList<RaplaEvent> allOtherRemainingEvents = new ArrayList<>();
+
+        for (Set<RaplaEvent> eventSet : this.eventCal.values()) {
+            allMyEvents.addAll(eventSet);
+            allMyRemainingEvents.addAll(eventSet);
+        }
+        for (Set<RaplaEvent> eventSet : otherCalendar.eventCal.values()) {
+            allOtherEvents.addAll(eventSet);
+            allOtherRemainingEvents.addAll(eventSet);
+        }
+
+        boolean eventFound = false;
+
+        // Now start comparing
+        for (RaplaEvent myEvent : allMyEvents) {
+            String uniqueID = myEvent.getUniqueEventID();
+            for (RaplaEvent otherEvent : allOtherEvents) {
+                if (otherEvent.getUniqueEventID().equals(uniqueID)) {
+                    // Same Event
+                    if (otherEvent.hashCode() != myEvent.hashCode()) {
+                        // Something changed
+                        allModifications.add(new EventModification(myEvent, otherEvent, EventModification.ModificationType.MODIFIED));
+                    }
+
+                    allMyRemainingEvents.remove(myEvent);
+                    allOtherRemainingEvents.remove(otherEvent);
+                    eventFound = true;
+                    break;
+                }
+            }
+            if (!eventFound) {
+                allModifications.add(new EventModification(myEvent, null, EventModification.ModificationType.REMOVED));
+                allMyRemainingEvents.remove(myEvent);
+            }
+            eventFound = false;
+        }
+
+        // Add all remaining events as new
+        for (RaplaEvent otherEvent : allOtherRemainingEvents) {
+            allModifications.add(new EventModification(null, otherEvent, EventModification.ModificationType.ADDED));
+        }
+
+        return allModifications;
+    }
 }

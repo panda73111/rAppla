@@ -8,15 +8,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+
 import app.rappla.R;
 import app.rappla.ui.fragments.SettingsFragment;
 
 public class SettingsActivity extends Activity
 {
-	ViewGroup myViewGroup = null;
-	SettingsFragment settingsFragment = null;
 	public static boolean calendarWasChanged = false;
-	public static final int RESULT_UPDATE_CALENDAR = 1792311;
+    ViewGroup myViewGroup = null;
+    SettingsFragment settingsFragment = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -46,15 +46,12 @@ public class SettingsActivity extends Activity
 	public void onBackPressed()
 	{
 		Intent intent = this.getIntent();
-		if (calendarWasChanged)
-		{
-			calendarWasChanged = false;
-			setResult(RESULT_UPDATE_CALENDAR, intent);
-		} else
-			setResult(RESULT_OK, intent);
-
-		finish();
-	}
+        if (calendarWasChanged) {
+            calendarWasChanged = false;
+            setResult(R.integer.Request_code_updateCalendar, intent);
+        }
+        finish();
+    }
 
 	public void addSettingsFragment()
 	{
